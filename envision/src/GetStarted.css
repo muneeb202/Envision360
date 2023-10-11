@@ -1,0 +1,14 @@
+.getStarted-container{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -100;
+    overflow: hidden;
+    max-height: 100vh;
+}
+
+/* .socials-header {
+    position: absolute;
+    left: 20vw;
+    top: 35vh;
+} */

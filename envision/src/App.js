@@ -1,15 +1,19 @@
-import logo from './logo.svg';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Updated import for BrowserRouter
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Home from './Home';
+import GetStarted from './GetStarted';
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-      </Routes>
-    </Router>
+    <div className='body'>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/GetStarted" element={<GetStarted />} />
+        </Routes>
+      </Router>
+    </div>
+
   );
 }
 
