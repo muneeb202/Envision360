@@ -70,7 +70,7 @@ const Generate = () => {
             <div className='overlay' />
             <div className='generate-container'>
 
-                <img src={logo} className='logo' />
+                <a href='/'><img src={logo} className='logo' /></a>
                 <div className='row generate-row'>
                     <div className='col-md-6 px-5'>
                         <div className='generate-type'>

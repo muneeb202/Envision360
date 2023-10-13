@@ -77,6 +77,11 @@
     letter-spacing: 3px;
 }
 
+.generate-container a {
+    z-index: 10;
+    width: min-content;
+}
+
 .generate-button:hover {
     box-shadow: rgb(141 82 201) 0px 0px 20px 5px;
 }
