@@ -1,0 +1,120 @@
+import background from './images/generatebg.png'
+import logo from './images/image.png'
+import './Generate.css'
+import { ImageList, ImageListItem, TextField, ThemeProvider, createTheme, styled } from '@mui/material';
+import { useState } from 'react';
+
+const theme = createTheme({
+    palette: {
+        mode: 'dark',
+        primary: {
+            main: 'rgb(255, 255, 255)',
+        },
+        secondary: {
+            main: '#8331D6',
+        }
+    },
+    typography: {
+        fontFamily: 'Poppins, sans-serif',
+    }
+});
+
+const Generate = () => {
+
+    const [generateType, setGenerateType] = useState(1);
+    const [isDragging, setIsDragging] = useState(false);
+    const [selectedFiles, setSelectedFiles] = useState([]);
+
+    const handleDragEnter = (e) => {
+        e.preventDefault();
+        setIsDragging(true);
+    };
+
+    const handleDragLeave = () => {
+        setIsDragging(false);
+    };
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        setIsDragging(false);
+        setSelectedFiles((prevFiles) => [...prevFiles, ...e.dataTransfer.files]);
+    };
+
+    const handleFileInputChange = (e) => {
+        setSelectedFiles((prevFiles) => [...prevFiles, ...e.target.files]);
+    };
+
+    return (
+        <>
+            <div className='image-container'>
+                <img src={background} />
+            </div>
+            <div className='overlay' />
+            <div className='generate-container'>
+
+                <img src={logo} className='logo' />
+                <div className='row generate-row'>
+                    <div className='col-md-6 px-5'>
+                        <div className='generate-type'>
+                            <button onClick={() => setGenerateType(1)} className={generateType === 1 ? 'active' : ''}>Location Search</button>
+                            <button onClick={() => setGenerateType(2)} className={generateType === 2 ? 'active' : ''}>Coordinates</button>
+                            <button onClick={() => setGenerateType(3)} className={generateType === 3 ? 'active' : ''}>Upload Images</button>
+                        </div>
+                        <div className='input-container'>
+                            <ThemeProvider theme={theme}>
+                                <div className='w-75'>
+                                    {generateType === 1 && (
+                                        <TextField color='secondary' fullWidth multiline maxRows={7} label="Search Query" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                    )}
+                                    {generateType === 2 && (
+                                        <>
+                                            <TextField color='secondary' fullWidth label="Latitude" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                            <br /><br />
+                                            <TextField color='secondary' fullWidth label="Longitude" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                        </>
+                                    )}
+                                </div>
+
+                                {generateType === 3 && (
+                                    <label
+                                        className={`drag-drop-box ${isDragging ? 'drag-over' : ''}`}
+                                        onDragEnter={handleDragEnter}
+                                        onDragOver={handleDragEnter}
+                                        onDragLeave={handleDragLeave}
+                                        onDrop={handleDrop}
+                                    >
+                                        {selectedFiles.length === 0 && (
+                                            <>Drag images here or click to upload</>
+                                        )}
+                                        <input
+                                            type="file"
+                                            className="file-input"
+                                            multiple
+                                            onChange={handleFileInputChange}
+                                        />
+
+                                        <ImageList className='image-list' cols={3} sx={{ marginBottom: '0' }}>
+                                            {selectedFiles.map((file, index) => (
+                                                <ImageListItem key={index}>
+                                                    <img src={URL.createObjectURL(file)} alt={`uploaded-${index}`} />
+                                                </ImageListItem>
+                                            ))}
+                                        </ImageList>
+                                    </label>
+                                )}
+                            </ThemeProvider>
+                        </div>
+                        <button className='generate-button'>Generate 360&deg; Image</button>
+                    </div>
+                    <div className='col-md-6 ps-5'>
+                        <h1>Generate Image</h1>
+                    <p>Create breathtaking 360-degree images effortlessly.</p>
+                    <p>Explore real-time rendering and craft your panoramic masterpiece.</p>
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+}
+
+export default Generate;
