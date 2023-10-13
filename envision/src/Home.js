@@ -12,13 +12,13 @@ const Home = () => {
             <div className='image-container'>
                 <img src={background} />
             </div>
-            <div className='navbar'>
+            <div className='home-navbar'>
                 <img src={logo} className='logo' />
                 <div className='links'>
-                    <a href='/GetStarted'>Get Started</a>
+                    <a href='/start'>Get Started</a>
                     <a href=''>About Us</a>
                     <a href=''>Blog</a>
-                    <a href=''>Demo</a>
+                    <a href='/generate'>Demo</a>
                 </div>
             </div>
             <div className='header'>
