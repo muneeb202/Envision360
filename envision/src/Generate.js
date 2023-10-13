@@ -2,7 +2,10 @@ import background from './images/generatebg.png'
 import logo from './images/image.png'
 import './Generate.css'
 import { Button, ImageList, ImageListItem, TextField, ThemeProvider, createTheme, styled } from '@mui/material';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import Particles from 'react-tsparticles';
+import { loadFull } from 'tsparticles';
+import particlesConfig2 from "./config/particle-config2";
 
 const theme = createTheme({
     palette: {
@@ -18,6 +21,10 @@ const theme = createTheme({
         fontFamily: 'Poppins, sans-serif',
     }
 });
+
+const MemoizedParticles = React.memo(({ options }) => (
+    <Particles init={(main) => loadFull(main)} options={options} />
+  ));
 
 const Generate = () => {
 
@@ -56,6 +63,7 @@ const Generate = () => {
 
     return (
         <ThemeProvider theme={theme}>
+            <MemoizedParticles options={particlesConfig2} />
             <div className='image-container'>
                 <img src={background} />
             </div>
@@ -78,9 +86,9 @@ const Generate = () => {
                                 )}
                                 {generateType === 2 && (
                                     <>
-                                        <TextField color='secondary' fullWidth label="Latitude" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                        <TextField color='secondary' type='number' fullWidth label="Latitude" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
                                         <br /><br />
-                                        <TextField color='secondary' fullWidth label="Longitude" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                        <TextField color='secondary' type='number' fullWidth label="Longitude" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
                                     </>
                                 )}
                             </div>
