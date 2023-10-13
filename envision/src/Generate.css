@@ -11,6 +11,7 @@
 
 .generate-container {
     height: 80vh;
+    max-height: 80vh;
     display: flex;
     flex-direction: column;
 }
@@ -53,6 +54,7 @@
     font-weight: 200;
     letter-spacing: 1px;
     font-size: 12px;
+    z-index: 10;
 }
 
 .generate-type .active {
@@ -68,16 +70,16 @@
 }
 
 .generate-button {
-    color: rgb(255, 255, 255);
     border-radius: 50px;
-    background: #8331D6;
-    border: none;
     padding: 20px;
     margin: 0px 10%;
     font-size: 18px;
     letter-spacing: 3px;
-    box-shadow: rgb(141 82 201) 0px 0px 20px 0px;
-    transition: box-shadow 0.2s ease-in;
+}
+
+.generate-container a {
+    z-index: 10;
+    width: min-content;
 }
 
 .generate-button:hover {
@@ -96,6 +98,9 @@
     justify-content: center;
     cursor: pointer;
     transition: border-color 0.3s ease;
+    box-shadow: rgb(35 9 61) 9px 9px 20px 0px;
+    overflow: auto;
+    z-index: 10;
   }
   
   .drag-drop-box.drag-over {
@@ -112,13 +117,36 @@
 
 .image-list::-webkit-scrollbar-track {
     border-radius: 8px;
-    background-color: #e7e7e7;
-    border: 1px solid #c3c3c3;
+    background-color: transparent;
 }
 
 .image-list::-webkit-scrollbar-thumb {
     border-radius: 8px;
   border: 3px solid transparent;
    background-clip: content-box;
-    background-color: #686868;
+    background-color: #8d69b1;
+}
+
+.image-item {
+    position: relative;
+}
+
+.delete-button {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background-color: transparent;
+    border: transparent;
+    display: none;
+    background-color: grey;
+    border-radius: 50%;
+}
+
+.image-item:hover .delete-button {
+    display: block;
+}
+
+.delete-button:hover{
+    color: red !important;
+    background-color: transparent;
 }
