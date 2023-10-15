@@ -6,6 +6,8 @@ import React, { useRef, useState } from 'react';
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
 import particlesConfig2 from "./config/particle-config2";
+import animationData from './images/robot.json';
+import Lottie, {LottieRefCurrentProps} from 'lottie-react'
 
 const theme = createTheme({
     palette: {
@@ -33,6 +35,11 @@ const Generate = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [progress, setProgress] = React.useState(0);
     const [buffer, setBuffer] = React.useState(10);
+    const animationRef = useRef(<LottieRefCurrentProps/>);
+
+  const handleClick = () => {
+    animationRef.current?.goToAndPlay(0, true);
+  };
 
     const progressRef = React.useRef(() => { });
     React.useEffect(() => {
@@ -94,7 +101,13 @@ const Generate = () => {
  
             <div> 
                 {isLoading && (
-                    <div className={isLoading ? 'loading-screen active' : 'loading-screen'}>
+                    <div className={isLoading ? 'loading-screen active' : 'loading-screen'} onClick={handleClick}>
+                        <Lottie
+                            lottieRef={animationRef}
+                            animationData={animationData}
+                            loop={false}
+                            style={{ width: 200, height: 200 }}
+                        />
                         <Box sx={{ width: '50%' }}>
                             <LinearProgress variant="buffer" value={progress} valueBuffer={buffer} />
                         </Box>
