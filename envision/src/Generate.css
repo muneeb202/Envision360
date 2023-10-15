@@ -179,6 +179,15 @@
     }
 }
 
+.loading-screen p {
+    width: 50%;
+    height: 48px;
+    font-weight: 200;
+    letter-spacing: 1px;
+    font-size: small;
+    text-align: center;
+}
+
 .first{
     white-space: nowrap;
     overflow: hidden;
