@@ -1,8 +1,8 @@
 import background from './images/generatebg.png'
 import logo from './images/image.png'
 import './Generate.css'
-import { Button, ImageList, ImageListItem, TextField, ThemeProvider, createTheme, styled } from '@mui/material';
-import React, { useState } from 'react';
+import { Box, Button, ImageList, ImageListItem, LinearProgress, TextField, ThemeProvider, createTheme } from '@mui/material';
+import React, { useRef, useState } from 'react';
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
 import particlesConfig2 from "./config/particle-config2";
@@ -24,13 +24,40 @@ const theme = createTheme({
 
 const MemoizedParticles = React.memo(({ options }) => (
     <Particles init={(main) => loadFull(main)} options={options} />
-  ));
+));
 
 const Generate = () => {
-
     const [generateType, setGenerateType] = useState(1);
     const [isDragging, setIsDragging] = useState(false);
     const [selectedFiles, setSelectedFiles] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [progress, setProgress] = React.useState(0);
+    const [buffer, setBuffer] = React.useState(10);
+
+    const progressRef = React.useRef(() => { });
+    React.useEffect(() => {
+        progressRef.current = () => {
+            if (progress > 100) {
+                setProgress(0);
+                setBuffer(10);
+            } else {
+                const diff = Math.random() * 10;
+                const diff2 = Math.random() * 10;
+                setProgress(progress + diff);
+                setBuffer(progress + diff + diff2);
+            }
+        };
+    });
+
+    React.useEffect(() => {
+        const timer = setInterval(() => {
+            progressRef.current();
+        }, 500);
+
+        return () => {
+            clearInterval(timer);
+        };
+    }, []);
 
     const handleDragEnter = (e) => {
         e.preventDefault();
@@ -64,6 +91,17 @@ const Generate = () => {
     return (
         <ThemeProvider theme={theme}>
             <MemoizedParticles options={particlesConfig2} />
+ 
+            <div> 
+                {isLoading && (
+                    <div className={isLoading ? 'loading-screen active' : 'loading-screen'}>
+                        <Box sx={{ width: '50%' }}>
+                            <LinearProgress variant="buffer" value={progress} valueBuffer={buffer} />
+                        </Box>
+                    </div>
+                )}
+            </div>
+
             <div className='image-container'>
                 <img src={background} />
             </div>
@@ -124,12 +162,12 @@ const Generate = () => {
                             )}
 
                         </div>
-                        <Button variant='contained' color='secondary' sx={{ padding: '20px', margin: '0 10%', letterSpacing: '3px', fontSize: '18px', borderRadius: '50px', width: '80%' }}>Generate 360&deg; Image</Button>
+                        <Button variant='contained' onClick={() => setIsLoading(true)} color='secondary' sx={{ padding: '20px', margin: '0 10%', letterSpacing: '3px', fontSize: '18px', borderRadius: '50px', width: '80%' }}>Generate 360&deg; Image</Button>
                     </div>
                     <div className='col-md-6 ps-5'>
                         <h1>Generate Image</h1>
-                        <p>Create breathtaking 360-degree images effortlessly.</p>
-                        <p>Explore real-time rendering and craft your panoramic masterpiece.</p>
+                        <p className='first'>Create breathtaking 360-degree images effortlessly.</p>
+                        <p className='second'>Explore real-time rendering and craft your panoramic masterpiece.</p>
                     </div>
                 </div>
             </div>
