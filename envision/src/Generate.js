@@ -6,7 +6,8 @@ import React, { useRef, useState } from 'react';
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
 import particlesConfig2 from "./config/particle-config2";
-import animationData from './images/robot.json';
+import robotAnimation from './images/robot.json';
+import successAnimation from './images/success.json';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react'
 import Typewriter from 'typewriter-effect';
 
@@ -38,6 +39,7 @@ const Generate = () => {
     const [buffer, setBuffer] = React.useState(10);
     const animationRef = useRef(<LottieRefCurrentProps />);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [playSuccessAnimation, setPlaySuccessAnimation] = useState(false);
     const facts = [
         'The earliest known panorama was created in 1787 by Robert Barker, an Irish painter. It was a massive painting of Edinburgh, Scotland, that was displayed in a specially built rotunda.',
         'The word "panorama" comes from the Greek words "pan" (all) and "horama" (view).',
@@ -63,27 +65,33 @@ const Generate = () => {
     const progressRef = React.useRef(() => { });
     React.useEffect(() => {
         progressRef.current = () => {
-            if (progress > 100) {
-                setProgress(0);
-                setBuffer(10);
-            } else {
+            if (progress < 100) {
                 const diff = Math.random() * 10;
                 const diff2 = Math.random() * 10;
-                setProgress(progress + diff);
+                setProgress(Math.min(progress + diff, 100));
                 setBuffer(progress + diff + diff2);
             }
         };
     });
 
     React.useEffect(() => {
-        const timer = setInterval(() => {
-            progressRef.current();
-        }, 500);
+        const timerRef = { current: null }; // Create a ref to hold the timer
+
+        if (isLoading) {
+            timerRef.current = setInterval(() => {
+                progressRef.current();
+
+                if (progress >= 100) {
+                    clearInterval(timerRef.current); // Use the ref value to clear the interval
+                    setPlaySuccessAnimation(true);
+                }
+            }, 1000);
+        }
 
         return () => {
-            clearInterval(timer);
+            clearInterval(timerRef.current); // Clear the interval using the ref value
         };
-    }, []);
+    }, [isLoading, progress]);
 
     const handleDragEnter = (e) => {
         e.preventDefault();
@@ -121,18 +129,26 @@ const Generate = () => {
             <div>
                 {isLoading && (
                     <div className={isLoading ? 'loading-screen active' : 'loading-screen'} onClick={handleClick}>
-                        <Lottie
-                            lottieRef={animationRef}
-                            animationData={animationData}
-                            loop={false}
-                            style={{ width: 200, height: 200 }}
-                            onComplete={() => setIsPlaying(false)}
-                        />
-                        <br/>
+                        {playSuccessAnimation ? (
+                            <Lottie
+                                animationData={successAnimation}
+                                loop={false}
+                                style={{ width: 200, height: 200 }}
+                            />
+                        ) : (
+                            <Lottie
+                                lottieRef={animationRef}
+                                animationData={robotAnimation}
+                                loop={false}
+                                style={{ width: 200, height: 200 }}
+                                onComplete={() => setIsPlaying(false)}
+                            />
+                        )}
+                        <br />
                         <Box sx={{ width: '50%' }}>
                             <LinearProgress variant="buffer" value={progress} valueBuffer={buffer} />
                         </Box>
-                        <br/>
+                        <br />
                         <p>
                             <Typewriter
                                 options={{
@@ -142,7 +158,7 @@ const Generate = () => {
                                     delay: 30,
                                     deleteSpeed: 0,
                                     pauseFor: 5000
-                                  }}
+                                }}
                             />
                         </p>
                     </div>

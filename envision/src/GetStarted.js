@@ -1,26 +1,40 @@
 // import Particles from "react-tsparticles";
 // import { loadFull } from "tsparticles";
-// import particlesConfig from "./config/particle-config";
-// import background from './images/startbg.png'
+import particlesConfig3 from "./config/particle-config-3";
+import background from './images/startbg.png'
 import './GetStarted.css'
-import React from "react";
+
+import { TextField, ThemeProvider, createTheme } from '@mui/material';
+import React, { useRef } from "react";
 import logo from './images/image.png'
-import videoBackground from './images/space.mp4';
 import { useEffect, useState } from "react";
+import { loadFull } from "tsparticles";
+import Particles from "react-tsparticles";
+
+const theme = createTheme({
+    palette: {
+        mode: 'dark',
+        primary: {
+            main: 'rgb(255, 255, 255)',
+        },
+        secondary: {
+            main: 'rgba(25, 166, 197)',
+        }
+    },
+    typography: {
+        fontFamily: 'Poppins, sans-serif',
+    }
+});
+
+const MemoizedParticles = React.memo(({ options }) => (
+    <Particles init={(main) => loadFull(main)} options={options} />
+));
 
 const GetStarted = () => {
-    // const particlesInit = async (main) => {
-    //     await loadFull(main);
-    // };
+    
 
     const [showLogin, setShowLogin] = useState(true);
 
-    useEffect(() => {
-        const video = document.querySelector(".video-container video");
-        if (video) {
-            video.playbackRate = 0.5; // Adjust the playback rate as needed
-        }
-    }, []);
 
     const toggleLogin = () => {
         setShowLogin(true);
@@ -31,37 +45,36 @@ const GetStarted = () => {
     };
 
     return (
+        <ThemeProvider theme={theme}>
+            <MemoizedParticles options={particlesConfig3} />
         <div className='started-container'>
-            <div className="video-container">
-                <video autoPlay loop muted>
-                    <source src={videoBackground} type="video/mp4" />
-                </video>
-            </div>
-            {/* <div className='image-container'>
+            
+            <div className='image-container'>
                 <img src={background} />
-            </div> */}
-            <div className="overlay">
+            </div>
+            <div className="overlay-started">
                 <div className="content-container">
                     <div className='navbar'>
-                        <img src={logo} alt="" className='logo' />
+                    <a href='/'><img src={logo} className='logo' /></a>
                     </div>
                     <div className="container" style={{ marginLeft: '80px', marginRight: '80px', minWidth: '80%' }}>
                         <div className='row'>
                             <div className='col-md-6 socials-header'>
-                                <h3 style={{ marginBottom: '30px' }}>Get Started</h3>
+                                <h2 style={{ marginBottom: '30px' }}>Get Started</h2>
                                 <button className="social-button">Sign In With <i className="fab fa-google"></i></button>
                                 <button className="social-button">Sign In With <i className="fab fa-facebook"></i></button>
                             </div>
-                            <div className="col-md-6 login-section">
                                 {showLogin ? (
-                                    <>
+                                    <div className="col-md-6 login-section">
                                         <h3 style={{ marginBottom: '30px' }}>LOGIN</h3>
                                         <form className="login-form">
                                             <div className="form-group">
-                                                <input type="text" id="username" className="form-control" placeholder="Username" />
+                                            <TextField color='secondary'  fullWidth label="Userame" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                    
                                             </div>
                                             <div className="form-group">
-                                                <input type="password" id="password" className="form-control" placeholder="Password" />
+                                            <TextField color='secondary'  fullWidth label="Password" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                        
                                             </div>
                                             <div className="forgot-password">
                                                 <a href="#">Forgot Password?</a>
@@ -69,33 +82,40 @@ const GetStarted = () => {
                                             </div>
                                             <button type="submit" className="submit-button">Login</button>
                                         </form>
-                                    </>
+                                    </div>
                                 ) : (
-                                    <>
+                                    <div className="col-md-6 signup-section">
                                         <h3 style={{ marginBottom: '30px' }}>SIGN UP</h3>
                                         <form className="login-form">
                                             <div className="form-group">
-                                                <input type="email" id="email" className="form-control" placeholder="Email" />
+                                            <TextField color='secondary'  fullWidth label="Email" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                        
                                             </div>
                                             <div className="form-group">
-                                                <input type="text" id="username" className="form-control" placeholder="Username" />
+                                            <TextField color='secondary' fullWidth label="Userame" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                        
                                             </div>
                                             <div className="form-group">
-                                                <input type="password" id="password" className="form-control" placeholder="Password" />
+                                            <TextField color='secondary'  fullWidth label="Password" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                        
+                                            </div>
+                                            <div className="form-group">
+                                            <TextField color='secondary'  fullWidth label="Re-enter Password" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                        
                                             </div>
                                             <div className="forgot-password">
                                                 <a href="#" style={{ float: 'right' }} onClick={toggleLogin}>Already Have An Account?</a>
                                             </div>
                                             <button type="submit" className="submit-button">Sign Up</button>
                                         </form>
-                                    </>
+                                    </div>
                                 )}
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        </ThemeProvider>
     );
 }
 

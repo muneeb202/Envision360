@@ -1,13 +1,13 @@
-.socials-header h3{
+.socials-header h2{
     font-weight: bolder;
     letter-spacing: 8px;
+    font-size: 40px;
 }
 
 .started-container {
-    background: linear-gradient(180deg, black, transparent);
     height: 100vh;
     max-width: 100vw;
-    /* background:linear-gradient(to left, rgba(13, 95, 113, 1), rgba(13, 95, 113, 0)); */
+    background:linear-gradient(to left, rgba(13, 95, 113, 1), rgba(13, 95, 113, 0));
 }
 
 .social-button{
@@ -19,7 +19,9 @@
     background-color: rgba(25, 166, 197, 0.7);
     margin-bottom: 10px;
     font-weight: 200;
-    transition: background-color 0.3s; 
+    transition: background-color 0.3s;
+    z-index: 10;
+    position: relative;
 }
 
 .social-button:focus {
@@ -43,8 +45,13 @@
     margin-top: 80px;
     padding-right: 100px;
 }
+.signup-section{
+    padding-left: 100px;
+    margin-top: 50px;
+    padding-right: 100px;
+}
 
-.login-section h3{
+.overlay-started h3{
     font-weight: bolder;
     letter-spacing: 15px;
 }
@@ -68,10 +75,13 @@
 }
 
 .login-form a{
+    text-decoration: none;
     color: white;
-    font-size: small;
+    font-size: x-small;
     letter-spacing: 2px;
     font-weight: 100;
+    z-index: 10;
+    position: relative;
 }
 
 .submit-button{
@@ -85,6 +95,8 @@
     margin-bottom: 10px;
     transition: background-color 0.3s; 
     font-weight: 200;
+    position: relative;
+    z-index: 10;
 }
 
 .submit-button:focus {
@@ -103,30 +115,6 @@
     letter-spacing: 5px;
 }
 
-
-
-/* CSS for the full-screen video background */
-.video-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    z-index: -1;
-}
-
-.video-container video {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-}
-
-.overlay {
-    position: relative;
-}
-
-.content-container {
-    position: relative;
-    z-index: 1;
+.overlay-started .form-group {
+    padding-bottom: 10px;
 }
