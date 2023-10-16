@@ -1,13 +1,9 @@
-// import Particles from "react-tsparticles";
-// import { loadFull } from "tsparticles";
 import particlesConfig3 from "./config/particle-config-3";
 import background from './images/startbg.png'
 import './GetStarted.css'
-
 import { TextField, ThemeProvider, createTheme } from '@mui/material';
-import React, { useRef } from "react";
 import logo from './images/image.png'
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { loadFull } from "tsparticles";
 import Particles from "react-tsparticles";
 
@@ -34,7 +30,7 @@ const GetStarted = () => {
 
 
     const [showLogin, setShowLogin] = useState(true);
-    const [showEmail, setShowEmail] = useState(true);
+    const [showEmail, setShowEmail] = useState(false);
 
     const toggleLogin = () => {
         setShowLogin(true);
@@ -56,12 +52,12 @@ const GetStarted = () => {
             <div className='started-container'>
 
                 <div className='image-container'>
-                    <img src={background} />
+                    <img src={background} alt="background"/>
                 </div>
                 <div className="overlay-started">
                     <div className="content-container">
                         <div className='navbar'>
-                            <a href='/'><img src={logo} className='logo' /></a>
+                            <a href='/'><img src={logo} className='logo' alt="Logo"/></a>
                         </div>
                         <div className="container" style={{ marginLeft: '80px', marginRight: '80px', minWidth: '80%' }}>
                             <div className='row'>
@@ -80,7 +76,7 @@ const GetStarted = () => {
 
                                                     </div>
                                                     <div className="forgot-password">
-                                                        <a href="#" style={{ float: 'right' }} onClick={toggleLogin}>Back</a>
+                                                        <button style={{ float: 'right' }} onClick={toggleLogin}>Back</button>
                                                     </div>
                                                     <button type="submit" className="submit-button">Submit</button>
                                             </form>
@@ -90,7 +86,7 @@ const GetStarted = () => {
                                                 <h3 style={{ marginBottom: '30px' }}>LOGIN</h3>
                                                 <form className="login-form">
                                                     <div className="form-group">
-                                                        <TextField color='secondary' fullWidth label="Userame" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                                        <TextField color='secondary' fullWidth label="Username" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
 
                                                     </div>
                                                     <div className="form-group">
@@ -98,8 +94,8 @@ const GetStarted = () => {
 
                                                     </div>
                                                     <div className="forgot-password">
-                                                        <a href="#" onClick={toggleEnterEmail}>Forgot Password?</a>
-                                                        <a href="#" style={{ float: 'right' }} onClick={toggleSignUp}>Not A Member Yet?</a>
+                                                        <button onClick={toggleEnterEmail}>Forgot Password?</button>
+                                                        <button href="#" style={{ float: 'right' }} onClick={toggleSignUp}>Not A Member Yet?</button>
                                                     </div>
                                                     <button type="submit" className="submit-button">Login</button>
                                                 </form>
@@ -127,7 +123,7 @@ const GetStarted = () => {
 
                                             </div>
                                             <div className="forgot-password">
-                                                <a href="#" style={{ float: 'right' }} onClick={toggleLogin}>Already Have An Account?</a>
+                                                <button style={{ float: 'right' }} onClick={toggleLogin}>Already Have An Account?</button>
                                             </div>
                                             <button type="submit" className="submit-button">Sign Up</button>
                                         </form>

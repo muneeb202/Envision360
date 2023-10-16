@@ -10,14 +10,14 @@ const Home = () => {
     return (
         <div className='home-container'>
             <div className='image-container'>
-                <img src={background} />
+                <img src={background} alt='background'/>
             </div>
             <div className='home-navbar'>
-                <img src={logo} className='logo' />
+                <img src={logo} className='logo' alt='logo'/>
                 <div className='links'>
                     <a href='/start'>Get Started</a>
-                    <a href=''>About Us</a>
-                    <a href=''>Blog</a>
+                    <a href='/aboutus'>About Us</a>
+                    <a href='/blog'>Blog</a>
                     <a href='/generate'>Demo</a>
                 </div>
             </div>
