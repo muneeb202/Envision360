@@ -1,4 +1,4 @@
-import { Avatar, Box, Card, CardContent, CardHeader, CardMedia, ThemeProvider, Typography, createTheme } from '@mui/material';
+import { Avatar, Badge, Box, Card, CardContent, CardHeader, CardMedia, IconButton, ThemeProvider, Typography, createTheme } from '@mui/material';
 import background from './images/blogbg.png'
 import logo from './images/image.png'
 import { useState } from 'react';
@@ -29,6 +29,17 @@ const theme = createTheme({
 
 const Blog = () => {
 
+    const [likes, setLikes] = useState(59);
+    const [liked, setLiked] = useState(false);
+
+    const likePost = () => {
+        if (liked)
+            setLikes(likes - 1);
+        else
+            setLikes(likes + 1);
+        setLiked(!liked);
+    }
+
     return (
         <ThemeProvider theme={theme}>
             <div className='image-container'>
@@ -39,6 +50,11 @@ const Blog = () => {
                 <Card sx={{width: '50vw', backgroundColor:'#000000b5'}} elevation={2}>
                     <CardHeader 
                         avatar={ <Avatar sx={{ bgcolor: red[500] }}>R</Avatar>}
+                        action={
+                            <Badge badgeContent={likes}>
+                                <i style={{fontSize:'24px', color:'red'}} onClick={likePost} class={liked ? "fas fa-heart": "far fa-heart"}></i>
+                            </Badge>
+                        }
                         title='Eiffel Tower in the Night Sky'
                         subheader='October 17, 2023'
                     />
