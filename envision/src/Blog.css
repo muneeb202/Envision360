@@ -1,0 +1,19 @@
+.MuiCardHeader-action {
+    padding: 8px;
+}
+
+.fa-expand {
+    position: absolute;
+    color: #9b7d7d;
+    bottom: 10px;
+    right: 10px;
+    cursor:pointer;
+}
+
+.fa-expand:hover {
+    box-shadow: 0 0 8px 3px rgb(255 255 255 / 11%)
+}
+
+.fa-expand:active {
+    color: whitesmoke;
+}
