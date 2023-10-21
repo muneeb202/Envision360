@@ -48,13 +48,3 @@
     background-color: rgb(100, 100, 100);
     border-radius: 4px;
   }
-
-.list {
-    height: 0% !important;
-    overflow: hidden;
-    transition: height 1s ease;
-}
-
-.list.active {
-    height: 100% !important;
-}
