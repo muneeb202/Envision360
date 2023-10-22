@@ -87,7 +87,6 @@ const GetStarted = () => {
                                                 <form className="login-form">
                                                     <div className="form-group">
                                                         <TextField color='secondary' fullWidth label="Username" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
-
                                                     </div>
                                                     <div className="form-group">
                                                         <TextField color='secondary' fullWidth label="Password" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />

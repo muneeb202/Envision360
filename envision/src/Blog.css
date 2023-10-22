@@ -1,0 +1,50 @@
+.MuiCardHeader-action {
+    padding: 8px;
+}
+
+.fa-expand {
+    position: absolute;
+    color: #9b7d7d;
+    bottom: 10px;
+    right: 10px;
+    cursor:pointer;
+    transition: box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.fa-expand:hover {
+    box-shadow: 0 0 8px 3px rgb(255 255 255 / 11%);
+    background-color: rgb(255 255 255 / 11%);
+}
+
+.fa-expand:active {
+    color: whitesmoke;
+}
+
+.MuiListItemText-secondary {
+    font-size: 0.65rem !important;
+}
+
+.MuiDialog-paper .MuiCardHeader-title {
+    font-size: 25px;
+}
+
+.MuiDialog-paper .MuiPaper-elevation2 {
+    overflow-y: auto;
+}
+
+.MuiDialog-paper::-webkit-scrollbar-button{
+    display: none !important;
+}
+
+.MuiDialog-paper ::-webkit-scrollbar {
+    width: 0.6em;
+  }
+   
+  .MuiDialog-paper ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+   
+  .MuiDialog-paper ::-webkit-scrollbar-thumb {
+    background-color: rgb(100, 100, 100);
+    border-radius: 4px;
+  }
