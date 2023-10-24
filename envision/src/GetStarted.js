@@ -6,6 +6,8 @@ import logo from './images/image.png'
 import React, { useState } from "react";
 import { loadFull } from "tsparticles";
 import Particles from "react-tsparticles";
+import axios from "axios"
+import { useNavigate } from 'react-router-dom'
 
 const theme = createTheme({
     palette: {
@@ -29,21 +31,91 @@ const MemoizedParticles = React.memo(({ options }) => (
 const GetStarted = () => {
 
 
+    const [formData, setFormData] = useState({
+        email: '',
+        username: '',
+        password: '',
+        re_password: ''
+    });
+
+    const navigate = useNavigate();
+
+
     const [showLogin, setShowLogin] = useState(true);
     const [showEmail, setShowEmail] = useState(false);
 
-    const toggleLogin = () => {
+    const [checkUsername, setCheckUsername] = useState(false);
+
+    const [checkPassword, setCheckPassword] = useState(false);
+
+    const [checkEmail, setCheckEmail] = useState(false);
+
+    const toggleLogin = (e) => {
+        e.preventDefault();
         setShowLogin(true);
         setShowEmail(false);
+        setCheckUsername(false);
+        setCheckPassword(false);
+        setCheckEmail(false);
     };
 
     const toggleSignUp = () => {
         setShowLogin(false);
+        setCheckUsername(false);
+        setCheckPassword(false);
+        setCheckEmail(false);
     };
 
     const toggleEnterEmail = () => {
         setShowLogin(true);
         setShowEmail(true);
+        setCheckUsername(false);
+        setCheckPassword(false);
+        setCheckEmail(false);
+    };
+
+    const handleInputChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    const handleSignUpSubmit = async (e) => {
+        e.preventDefault();
+        setCheckPassword(false)
+        if (formData.password !== formData.re_password) {
+            setCheckPassword(true)
+            return;
+        }
+
+        try {
+            console.log(formData)
+            const response = await axios.post('http://localhost:8000/api/create_user/', formData);
+            navigate('/')
+
+        } catch (error) {
+            setCheckUsername(true)
+        }
+    };
+
+    const handleLoginSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('http://localhost:8000/api/login/', formData);
+            navigate('/')
+
+        } catch (error) {
+            setCheckUsername(true)
+        }
+    };
+
+    const handleEmailSubmit = async (e) => {
+        e.preventDefault();
+        console.log(formData)
+        if (!formData.email) {
+            setCheckEmail(true);
+        }
     };
 
     return (
@@ -52,12 +124,12 @@ const GetStarted = () => {
             <div className='started-container'>
 
                 <div className='image-container'>
-                    <img src={background} alt="background"/>
+                    <img src={background} alt="background" />
                 </div>
                 <div className="overlay-started">
                     <div className="content-container">
                         <div className='navbar'>
-                            <a href='/'><img src={logo} className='logo' alt="Logo"/></a>
+                            <a href='/'><img src={logo} className='logo' alt="Logo" /></a>
                         </div>
                         <div className="container" style={{ marginLeft: '80px', marginRight: '80px', minWidth: '80%' }}>
                             <div className='row'>
@@ -70,63 +142,63 @@ const GetStarted = () => {
                                     <>
                                         {showEmail ? (
                                             <div className="col-md-6 d-flex flex-column justify-content-center px-5 pt-5">
-                                            <form>
-                                                <div className="form-group">
-                                                        <TextField color='secondary' fullWidth label="Enter Email" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                                <form onSubmit={(e) => e.preventDefault()}>
+                                                    <div className="form-group">
+                                                        <TextField color='secondary' error={checkEmail} helperText={checkEmail ? 'enter valid email' : ''} fullWidth label="Enter Email" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
 
                                                     </div>
-                                                    <div className="forgot-password">
-                                                        <button style={{ float: 'right' }} onClick={toggleLogin}>Back</button>
-                                                    </div>
-                                                    <button type="submit" className="submit-button">Submit</button>
-                                            </form>
+                                                </form>
+                                                <div className="forgot-password">
+                                                    <button style={{ float: 'right' }} onClick={toggleLogin}>Back</button>
+                                                </div>
+                                                <button type="submit" onClick={handleEmailSubmit} className="submit-button">Submit</button>
                                             </div>
                                         ) : (
                                             <div className="col-md-6 login-section">
                                                 <h3 style={{ marginBottom: '30px' }}>LOGIN</h3>
-                                                <form className="login-form">
+                                                <form className="login-form" onSubmit={handleLoginSubmit}>
                                                     <div className="form-group">
-                                                        <TextField color='secondary' fullWidth label="Username" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                                        <TextField required color='secondary' onChange={handleInputChange} name="username" fullWidth label="Username" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
 
                                                     </div>
                                                     <div className="form-group">
-                                                        <TextField color='secondary' fullWidth label="Password" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                                        <TextField required color='secondary' error={checkUsername} helperText={checkUsername ? 'username or password invalid' : ''} onChange={handleInputChange} name="password" fullWidth label="Password" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
 
                                                     </div>
-                                                    <div className="forgot-password">
-                                                        <button onClick={toggleEnterEmail}>Forgot Password?</button>
-                                                        <button href="#" style={{ float: 'right' }} onClick={toggleSignUp}>Not A Member Yet?</button>
-                                                    </div>
-                                                    <button type="submit" className="submit-button">Login</button>
                                                 </form>
+                                                <div className="forgot-password">
+                                                    <button onClick={toggleEnterEmail}>Forgot Password?</button>
+                                                    <button href="#" style={{ float: 'right' }} onClick={toggleSignUp}>Not A Member Yet?</button>
+                                                </div>
+                                                <button type="submit" onClick={handleLoginSubmit} className="submit-button">Login</button>
                                             </div>
                                         )}
                                     </>
                                 ) : (
                                     <div className="col-md-6 signup-section">
                                         <h3 style={{ marginBottom: '30px' }}>SIGN UP</h3>
-                                        <form className="login-form">
+                                        <form className="login-form" onSubmit={handleSignUpSubmit}>
                                             <div className="form-group">
-                                                <TextField color='secondary' fullWidth label="Email" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                                <TextField required onChange={handleInputChange} name="email" color='secondary' fullWidth label="Email" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
 
                                             </div>
                                             <div className="form-group">
-                                                <TextField color='secondary' fullWidth label="Userame" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                                <TextField required error={checkUsername} helperText={checkUsername ? 'username already exists' : ''} onChange={handleInputChange} name="username" color='secondary' fullWidth label="Userame" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
 
                                             </div>
                                             <div className="form-group">
-                                                <TextField color='secondary' fullWidth label="Password" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                                <TextField required onChange={handleInputChange} name="password" color='secondary' fullWidth label="Password" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
 
                                             </div>
                                             <div className="form-group">
-                                                <TextField color='secondary' fullWidth label="Re-enter Password" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                                <TextField required error={checkPassword} helperText={checkPassword ? 'passwords do not match' : ''} onChange={handleInputChange} name="re_password" color='secondary' fullWidth label="Re-enter Password" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
 
                                             </div>
-                                            <div className="forgot-password">
-                                                <button style={{ float: 'right' }} onClick={toggleLogin}>Already Have An Account?</button>
-                                            </div>
-                                            <button type="submit" className="submit-button">Sign Up</button>
                                         </form>
+                                        <div className="forgot-password">
+                                            <button style={{ float: 'right' }} onClick={toggleLogin}>Already Have An Account?</button>
+                                        </div>
+                                        <button type="submit" onClick={handleSignUpSubmit} className="submit-button">Sign Up</button>
                                     </div>
                                 )}
                             </div>
