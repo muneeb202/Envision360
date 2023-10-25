@@ -4,6 +4,7 @@ import Home from './Home';
 import GetStarted from './GetStarted';
 import Generate from './Generate';
 import Blog from './Blog';
+import Profile from './Profile';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/start" element={<GetStarted />} />
           <Route path='/generate' element={<Generate/>}/>
           <Route path='/blog' element={<Blog/>}/>
+          <Route path='/profile' element={<Profile/>}/>
         </Routes>
       </Router>
     </div>
