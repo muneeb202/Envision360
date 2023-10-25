@@ -88,7 +88,7 @@ const Blog = () => {
                 >
                     <Card elevation={2}>
                         <CardHeader
-                            avatar={<Tooltip title='Ramon Sanchez'><Avatar sx={{ bgcolor: red[500] }}>R</Avatar></Tooltip>}
+                            avatar={<Tooltip title='Ramon Sanchez'><Avatar  sx={{ bgcolor: red[500] }}>R</Avatar></Tooltip>}
                             action={
                                 <Badge badgeContent={likes} max={99}>
                                     <i style={{ fontSize: '24px', color: 'red' }} onClick={likePost} class={liked ? "fas fa-heart" : "far fa-heart"}></i>
