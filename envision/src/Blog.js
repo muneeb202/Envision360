@@ -1,4 +1,4 @@
-import { Avatar, Badge, Box, Button, Card, CardContent, CardHeader, CardMedia, Collapse, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, List, ListItem, ListItemAvatar, ListItemText, Slide, ThemeProvider, Tooltip, Typography, createTheme } from '@mui/material';
+import { Avatar, Badge, Box, Button, Card, CardContent, CardHeader, CardMedia, Collapse, Dialog, List, ListItem, ListItemAvatar, ListItemText, Slide, ThemeProvider, Tooltip, createTheme } from '@mui/material';
 import background from './images/blogbg.png'
 import logo from './images/image.png'
 import { forwardRef, useState } from 'react';
@@ -56,9 +56,9 @@ const Blog = () => {
     return (
         <ThemeProvider theme={theme}>
             <div className='image-container'>
-                <img src={background} alt='background' />
+                <img src={background} alt='background' draggable='false'/>
             </div>
-            <a href='/'><img src={logo} className='logo' alt='background' /></a>
+            <a href='/'><img src={logo} className='logo' alt='background' draggable='false'/></a>
             <div className='d-flex flex-column align-items-center'>
                 <Card sx={{ width: '50vw', backgroundColor: '#000000b5' }} elevation={2}>
                     <CardHeader
@@ -72,7 +72,7 @@ const Blog = () => {
                         subheader='October 17, 2023'
                     />
                     <Box sx={{ display: 'flex', position: 'relative' }}>
-                        <CardMedia component='img' sx={{ maxHeight: '200px', maxWidth: '200px' }} src={eiffel} alt='eiffel' />
+                        <CardMedia component='img' sx={{ maxHeight: '200px', maxWidth: '200px' }} src={eiffel} draggable='false' alt='eiffel' />
                         <CardContent>
                             <p style={{ fontWeight: '200' }}>Capturing the enchanting beauty of the Eiffel Tower against the night sky, where the city lights weave a mesmerizing tapestry. A breathtaking moment frozen in time. 🌃✨ #EiffelNights #CityscapeMagic #TravelDreams</p>
                         </CardContent>
@@ -97,7 +97,7 @@ const Blog = () => {
                             title='Eiffel Tower in the Night Sky'
                             subheader='October 17, 2023' 
                         />
-                        <CardMedia component='img' sx={{ maxHeight: '300px', maxWidth: '100%' }} src={eiffel} alt='eiffel' />
+                        <CardMedia component='img' sx={{ maxHeight: '300px', maxWidth: '100%' }} draggable='false' src={eiffel} alt='eiffel' />
                         <CardContent> 
                             <p style={{ fontWeight: '200' }}>Capturing the enchanting beauty of the Eiffel Tower against the night sky, where the city lights weave a mesmerizing tapestry. A breathtaking moment frozen in time. 🌃✨ #EiffelNights #CityscapeMagic #TravelDreams</p>
                         </CardContent>

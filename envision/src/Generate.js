@@ -166,12 +166,12 @@ const Generate = () => {
             </div>
 
             <div className='image-container'>
-                <img src={background} alt='background'/>
+                <img src={background} alt='background' draggable='false'/>
             </div>
             <div className='overlay' />
             <div className='generate-container'>
 
-                <a href='/'><img src={logo} className='logo' alt='background'/></a>
+                <a href='/'><img src={logo} className='logo' alt='background' draggable='false'/></a>
                 <div className='row generate-row'>
                     <div className='col-md-6 px-5'>
                         <div className='generate-type'>

@@ -5,6 +5,7 @@
     z-index: -100;
     overflow: hidden;
     max-height: 100vh;
+    user-select: none;
 }
 
 .image-container img {

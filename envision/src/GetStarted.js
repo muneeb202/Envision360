@@ -52,12 +52,12 @@ const GetStarted = () => {
             <div className='started-container'>
 
                 <div className='image-container'>
-                    <img src={background} alt="background"/>
+                    <img src={background} alt="background" draggable='false'/>
                 </div>
                 <div className="overlay-started">
                     <div className="content-container">
                         <div className='navbar'>
-                            <a href='/'><img src={logo} className='logo' alt="Logo"/></a>
+                            <a href='/'><img src={logo} className='logo' alt="Logo" draggable='false'/></a>
                         </div>
                         <div className="container" style={{ marginLeft: '80px', marginRight: '80px', minWidth: '80%' }}>
                             <div className='row'>
