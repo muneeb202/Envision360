@@ -1,0 +1,19 @@
+.MuiDrawer-paperAnchorRight {
+    background: rgb(41,2,22);
+    background: linear-gradient(90deg, rgba(41,2,22,1) 0%, rgba(0,0,0,1) 100%) !important; 
+    box-shadow: -5px 0px 20px 0px rgb(41,2,22) !important;
+    width: 400px;
+}
+
+.sidebar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+}
+
+.sidebar p:last-child {
+    color: rgba(128, 128, 128, 0.632);
+    font-style: italic;
+}
