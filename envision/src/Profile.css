@@ -17,3 +17,20 @@
     color: rgba(128, 128, 128, 0.632);
     font-style: italic;
 }
+
+::-webkit-scrollbar-button{
+    display: none !important;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+  }
+   
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+   
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.457);
+    border-radius: 4px;
+  }

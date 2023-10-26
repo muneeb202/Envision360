@@ -67,6 +67,9 @@ const Profile = () => {
     const [showPosts, setShowPosts] = useState(false);
 
     const images = ['canyon.jpg', 'eiffel.png',
+    'petra.jpg', 'pyramids.png', 'machu pichu.jpg','canyon.jpg', 'eiffel.png',
+    'petra.jpg', 'pyramids.png', 'machu pichu.jpg','canyon.jpg', 'eiffel.png',
+    'petra.jpg', 'pyramids.png', 'machu pichu.jpg', 'canyon.jpg', 'eiffel.png',
     'petra.jpg', 'pyramids.png', 'machu pichu.jpg']
 
     return (
