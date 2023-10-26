@@ -1,6 +1,6 @@
 import background from './images/profilebg.png'
 import logo from './images/image.png'
-import { AppBar, Avatar, Box, Button, Drawer, IconButton, InputBase, ThemeProvider, Toolbar, Tooltip, Typography, alpha, createTheme, styled } from '@mui/material'
+import { AppBar, Avatar, Box, Button, Drawer, IconButton, ImageList, ImageListItem, InputBase, ThemeProvider, Toolbar, Tooltip, Typography, alpha, createTheme, styled } from '@mui/material'
 import { red } from '@mui/material/colors';
 import { useState } from 'react';
 import './Profile.css'
@@ -66,9 +66,9 @@ const Profile = () => {
     const [showFav, setShowFav] = useState(false);
     const [showPosts, setShowPosts] = useState(false);
 
-    const images = ['canyon.jpg', 'eiffel.png', 'machu pichu.jpg',
-    'petra.jpg', 'pyramids.png']
-    
+    const images = ['canyon.jpg', 'eiffel.png',
+    'petra.jpg', 'pyramids.png', 'machu pichu.jpg']
+
     return (
         <ThemeProvider theme={theme}>
             <div className='image-container'>
@@ -87,8 +87,8 @@ const Profile = () => {
                 </Drawer>
             </div>
             <Box sx={{ width:'80vw', paddingLeft:'10vw' }}>
-                    <AppBar position="static">
-                        <Toolbar sx={{backgroundColor:'none'}}>
+                    <AppBar position="static" sx={{backgroundColor:'transparent'}}>
+                        <Toolbar>
                             <IconButton
                                 size="large"
                                 edge="start"
@@ -104,7 +104,7 @@ const Profile = () => {
                                 component="div"
                                 sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
                             >
-                                Your {showPosts? 'Blog Posts' : '360&deg; Images'}
+                                Your {showPosts? 'Blog Posts' : '360\u00B0 Images'}
                             </Typography>
                             <IconButton onClick={() => setShowPosts(!showPosts)} sx={{backgroundColor: showPosts ? '#ffffff38' : 'transparent'}}>
                                 <Tooltip title={!showPosts && 'Show Blog Posts'}><i className="fas fa-blog"/></Tooltip>
@@ -123,9 +123,14 @@ const Profile = () => {
                             </Search>
                         </Toolbar>
                     </AppBar>
-                    {images.map((image, index) => (
-                        <img src={`${process.env.PUBLIC_URL}/images/${image}`} style={{maxHeight:300, maxWidth:300}}/>
-                    ))}
+                    <br/>
+                    <ImageList variant='masonry' cols={3} gap={8}>
+                        {images.map((image) => (
+                            <ImageListItem key={image}>
+                                <img src={`${process.env.PUBLIC_URL}/images/${image}`} style={{maxHeight:300, maxWidth:300}}/>
+                            </ImageListItem>
+                        ))}
+                    </ImageList>
                 </Box>
         </ThemeProvider>
     )
