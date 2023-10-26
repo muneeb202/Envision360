@@ -66,6 +66,9 @@ const Profile = () => {
     const [showFav, setShowFav] = useState(false);
     const [showPosts, setShowPosts] = useState(false);
 
+    const images = ['canyon.jpg', 'eiffel.png', 'machu pichu.jpg',
+    'petra.jpg', 'pyramids.png']
+    
     return (
         <ThemeProvider theme={theme}>
             <div className='image-container'>
@@ -101,7 +104,7 @@ const Profile = () => {
                                 component="div"
                                 sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
                             >
-                                Your 360&deg; Images
+                                Your {showPosts? 'Blog Posts' : '360&deg; Images'}
                             </Typography>
                             <IconButton onClick={() => setShowPosts(!showPosts)} sx={{backgroundColor: showPosts ? '#ffffff38' : 'transparent'}}>
                                 <Tooltip title={!showPosts && 'Show Blog Posts'}><i className="fas fa-blog"/></Tooltip>
@@ -120,6 +123,9 @@ const Profile = () => {
                             </Search>
                         </Toolbar>
                     </AppBar>
+                    {images.map((image, index) => (
+                        <img src={`${process.env.PUBLIC_URL}/images/${image}`} style={{maxHeight:300, maxWidth:300}}/>
+                    ))}
                 </Box>
         </ThemeProvider>
     )
