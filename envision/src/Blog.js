@@ -1,4 +1,4 @@
-import { Avatar, Badge, Box, Button, Card, CardContent, CardHeader, CardMedia, Collapse, Dialog, List, ListItem, ListItemAvatar, ListItemText, Slide, ThemeProvider, Tooltip, createTheme } from '@mui/material';
+import { Avatar, Badge, Box, Button, Card, CardContent, CardHeader, CardMedia, Collapse, Dialog, IconButton, List, ListItem, ListItemAvatar, ListItemText, Slide, ThemeProvider, Tooltip, createTheme } from '@mui/material';
 import background from './images/blogbg.png'
 import logo from './images/image.png'
 import { forwardRef, useState } from 'react';
@@ -76,7 +76,7 @@ const Blog = () => {
                         <CardContent>
                             <p style={{ fontWeight: '200' }}>Capturing the enchanting beauty of the Eiffel Tower against the night sky, where the city lights weave a mesmerizing tapestry. A breathtaking moment frozen in time. 🌃✨ #EiffelNights #CityscapeMagic #TravelDreams</p>
                         </CardContent>
-                        <i onClick={handleClickOpen} class="fas fa-expand"></i>
+                        <IconButton sx={{position:'absolute', bottom:10, right:10, fontSize:20}}><i onClick={handleClickOpen} className="fas fa-expand"></i></IconButton>
                     </Box>
                 </Card> <br />
                 <Dialog

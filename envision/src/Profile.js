@@ -1,6 +1,6 @@
 import background from './images/profilebg.png'
 import logo from './images/image.png'
-import { AppBar, Avatar, Box, Button, Drawer, IconButton, ImageList, ImageListItem, InputBase, ThemeProvider, Toolbar, Tooltip, Typography, alpha, createTheme, styled } from '@mui/material'
+import { AppBar, Avatar, Box, Button, Drawer, IconButton, ImageList, ImageListItem, ImageListItemBar, InputBase, ThemeProvider, Toolbar, Tooltip, Typography, alpha, createTheme, styled } from '@mui/material'
 import { red } from '@mui/material/colors';
 import { useState } from 'react';
 import './Profile.css'
@@ -53,9 +53,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
         transition: theme.transitions.create('width'),
         width: '100%',
         [theme.breakpoints.up('sm')]: {
-            width: '12ch',
+            width: '20ch',
             '&:focus': {
-                width: '20ch',
+                width: '30ch',
             },
         },
     },
@@ -66,11 +66,43 @@ const Profile = () => {
     const [showFav, setShowFav] = useState(false);
     const [showPosts, setShowPosts] = useState(false);
 
-    const images = ['canyon.jpg', 'eiffel.png',
-    'petra.jpg', 'pyramids.png', 'machu pichu.jpg','canyon.jpg', 'eiffel.png',
-    'petra.jpg', 'pyramids.png', 'machu pichu.jpg','canyon.jpg', 'eiffel.png',
-    'petra.jpg', 'pyramids.png', 'machu pichu.jpg', 'canyon.jpg', 'eiffel.png',
-    'petra.jpg', 'pyramids.png', 'machu pichu.jpg']
+    const images = [
+        {
+            src: 'canyon.jpg',
+            title: 'Grand Canyon',
+            date: '20th September 2023'
+        },
+        {
+            src: 'eiffel.png',
+            title: 'Eiffel Tower',
+            date: '3rd October 2023'
+        },
+        {
+            src: 'petra.jpg',
+            title: 'Petra',
+            date: '12th November 2023'
+        },
+        {
+            src: 'pyramids.png',
+            title: 'Great Pyramids of Giza',
+            date: '8th December 2023'
+        },
+        {
+            src: 'machu pichu.jpg',
+            title: 'Machu Picchu',
+            date: '5th January 2024'
+        }
+    ];
+
+    const togglePosts = () =>{ 
+        setShowPosts(!showPosts)
+        setShowFav(false);
+    } 
+
+    const toggleFav = () =>{ 
+        setShowFav(!showFav)
+        setShowPosts(false);
+    } 
 
     return (
         <ThemeProvider theme={theme}>
@@ -107,13 +139,13 @@ const Profile = () => {
                                 component="div"
                                 sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
                             >
-                                Your {showPosts? 'Blog Posts' : '360\u00B0 Images'}
+                                Your {showPosts? 'Blog Posts' : showFav ? 'Favourite Images' : '360\u00B0 Images'}
                             </Typography>
-                            <IconButton onClick={() => setShowPosts(!showPosts)} sx={{backgroundColor: showPosts ? '#ffffff38' : 'transparent'}}>
-                                <Tooltip title={!showPosts && 'Show Blog Posts'}><i className="fas fa-blog"/></Tooltip>
+                            <IconButton onClick={togglePosts} sx={{backgroundColor: showPosts ? '#ffffff38' : 'transparent'}}>
+                                <Tooltip title={showPosts ? 'Show All' : 'Show Blog Posts'}><i className="fas fa-blog"/></Tooltip>
                             </IconButton>
-                            <IconButton onClick={() => setShowFav(!showFav)}>
-                                <Tooltip title={showFav ? 'Hide Favourites': 'Show Favourites'}><i className={showFav ? "fas fa-heart" :"far fa-heart"}/></Tooltip>
+                            <IconButton onClick={toggleFav}>
+                                <Tooltip title={showFav ? 'Show All': 'Show Favourites'}><i className={showFav ? "fas fa-heart" :"far fa-heart"}/></Tooltip>
                             </IconButton>
                             <Search>
                                 <SearchIconWrapper>
@@ -127,10 +159,19 @@ const Profile = () => {
                         </Toolbar>
                     </AppBar>
                     <br/>
-                    <ImageList variant='masonry' cols={3} gap={8}>
+                    <ImageList cols={3} gap={8}>
                         {images.map((image) => (
-                            <ImageListItem key={image}>
-                                <img src={`${process.env.PUBLIC_URL}/images/${image}`} style={{maxHeight:300, maxWidth:300}}/>
+                            <ImageListItem key={image.src}>
+                                <img src={`${process.env.PUBLIC_URL}/images/${image.src}`}/>
+                                <ImageListItemBar
+                                    title={image.title}
+                                    subtitle={image.date}
+                                    actionIcon={
+                                        <IconButton>
+                                            <i className="fas fa-expand"/>
+                                        </IconButton>
+                                    }
+                                />
                             </ImageListItem>
                         ))}
                     </ImageList>
