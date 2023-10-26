@@ -34,3 +34,15 @@
     background-color: rgba(255, 255, 255, 0.457);
     border-radius: 4px;
   }
+
+.MuiImageListItemBar-subtitle {
+    opacity: 0.5;
+    font-style: italic;
+}
+
+.empty {
+    text-align: center;
+    padding: 20px;
+    letter-spacing: 1px;
+    font-weight: 200;
+}
