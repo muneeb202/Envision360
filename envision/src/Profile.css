@@ -5,6 +5,16 @@
     width: 400px;
 }
 
+.MuiImageListItem-standard .fa-file-arrow-up {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    font-size: 20px;
+}
+
+.MuiImageListItem-standard:hover .fa-file-arrow-up {
+    opacity: 0.7;
+}
+
 .sidebar {
     display: flex;
     justify-content: center;

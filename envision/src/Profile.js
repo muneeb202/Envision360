@@ -1,6 +1,6 @@
 import background from './images/profilebg.png'
 import logo from './images/image.png'
-import { AppBar, Avatar, Box, Drawer, IconButton, ImageList, ImageListItem, ImageListItemBar, InputBase, ThemeProvider, Toolbar, Tooltip, Typography, alpha, createTheme, styled } from '@mui/material'
+import { AppBar, Avatar, Box, Drawer, IconButton, ImageList, ImageListItem, ImageListItemBar, InputBase, ThemeProvider, Toolbar, Tooltip, Typography, alpha, createTheme, styled, useMediaQuery } from '@mui/material'
 import { red } from '@mui/material/colors';
 import { useEffect, useRef, useState } from 'react';
 import emptyAnimation from './images/empty.json'
@@ -54,10 +54,16 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
         paddingLeft: `calc(1em + ${theme.spacing(4)})`,
         transition: theme.transitions.create('width'),
         width: '100%',
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up('md')]: {
             width: '20ch',
             '&:focus': {
                 width: '30ch',
+            },
+        },
+        [theme.breakpoints.down('md')]: {
+            width: '10ch',
+            '&:focus': {
+                width: '15ch',
             },
         },
     },
@@ -69,14 +75,13 @@ const Profile = () => {
     const [showPosts, setShowPosts] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredImages, setFilteredImages] = useState([]);
-    const animationRef = useRef(); // Create an empty ref
-
-    // Later in your component's code, you can set the ref to your component instance:
+    const animationRef = useRef();
     useEffect(() => {
         animationRef.current = <LottieRefCurrentProps />;
     }, []);
+    const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
 
-    const images = [
+    const [images, setImages] = useState([
         {
             src: 'canyon.jpg',
             title: 'Grand Canyon',
@@ -112,7 +117,7 @@ const Profile = () => {
             posted: false,
             favourite: false
         }
-    ];
+    ])
 
     const togglePosts = () => {
         setShowPosts(!showPosts)
@@ -123,6 +128,27 @@ const Profile = () => {
         setShowFav(!showFav)
         setShowPosts(false);
     }
+
+    const favImage = (image) => {
+        return () => {
+            // Create a copy of the original images array
+            const updatedImages = [...images];
+    
+            // Find the image in the copy by its title
+            const targetImage = updatedImages.find((img) => img.title === image.title);
+    
+            if (targetImage) {
+                // Toggle the favorite status
+                targetImage.favourite = !targetImage.favourite;
+    
+                // Update the state for both images and filteredImages
+                setImages(updatedImages);
+                setFilteredImages(updatedImages);
+            }
+        };
+    };
+    
+
 
     useEffect(() => {
         const filtered = images.filter((image) => {
@@ -159,7 +185,7 @@ const Profile = () => {
                     </div>
                 </Drawer>
             </div>
-            <Box sx={{ width: '80vw', paddingLeft: '10vw' }}>
+            <Box sx={{ width: '90vw', paddingLeft: '10vw' }}>
                 <AppBar position="static" sx={{ backgroundColor: 'transparent' }}>
                     <Toolbar>
                         <IconButton
@@ -175,7 +201,7 @@ const Profile = () => {
                             variant="h6"
                             noWrap
                             component="div"
-                            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' }, letterSpacing:2, fontWeight:200 }}
+                            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block', }, letterSpacing: 2, fontWeight: 200 }}
                         >
                             Your {showPosts ? 'Blog Posts' : showFav ? 'Favourite Images' : '360\u00B0 Images'}
                         </Typography>
@@ -183,7 +209,7 @@ const Profile = () => {
                             <Tooltip title={showPosts ? 'Show All' : 'Show Blog Posts'}><i className="fas fa-blog" /></Tooltip>
                         </IconButton>
                         <IconButton onClick={toggleFav}>
-                            <Tooltip title={showFav ? 'Show All' : 'Show Favourites'}><i className={showFav ? "fas fa-heart" : "far fa-heart"} /></Tooltip>
+                            <Tooltip title={showFav ? 'Show All' : 'Show Favourites'}><i className={showFav ? "fas fa-star" : "far fa-star"} /></Tooltip>
                         </IconButton>
                         <Search>
                             <SearchIconWrapper>
@@ -198,12 +224,12 @@ const Profile = () => {
                     </Toolbar>
                 </AppBar>
                 <br />
-                <ImageList cols={3} gap={8}>
+                <ImageList cols={matchDownMd ? 3 : 5} gap={8}>
                     {filteredImages.length === 0 ? (
                         <>
-                            <ImageListItem />
-                            <ImageListItem>
+                            <ImageListItem cols={matchDownMd ? 3 : 5}>
                                 <Lottie
+                                    style={{ maxHeight: 300 }}
                                     lottieRef={animationRef}
                                     loop={false}
                                     onComplete={() => animationRef.current.goToAndPlay(162, true)}
@@ -214,17 +240,28 @@ const Profile = () => {
                         </>
                     ) : (
                         filteredImages.map((image) => (
-                            <ImageListItem key={image.src}>
+                            <ImageListItem key={image.src} >
                                 <img src={`${process.env.PUBLIC_URL}/images/${image.src}`} alt={image.title} />
                                 <ImageListItemBar
                                     title={image.title}
                                     subtitle={image.date}
                                     actionIcon={
                                         <IconButton>
-                                            <i className="fas fa-expand" />
+                                            <Tooltip title='Post to Blog'><i className="fa-solid fa-file-arrow-up"></i></Tooltip>
                                         </IconButton>
                                     }
                                 />
+                                <ImageListItemBar
+                                    sx={{ background: 'none' }}
+                                    position='top'
+                                    actionIcon={
+                                        <IconButton onClick={favImage(image)}>
+                                            <i style={{fontSize:15}} className={`${image.favourite ? 'fas' : 'far'} fa-star`} />
+                                        </IconButton>
+                                    }
+                                    actionPosition='left'
+                                />
+
                             </ImageListItem>
                         ))
                     )}
