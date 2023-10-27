@@ -5,14 +5,32 @@
     width: 400px;
 }
 
-.MuiImageListItem-standard .fa-file-arrow-up {
+.MuiImageListItem-standard {
+    position: relative;
+}
+
+.MuiImageListItem-standard .fa-cloud-arrow-up, .MuiImageListItem-standard .fa-xmark,
+.MuiImageListItem-standard .fa-star, .MuiImageListItem-standard .fa-trash {
     opacity: 0;
     transition: opacity 0.5s ease;
     font-size: 20px;
 }
 
-.MuiImageListItem-standard:hover .fa-file-arrow-up {
+.MuiImageListItem-standard:hover .fa-cloud-arrow-up, .MuiImageListItem-standard:hover .fa-xmark,
+.MuiImageListItem-standard:hover .fa-star, .MuiImageListItem-standard:hover .fa-trash {
     opacity: 0.7;
+}
+
+.MuiPopover-paper {
+    background-color: black !important;
+}
+
+.confirmation p {
+    letter-spacing: 1px;
+    font-weight: 200;
+    font-size: 14px;
+    margin: 0;
+    padding: 0 10px;
 }
 
 .sidebar {
