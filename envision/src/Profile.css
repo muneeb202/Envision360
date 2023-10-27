@@ -1,0 +1,76 @@
+.MuiDrawer-paperAnchorRight {
+    background: rgb(41,2,22);
+    background: linear-gradient(90deg, rgba(41,2,22,1) 0%, rgba(0,0,0,1) 100%) !important; 
+    box-shadow: -5px 0px 20px 0px rgb(41,2,22) !important;
+    width: 400px;
+}
+
+.MuiImageListItem-standard {
+    position: relative;
+}
+
+.MuiImageListItem-standard .fa-cloud-arrow-up, .MuiImageListItem-standard .fa-xmark,
+.MuiImageListItem-standard .fa-star, .MuiImageListItem-standard .fa-trash {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    font-size: 20px;
+}
+
+.MuiImageListItem-standard:hover .fa-cloud-arrow-up, .MuiImageListItem-standard:hover .fa-xmark,
+.MuiImageListItem-standard:hover .fa-star, .MuiImageListItem-standard:hover .fa-trash {
+    opacity: 0.7;
+}
+
+.MuiPopover-paper {
+    background-color: black !important;
+}
+
+.confirmation p {
+    letter-spacing: 1px;
+    font-weight: 200;
+    font-size: 14px;
+    margin: 0;
+    padding: 0 10px;
+}
+
+.sidebar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+}
+
+.sidebar p:last-child {
+    color: rgba(128, 128, 128, 0.632);
+    font-style: italic;
+}
+
+::-webkit-scrollbar-button{
+    display: none !important;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+  }
+   
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+   
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.457);
+    border-radius: 4px;
+  }
+
+.MuiImageListItemBar-subtitle {
+    opacity: 0.5;
+    font-style: italic;
+}
+
+.empty {
+    text-align: center;
+    padding: 20px;
+    letter-spacing: 1px;
+    font-weight: 200;
+}
