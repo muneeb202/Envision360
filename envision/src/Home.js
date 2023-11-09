@@ -5,6 +5,14 @@ import particlesConfig from "./config/particle-config";
 
 
 const Home = () => {
+    const user = localStorage.getItem('user');
+
+    const userLogout = (e) => {
+        e.preventDefault();
+        localStorage.setItem('user', '');
+        window.location.reload();
+    }
+
     return (
         <div className='home-container'>
             <div className='image-container'>
@@ -13,10 +21,18 @@ const Home = () => {
             <div className='home-navbar'>
                 <img src={`${process.env.PUBLIC_URL}/images/logo.png`} className='logo' alt='logo' draggable='false'/>
                 <div className='links'>
-                    <a href='/start'>Get Started</a>
+                    {user ? (
+                        <>
+                            <p>{user}</p>
+                            <a onClick={userLogout}>Logout</a>
+                        </>
+                    ) :
+                        (
+                            <a href='/start'>Get Started</a>
+                        )}
                     <a href='/aboutus'>About Us</a>
                     <a href='/blog'>Blog</a>
-                    <a href='/generate'>Demo</a>
+                    <a href='/generate'>{user ? 'Generate' : 'Demo'}</a>
                 </div>
             </div>
             <div className='header'>
@@ -28,7 +44,7 @@ const Home = () => {
                 options={particlesConfig}
                 width='30vw'
                 height='60vh'
-                style={{position:'absolute', right:'5vw', bottom:'20vh'}}
+                style={{ position: 'absolute', right: '5vw', bottom: '20vh' }}
             />
         </div>
     );

@@ -1,9 +1,12 @@
 import particlesConfig3 from "./config/particle-config-3";
 import './GetStarted.css'
-import { TextField, ThemeProvider, createTheme } from '@mui/material';
+import { IconButton, InputAdornment, TextField, ThemeProvider, createTheme } from '@mui/material';
 import React, { useState } from "react";
 import { loadFull } from "tsparticles";
 import Particles from "react-tsparticles";
+import axios from "axios"
+import { useNavigate } from 'react-router-dom'
+import LoadingBar from 'react-top-loading-bar'
 
 const theme = createTheme({
     palette: {
@@ -27,21 +30,116 @@ const MemoizedParticles = React.memo(({ options }) => (
 const GetStarted = () => {
 
 
+    const [formData, setFormData] = useState({
+        email: '',
+        username: '',
+        password: '',
+        re_password: ''
+    });
+
+    const navigate = useNavigate();
+
+
     const [showLogin, setShowLogin] = useState(true);
     const [showEmail, setShowEmail] = useState(false);
 
-    const toggleLogin = () => {
+    const [checkUsername, setCheckUsername] = useState(false);
+
+    const [checkPassword, setCheckPassword] = useState(false);
+
+    const [checkEmail, setCheckEmail] = useState(false);
+
+    const [showPassword, setShowPassword] = useState(false);
+
+    const [showRePassword, setReShowPassword] = useState(false);
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const [progress, setProgress] = useState(0);
+
+    const toggleLogin = (e) => {
+        e.preventDefault();
         setShowLogin(true);
         setShowEmail(false);
+        setCheckUsername(false);
+        setCheckPassword(false);
+        setCheckEmail(false);
+        setIsLoading(false);
     };
 
     const toggleSignUp = () => {
         setShowLogin(false);
+        setCheckUsername(false);
+        setCheckPassword(false);
+        setCheckEmail(false);
+        setIsLoading(false);
     };
 
     const toggleEnterEmail = () => {
         setShowLogin(true);
         setShowEmail(true);
+        setCheckUsername(false);
+        setCheckPassword(false);
+        setCheckEmail(false);
+        setIsLoading(false);
+    };
+
+    const handleInputChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    const handleSignUpSubmit = async (e) => {
+        e.preventDefault();
+        setCheckPassword(false);
+        setIsLoading(true);
+        setProgress(progress + 10)
+        if (formData.password !== formData.re_password) {
+            setCheckPassword(true);
+            return;
+        }
+        try {
+            setProgress(progress + 30)
+            await axios.post('http://localhost:8000/api/create_user/', formData);
+            localStorage.setItem('user', formData.username)
+            setProgress(progress + 50)
+            navigate('/')
+
+        } catch (error) {
+            setCheckUsername(true);
+            setProgress(0);
+        } finally {
+            setIsLoading(false);
+            setProgress(0);
+        }
+    };
+
+    const handleLoginSubmit = async (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+        setProgress(progress + 10)
+        try {
+            setProgress(progress + 30)
+            await axios.post('http://localhost:8000/api/login/', formData);
+            localStorage.setItem('user', formData.username)
+            setProgress(progress + 50)
+            navigate('/')
+
+        } catch (error) {
+            setCheckUsername(true);
+            setProgress(0);
+        } finally {
+            setIsLoading(false);
+            setProgress(0);
+        }
+    };
+
+    const handleEmailSubmit = async (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+        setProgress(progress + 50);
     };
 
     return (
@@ -57,8 +155,8 @@ const GetStarted = () => {
                         <div className='navbar'>
                             <a href='/'><img src={`${process.env.PUBLIC_URL}/images/logo.png`} className='logo' alt="Logo" draggable='false'/></a>
                         </div>
-                        <div className="container" style={{ marginLeft: '80px', marginRight: '80px', minWidth: '80%' }}>
-                            <div className='row'>
+                        <div className="container" style={{ marginLeft: '80px', marginRight: '80px', minWidth: '80%', height: '100vh', position: 'absolute', top: '0' }}>
+                            <div className='row d-flex align-items-center h-100'>
                                 <div className='col-md-6 socials-header'>
                                     <h2 style={{ marginBottom: '30px' }}>Get Started</h2>
                                     <button className="social-button">Sign In With <i className="fab fa-google"></i></button>
@@ -68,33 +166,48 @@ const GetStarted = () => {
                                     <>
                                         {showEmail ? (
                                             <div className="col-md-6 d-flex flex-column justify-content-center px-5 pt-5">
-                                            <form>
-                                                <div className="form-group">
-                                                        <TextField color='secondary' fullWidth label="Enter Email" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                                <form onSubmit={handleEmailSubmit}>
+                                                    <div className="form-group">
+                                                        <TextField required color='secondary' error={checkEmail} helperText={checkEmail ? 'enter valid email' : ''} fullWidth label="Enter Email" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
 
                                                     </div>
                                                     <div className="forgot-password">
-                                                        <button style={{ float: 'right' }} onClick={toggleLogin}>Back</button>
+                                                        <p style={{ float: 'right' }} onClick={toggleLogin}>Back</p>
                                                     </div>
-                                                    <button type="submit" className="submit-button">Submit</button>
-                                            </form>
+                                                    <button type="submit" className="submit-button" disabled={isLoading}>Submit</button>
+                                                    {isLoading && <LoadingBar color={'white'} progress={progress} onLoaderFinished={() => setProgress(0)} />}
+                                                </form>
                                             </div>
                                         ) : (
                                             <div className="col-md-6 login-section">
                                                 <h3 style={{ marginBottom: '30px' }}>LOGIN</h3>
-                                                <form className="login-form">
+                                                <form className="login-form" onSubmit={handleLoginSubmit}>
                                                     <div className="form-group">
-                                                        <TextField color='secondary' fullWidth label="Username" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                                        <TextField required color='secondary' onChange={handleInputChange} name="username" fullWidth label="Username" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
                                                     </div>
                                                     <div className="form-group">
-                                                        <TextField color='secondary' fullWidth label="Password" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                                        <TextField required color='secondary' error={checkUsername} helperText={checkUsername ? 'username or password invalid' : ''} onChange={handleInputChange} name="password" fullWidth label="Password" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} type={showPassword ? "text" : "password"}
+
+                                                            InputProps={{
+                                                                endAdornment: (
+                                                                    <InputAdornment position="end">
+                                                                        <IconButton
+                                                                            aria-label="toggle password visibility"
+                                                                            onClick={() => setShowPassword(!showPassword)}
+                                                                            onMouseDown={() => setShowPassword(!showPassword)}
+                                                                        >
+                                                                            <i class={showPassword ? "far fa-eye" : "far fa-eye-slash"}></i>                                                              </IconButton>
+                                                                    </InputAdornment>
+                                                                )
+                                                            }} />
 
                                                     </div>
-                                                    <div className="forgot-password">
-                                                        <button onClick={toggleEnterEmail}>Forgot Password?</button>
-                                                        <button href="#" style={{ float: 'right' }} onClick={toggleSignUp}>Not A Member Yet?</button>
+                                                    <div className="forgot-password d-flex justify-content-between">
+                                                        <p onClick={toggleEnterEmail}>Forgot Password?</p>
+                                                        <p onClick={toggleSignUp}>Not A Member Yet?</p>
                                                     </div>
-                                                    <button type="submit" className="submit-button">Login</button>
+                                                    <button type="submit" className="submit-button" disabled={isLoading}>Login</button>
+                                                    {isLoading && <LoadingBar color={'white'} progress={progress} onLoaderFinished={() => setProgress(0)} />}
                                                 </form>
                                             </div>
                                         )}
@@ -102,27 +215,64 @@ const GetStarted = () => {
                                 ) : (
                                     <div className="col-md-6 signup-section">
                                         <h3 style={{ marginBottom: '30px' }}>SIGN UP</h3>
-                                        <form className="login-form">
+                                        <form className="login-form" onSubmit={handleSignUpSubmit}>
                                             <div className="form-group">
-                                                <TextField color='secondary' fullWidth label="Email" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                                <TextField required onChange={handleInputChange} name="email" color='secondary' fullWidth label="Email" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
 
                                             </div>
                                             <div className="form-group">
-                                                <TextField color='secondary' fullWidth label="Userame" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                                <TextField required error={checkUsername} helperText={checkUsername ? 'username already exists' : ''} onChange={handleInputChange} name="username" color='secondary' fullWidth label="Username" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
 
                                             </div>
                                             <div className="form-group">
-                                                <TextField color='secondary' fullWidth label="Password" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                                <TextField required onChange={handleInputChange} name="password" color='secondary' fullWidth label="Password" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} type={showPassword ? "text" : "password"}
+
+                                                    InputProps={{
+                                                        endAdornment: (
+                                                            <InputAdornment position="end">
+                                                                <IconButton
+                                                                    aria-label="toggle password visibility"
+                                                                    onClick={() => setShowPassword(!showPassword)}
+                                                                    onMouseDown={() => setShowPassword(!showPassword)}
+                                                                >
+                                                                    <i class={showPassword ? "far fa-eye" : "far fa-eye-slash"}></i>                                                              </IconButton>
+                                                            </InputAdornment>
+                                                        )
+                                                    }} />
 
                                             </div>
                                             <div className="form-group">
-                                                <TextField color='secondary' fullWidth label="Re-enter Password" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                                <TextField
+                                                    required
+                                                    error={checkPassword}
+                                                    helperText={checkPassword ? 'passwords do not match' : ''}
+                                                    onChange={handleInputChange}
+                                                    name="re_password"
+                                                    color='secondary'
+                                                    fullWidth label="Re-enter Password"
+                                                    variant="standard" sx={{ color: 'white', letterSpacing: '2px' }}
+                                                    type={showRePassword ? "text" : "password"}
+
+                                                    InputProps={{
+                                                        endAdornment: (
+                                                            <InputAdornment position="end">
+                                                                <IconButton
+                                                                    aria-label="toggle password visibility"
+                                                                    onClick={() => setReShowPassword(!showRePassword)}
+                                                                    onMouseDown={() => setReShowPassword(!showRePassword)}
+                                                                >
+                                                                    <i class={showRePassword ? "far fa-eye" : "far fa-eye-slash"}></i>
+                                                                </IconButton>
+                                                            </InputAdornment>
+                                                        )
+                                                    }} />
 
                                             </div>
                                             <div className="forgot-password">
-                                                <button style={{ float: 'right' }} onClick={toggleLogin}>Already Have An Account?</button>
+                                                <p style={{ float: 'right' }} onClick={toggleLogin}>Already Have An Account?</p>
                                             </div>
-                                            <button type="submit" className="submit-button">Sign Up</button>
+                                            <button type="submit" className="submit-button" disabled={isLoading}>Sign Up</button>
+                                            {isLoading && <LoadingBar color={'white'} progress={progress} onLoaderFinished={() => setProgress(0)} />}
                                         </form>
                                     </div>
                                 )}
