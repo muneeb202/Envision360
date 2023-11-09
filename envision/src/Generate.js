@@ -1,13 +1,11 @@
-import background from './images/generatebg.png'
-import logo from './images/image.png'
 import './Generate.css'
 import { Box, Button, ImageList, ImageListItem, LinearProgress, TextField, ThemeProvider, createTheme } from '@mui/material';
 import React, { useRef, useState } from 'react';
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
 import particlesConfig2 from "./config/particle-config2";
-import robotAnimation from './images/robot.json';
-import successAnimation from './images/success.json';
+import robotAnimation from './animations/robot.json';
+import successAnimation from './animations/success.json';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react'
 import Typewriter from 'typewriter-effect';
 
@@ -166,12 +164,12 @@ const Generate = () => {
             </div>
 
             <div className='image-container'>
-                <img src={background} alt='background'/>
+                <img src={`${process.env.PUBLIC_URL}/images/generatebg.png`} alt='background' draggable='false'/>
             </div>
             <div className='overlay' />
             <div className='generate-container'>
 
-                <a href='/'><img src={logo} className='logo' alt='background'/></a>
+                <a href='/'><img src={`${process.env.PUBLIC_URL}/images/logo.png`} className='logo' alt='background' draggable='false'/></a>
                 <div className='row generate-row'>
                     <div className='col-md-6 px-5'>
                         <div className='generate-type'>

@@ -1,8 +1,6 @@
 import particlesConfig3 from "./config/particle-config-3";
-import background from './images/startbg.png'
 import './GetStarted.css'
 import { IconButton, InputAdornment, TextField, ThemeProvider, createTheme } from '@mui/material';
-import logo from './images/image.png'
 import React, { useState } from "react";
 import { loadFull } from "tsparticles";
 import Particles from "react-tsparticles";
@@ -150,12 +148,12 @@ const GetStarted = () => {
             <div className='started-container'>
 
                 <div className='image-container'>
-                    <img src={background} alt="background" />
+                    <img src={`${process.env.PUBLIC_URL}/images/startbg.png`} alt="background" draggable='false'/>
                 </div>
                 <div className="overlay-started">
                     <div className="content-container">
                         <div className='navbar'>
-                            <a href='/'><img src={logo} className='logo' alt="Logo" /></a>
+                            <a href='/'><img src={`${process.env.PUBLIC_URL}/images/logo.png`} className='logo' alt="Logo" draggable='false'/></a>
                         </div>
                         <div className="container" style={{ marginLeft: '80px', marginRight: '80px', minWidth: '80%', height: '100vh', position: 'absolute', top: '0' }}>
                             <div className='row d-flex align-items-center h-100'>
@@ -186,7 +184,6 @@ const GetStarted = () => {
                                                 <form className="login-form" onSubmit={handleLoginSubmit}>
                                                     <div className="form-group">
                                                         <TextField required color='secondary' onChange={handleInputChange} name="username" fullWidth label="Username" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
-
                                                     </div>
                                                     <div className="form-group">
                                                         <TextField required color='secondary' error={checkUsername} helperText={checkUsername ? 'username or password invalid' : ''} onChange={handleInputChange} name="password" fullWidth label="Password" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} type={showPassword ? "text" : "password"}
