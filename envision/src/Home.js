@@ -1,5 +1,3 @@
-import background from './images/homebg.png'
-import logo from './images/image.png'
 import './Home.css'
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
@@ -10,10 +8,10 @@ const Home = () => {
     return (
         <div className='home-container'>
             <div className='image-container'>
-                <img src={background} alt='background' draggable='false'/>
+                <img src={`${process.env.PUBLIC_URL}/images/homebg.png`} alt='background' draggable='false'/>
             </div>
             <div className='home-navbar'>
-                <img src={logo} className='logo' alt='logo' draggable='false'/>
+                <img src={`${process.env.PUBLIC_URL}/images/logo.png`} className='logo' alt='logo' draggable='false'/>
                 <div className='links'>
                     <a href='/start'>Get Started</a>
                     <a href='/aboutus'>About Us</a>

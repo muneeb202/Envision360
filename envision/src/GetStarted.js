@@ -1,8 +1,6 @@
 import particlesConfig3 from "./config/particle-config-3";
-import background from './images/startbg.png'
 import './GetStarted.css'
 import { TextField, ThemeProvider, createTheme } from '@mui/material';
-import logo from './images/image.png'
 import React, { useState } from "react";
 import { loadFull } from "tsparticles";
 import Particles from "react-tsparticles";
@@ -52,12 +50,12 @@ const GetStarted = () => {
             <div className='started-container'>
 
                 <div className='image-container'>
-                    <img src={background} alt="background" draggable='false'/>
+                    <img src={`${process.env.PUBLIC_URL}/images/startbg.png`} alt="background" draggable='false'/>
                 </div>
                 <div className="overlay-started">
                     <div className="content-container">
                         <div className='navbar'>
-                            <a href='/'><img src={logo} className='logo' alt="Logo" draggable='false'/></a>
+                            <a href='/'><img src={`${process.env.PUBLIC_URL}/images/logo.png`} className='logo' alt="Logo" draggable='false'/></a>
                         </div>
                         <div className="container" style={{ marginLeft: '80px', marginRight: '80px', minWidth: '80%' }}>
                             <div className='row'>

@@ -1,9 +1,7 @@
-import background from './images/profilebg.png'
-import logo from './images/image.png'
-import { AppBar, Avatar, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Drawer, IconButton, ImageList, ImageListItem, ImageListItemBar, InputBase, Popover, Snackbar, TextField, ThemeProvider, Toolbar, Tooltip, Typography, alpha, createTheme, styled, useMediaQuery } from '@mui/material'
+import { AppBar, Avatar, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Drawer, IconButton, ImageList, ImageListItem, ImageListItemBar, InputBase, Popover, Snackbar, TextField, ThemeProvider, Toolbar, Tooltip, Typography, alpha, createTheme, styled, useMediaQuery } from '@mui/material'
 import { green, red } from '@mui/material/colors';
 import { useEffect, useRef, useState } from 'react';
-import emptyAnimation from './images/empty.json'
+import emptyAnimation from './animations/empty.json'
 import './Profile.css'
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
 
@@ -218,10 +216,10 @@ const Profile = () => {
     return (
         <ThemeProvider theme={theme}>
             <div className='image-container'>
-                <img src={background} alt='background' draggable='false' />
+                <img src={`${process.env.PUBLIC_URL}/images/profilebg.png`} alt='background' draggable='false' />
             </div>
             <div className='home-navbar'>
-                <a href='/'><img src={logo} className='logo' alt='background' draggable='false' /></a>
+                <a href='/'><img src={`${process.env.PUBLIC_URL}/images/logo.png`} className='logo' alt='background' draggable='false' /></a>
                 <div className='m-5' onClick={() => setSidebar(true)}><Tooltip title='Click to view more details'><Avatar sx={{ bgcolor: red[500] }}>R</Avatar></Tooltip></div>
                 <Drawer open={sidebar} anchor='right' onClose={() => setSidebar(false)}>
                     <div className='sidebar'>
