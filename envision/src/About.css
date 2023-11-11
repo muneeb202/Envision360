@@ -96,39 +96,17 @@
     margin-top: 80px; /* Adjust the margin as needed */
 }
 
-.intro .introimage1,
-.intro .introimage2 {
-    width: 700px;
-    position: absolute;
-    top: 30vh;
-}
-
-.intro .introimage1 {
-    left: 3vw;
-}
-
-.intro .introimage2 {
-    width: 600px;
-    top: 4vh;
-    right: 0vw;
+.about-section img, .about-content {
+    max-width: 45%;
 }
 
 .about-section {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     padding: 20px;
     text-align: center;
     margin-top: 100px; /* Adjust the margin as needed */
-}
-
-.introimage3-container {
-    width: 600px;
-}
-
-.introimage3 {
-    width: 100%;
-    border-radius: 10px;
 }
 
 .about-content {
