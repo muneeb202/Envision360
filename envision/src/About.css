@@ -1,0 +1,147 @@
+/* About.css */
+
+.image-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -100;
+    overflow: hidden;
+    max-height: 100vh;
+}
+
+.image-container img {
+    max-width: 100vw;
+}
+
+.logo {
+    max-width: 200px;
+    margin-right: 200px;
+}
+
+.AboutUs-navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+}
+
+.links {
+    display: flex;
+    align-items: center;
+}
+
+.links a {
+    color: white;
+    font-size: 18px;
+    letter-spacing: 2px;
+    margin: 0 10px;
+    font-weight: 200;
+    text-decoration: none;
+    padding: 5px 20px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+    border: 2px solid transparent; 
+}
+
+.links .login-btn {
+    border-color: #2a90d3;
+}
+
+.links .login-btn:hover {
+    background-color: #2a90d3;
+    letter-spacing: 5px;
+}
+
+.links .signup-btn {
+    border-color: #14a24b; 
+}
+
+.links .signup-btn:hover {
+    background-color: #14a24b;
+    letter-spacing: 5px;
+}
+
+.links .specific-link:hover {
+    background-color: #09687d;
+    letter-spacing: 5px;
+}
+
+.links :first-child {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.body {
+    color: white;
+    font-family: 'Poppins', sans-serif;
+}
+
+.AboutUs-container h1 {
+    font-size: 50px;
+    font-weight: 700;
+    letter-spacing: 10px;
+    margin: 0 auto;
+}
+
+.AboutUs-container h2 {
+    font-size: 30px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    margin: 0 auto;
+}
+
+.intro {
+    position: relative;
+    margin-top: 80px; /* Adjust the margin as needed */
+}
+
+.intro .introimage1,
+.intro .introimage2 {
+    width: 700px;
+    position: absolute;
+    top: 30vh;
+}
+
+.intro .introimage1 {
+    left: 3vw;
+}
+
+.intro .introimage2 {
+    width: 600px;
+    top: 4vh;
+    right: 0vw;
+}
+
+.about-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 20px;
+    text-align: center;
+    margin-top: 100px; /* Adjust the margin as needed */
+}
+
+.introimage3-container {
+    width: 600px;
+}
+
+.introimage3 {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.about-content {
+    flex: 1;
+}
+
+.about-content h2 {
+    font-size: 36px;
+    color: #fff;
+}
+
+.about-content p {
+    font-size: 18px;
+    color: #fff;
+    line-height: 1.5;
+}

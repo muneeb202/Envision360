@@ -30,18 +30,6 @@
     padding: 20px;
 }
 
-.links :last-child {
-    background-color: #054D5D;
-    padding: 5px 30px;
-    border-radius: 20px;
-    transition: padding 0.3s ease;
-}
-.links :last-child:hover {
-    background-color: #09687d;
-    padding: 8px 35px;
-    letter-spacing: 5px;
-}
-
 .body {
     color: white;
     font-family: 'Poppins', sans-serif;
@@ -65,4 +53,8 @@
     position: absolute;
     left: 15vw;
     top: 40vh;
+}
+
+.newlogo{
+    width: 500px;
 }

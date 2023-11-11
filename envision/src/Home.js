@@ -1,4 +1,5 @@
 import background from './images/homebg.png'
+import newlogo from './images/Logo Small.png'
 import logo from './images/image.png'
 import './Home.css'
 import Particles from 'react-tsparticles';
@@ -16,14 +17,15 @@ const Home = () => {
                 <img src={logo} className='logo' alt='logo'/>
                 <div className='links'>
                     <a href='/start'>Get Started</a>
-                    <a href='/aboutus'>About Us</a>
+                    <a href='/about'>About Us</a>
                     <a href='/blog'>Blog</a>
                     <a href='/generate'>Demo</a>
                 </div>
             </div>
             <div className='header'>
-                <h1>ENVISION360</h1>
-                <h2>Redefining Visual Perspectives</h2>
+                {/* <h1>ENVISION360</h1>
+                <h2>Redefining Visual Perspectives</h2> */}
+                 <img src={newlogo} className='newlogo' alt='newlogo'/>
             </div>
             <Particles
                 init={(main) => loadFull(main)}
