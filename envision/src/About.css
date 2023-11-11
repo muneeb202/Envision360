@@ -26,6 +26,10 @@
     padding: 20px;
 }
 
+.AboutUs-navbar img:hover{
+    max-width: 205px;
+}
+
 .links {
     display: flex;
     align-items: center;
@@ -93,7 +97,7 @@
 
 .intro {
     position: relative;
-    margin-top: 80px; /* Adjust the margin as needed */
+    margin-top: 80px;
 }
 
 .about-section img, .about-content {
@@ -106,7 +110,7 @@
     justify-content: space-between;
     padding: 20px;
     text-align: center;
-    margin-top: 100px; /* Adjust the margin as needed */
+    margin-top: 100px; 
 }
 
 .about-content {
@@ -121,5 +125,121 @@
 .about-content p {
     font-size: 18px;
     color: #fff;
-    line-height: 1.5;
+    line-height: 2;
 }
+
+
+.mission-section img, .mission-content {
+    max-width: 45%;
+}
+
+.mission-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    text-align: center;
+    margin-top: 120px; 
+}
+
+.mission-content {
+    flex: 1;
+}
+
+.mission-content h2 {
+    font-size: 36px;
+    color: #fff;
+}
+
+.mission-content p {
+    font-size: 18px;
+    color: #fff;
+    line-height: 2;
+}
+
+
+.story-section img, .story-content {
+    max-width: 45%;
+}
+
+.story-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    text-align: center;
+    margin-top: 120px;
+}
+
+.story-content {
+    flex: 1;
+}
+
+.story-content h2 {
+    font-size: 36px;
+    color: #fff;
+}
+
+.story-content p {
+    font-size: 18px;
+    color: #fff;
+    line-height: 2;
+}
+
+
+.team-section h1{
+    text-align: center;
+    margin-top: 120px;
+}
+
+.team-member1, .team-member3 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    margin-top: 120px;
+    margin-left: 10vw;
+  }
+
+.team-member2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    margin-top: 120px;
+    margin-right: 10vw;
+  }
+  
+  .team-member1 img, .team-member2 img, .team-member3 img {
+    max-width: 20%;
+  }
+  
+  .team-member1 .team-member-details, .team-member2 .team-member-details, .team-member3 .team-member-details {
+    flex: 1;
+    padding: 20px;
+    background-color: rgba(45, 45, 45, 0.4); 
+  border-radius: 20px; 
+  width: 10%; 
+  margin: 0 auto;
+  }
+  
+  .team-member1 h2, .team-member2 h2, .team-member3 h2,
+  .team-member1 h3, .team-member2 h3, .team-member3 h3 {
+    text-align: center;
+    color: #fff;
+  }
+
+  .team-member1 p, .team-member2 p, .team-member3 p {
+    text-align: center;
+    color: #fff;
+    text-decoration: underline;
+  }
+  
+  .team-member1 h2, .team-member2 h2, .team-member3 h2 {
+    font-size: 35px;
+  }
+  
+  .team-member1 h3, .team-member2 h3, .team-member3 h3 {
+    font-size: 25px;
+    
+  }
