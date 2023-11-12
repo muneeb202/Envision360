@@ -1,5 +1,7 @@
 // About.js
-
+import React from 'react';
+import { Link } from 'react-router-dom';
+// import Particles from 'react-particles-js';
 import background from './images/AboutUsBg.png';
 import logo from './images/Logo Small.png';
 import introimage1 from './images/1.png';
@@ -11,6 +13,44 @@ import teamMember1 from './images/6.png';
 import teamMember2 from './images/7.png';
 import teamMember3 from './images/8.png';
 import './About.css';
+
+// const particlesOptions = {
+//   particles: {
+//     number: {
+//       value: 50, // Adjust the number of particles
+//       density: {
+//         enable: true,
+//         value_area: 800,
+//       },
+//     },
+//     size: {
+//       value: 3, // Adjust the size of particles
+//     },
+//     move: {
+//       speed: 2, // Adjust the speed of particles
+//     },
+//   },
+//   interactivity: {
+//     events: {
+//       onhover: {
+//         enable: true,
+//         mode: 'repulse',
+//       },
+//     },
+//   },
+// };
+
+
+const Footer = () => (
+  <div className="footer">
+    <p>&copy; 2023 Envision360. All rights reserved.</p>
+    <div>
+      <Link to="/privacy">Privacy Policy</Link>
+      <span>|</span>
+      <Link to="/terms">Terms of Service</Link>
+    </div>
+  </div>
+);
 
 
 const AboutUs = () => {
@@ -39,6 +79,7 @@ const AboutUs = () => {
     return (
 
         <div className='AboutUs-container'>
+           {/* <Particles params={particlesOptions} className="particles" /> */}
             <div className='image-container'>
                 <img src={background} alt='background'/>
             </div>
@@ -121,7 +162,7 @@ const AboutUs = () => {
         <div className='team-member1' onClick={() => openEmailCompose('l202147@lhr.nu.edu.pk')}>
           <img src={teamMember1} alt='Team Member 1' />
           <div className='team-member-details'>
-            <h2>Muneeb Arshad</h2>
+            <h2>Mohammad Muneeb Arshad</h2>
             <h3>BSCS 2020</h3>
             <p>
               <a href='#' onClick={(e) => { e.preventDefault(); openEmailCompose('l202147@lhr.nu.edu.pk'); }}>
@@ -147,7 +188,7 @@ const AboutUs = () => {
         <div className='team-member3' onClick={() => openEmailCompose('l201164@lhr.nu.edu.pk')}>
           <img src={teamMember3} alt='Team Member 3' />
           <div className='team-member-details'>
-            <h2>Abdul Rehman</h2>
+            <h2>Abdul Rehman Sodais</h2>
             <h3>BSCS 2020</h3>
             <p>
               <a href='#' onClick={(e) => { e.preventDefault(); openEmailCompose('l201164@lhr.nu.edu.pk'); }}>
@@ -157,6 +198,7 @@ const AboutUs = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

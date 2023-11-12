@@ -190,7 +190,22 @@
 .team-section h1{
     text-align: center;
     margin-top: 120px;
+    position: relative;
+    color: #000000;
 }
+
+.team-section h1::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80vw; 
+    height: 20vh;
+    background-color: rgba(255, 255, 255,0.9);
+    border-radius: 80px;
+    z-index: -1;
+  }
 
 .team-member1, .team-member3 {
     display: flex;
@@ -214,32 +229,67 @@
     max-width: 20%;
   }
   
-  .team-member1 .team-member-details, .team-member2 .team-member-details, .team-member3 .team-member-details {
+  .team-member1 .team-member-details, .team-member3 .team-member-details, .team-member2 .team-member-details {
     flex: 1;
-    padding: 20px;
-    background-color: rgba(45, 45, 45, 0.4); 
-  border-radius: 20px; 
-  width: 10%; 
-  margin: 0 auto;
+    padding: 5 px;
+    background-color: rgba(255, 255, 255, 0.9); 
+    border-radius: 50px;
+    margin-left: 180px;
+    margin-right: 180px;
   }
   
   .team-member1 h2, .team-member2 h2, .team-member3 h2,
   .team-member1 h3, .team-member2 h3, .team-member3 h3 {
     text-align: center;
-    color: #fff;
+    color: #000000;
   }
 
   .team-member1 p, .team-member2 p, .team-member3 p {
     text-align: center;
-    color: #fff;
+    color: #000000;
     text-decoration: underline;
   }
   
   .team-member1 h2, .team-member2 h2, .team-member3 h2 {
     font-size: 35px;
+    font-weight: bold;
   }
   
   .team-member1 h3, .team-member2 h3, .team-member3 h3 {
     font-size: 25px;
     
   }
+
+
+
+  .footer {
+    background-color: rgba(0, 0, 0);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    margin-top: 20vh;
+  }
+  
+  .footer a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+  }
+  
+  .footer a:hover {
+    text-decoration: underline;
+  }
+
+  /* .particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  } */
+
+  
