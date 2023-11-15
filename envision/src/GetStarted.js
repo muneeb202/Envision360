@@ -157,8 +157,8 @@ const GetStarted = () => {
                         <div className='navbar'>
                             <a href='/'><img src={logo} className='logo' alt="Logo" /></a>
                         </div>
-                        <div className="container" style={{ marginLeft: '80px', marginRight: '80px', minWidth: '80%', height: '100vh', position: 'absolute', top: '0' }}>
-                            <div className='row d-flex align-items-center h-100'>
+                        <div className="container" style={{ marginLeft: '80px', marginRight: '80px', minWidth: '80%', height: '100vh' }}>
+                            <div className='row getstarted-container d-flex align-items-center h-100'>
                                 <div className='col-md-6 socials-header'>
                                     <h2 style={{ marginBottom: '30px' }}>Get Started</h2>
                                     <button className="social-button">Sign In With <i className="fab fa-google"></i></button>
