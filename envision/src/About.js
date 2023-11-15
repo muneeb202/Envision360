@@ -1,6 +1,7 @@
 // About.js
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Sidebar from './Sidebar'; // Import the Sidebar component
 // import Particles from 'react-particles-js';
 import background from './images/AboutUsBg.png';
 import logo from './images/Logo Small.png';
@@ -14,31 +15,31 @@ import teamMember2 from './images/7.png';
 import teamMember3 from './images/8.png';
 import './About.css';
 
-const particlesOptions = {
-  particles: {
-    number: {
-      value: 50, // Adjust the number of particles
-      density: {
-        enable: true,
-        value_area: 800,
-      },
-    },
-    size: {
-      value: 3, // Adjust the size of particles
-    },
-    move: {
-      speed: 2, // Adjust the speed of particles
-    },
-  },
-  interactivity: {
-    events: {
-      onhover: {
-        enable: true,
-        mode: 'repulse',
-      },
-    },
-  },
-};
+// const particlesOptions = {
+//   particles: {
+//     number: {
+//       value: 50, // Adjust the number of particles
+//       density: {
+//         enable: true,
+//         value_area: 800,
+//       },
+//     },
+//     size: {
+//       value: 3, // Adjust the size of particles
+//     },
+//     move: {
+//       speed: 2, // Adjust the speed of particles
+//     },
+//   },
+//   interactivity: {
+//     events: {
+//       onhover: {
+//         enable: true,
+//         mode: 'repulse',
+//       },
+//     },
+//   },
+// };
 
 
 const Footer = () => (
@@ -80,6 +81,7 @@ const AboutUs = () => {
 
         <div className='AboutUs-container'>
            {/* <Particles params={particlesOptions} className="particles" /> */}
+           <Sidebar />
             <div className='image-container'>
                 <img src={background} alt='background'/>
             </div>
