@@ -14,31 +14,31 @@ import teamMember2 from './images/7.png';
 import teamMember3 from './images/8.png';
 import './About.css';
 
-// const particlesOptions = {
-//   particles: {
-//     number: {
-//       value: 50, // Adjust the number of particles
-//       density: {
-//         enable: true,
-//         value_area: 800,
-//       },
-//     },
-//     size: {
-//       value: 3, // Adjust the size of particles
-//     },
-//     move: {
-//       speed: 2, // Adjust the speed of particles
-//     },
-//   },
-//   interactivity: {
-//     events: {
-//       onhover: {
-//         enable: true,
-//         mode: 'repulse',
-//       },
-//     },
-//   },
-// };
+const particlesOptions = {
+  particles: {
+    number: {
+      value: 50, // Adjust the number of particles
+      density: {
+        enable: true,
+        value_area: 800,
+      },
+    },
+    size: {
+      value: 3, // Adjust the size of particles
+    },
+    move: {
+      speed: 2, // Adjust the speed of particles
+    },
+  },
+  interactivity: {
+    events: {
+      onhover: {
+        enable: true,
+        mode: 'repulse',
+      },
+    },
+  },
+};
 
 
 const Footer = () => (
