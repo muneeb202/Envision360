@@ -77,32 +77,22 @@ const AboutUs = () => {
         window.location.href = '/start';
       };
 
-
       const [showSidebar, setShowSidebar] = useState(false);
 
-  const handleMouseMove = (e) => {
-    const mouseX = e.pageX;
-    const windowWidth = window.innerWidth;
-
-    // Set a threshold, you can adjust this value
-    const threshold = 50;
-
-    if (windowWidth - mouseX < threshold) {
-      setShowSidebar(true);
-    } else {
-      setShowSidebar(false);
-    }
+      const handleSidebarToggle = () => {
+        setShowSidebar(!showSidebar);
   };
 
     return (
 
-        <div className='AboutUs-container'>
-           {/* <Particles params={particlesOptions} className="particles" /> */}
-           {showSidebar && <Sidebar />}
-           <div className='main-content'>
-            <div className='image-container'>
-                <img src={background} alt='background'/>
-            </div>
+      <div className='AboutUs-container'>
+      <div className={`sidebar ${showSidebar ? 'show' : ''}`}>
+        <Sidebar />
+      </div>
+      <div className='main-content'>
+        <div className='image-container'>
+          <img src={background} alt='background'/>
+        </div>
 
             <div className='AboutUs-navbar'>
             
@@ -112,6 +102,12 @@ const AboutUs = () => {
                     <a href='#' className='login-btn' onClick={redirectToLogin}> Log In</a>
                     <a href='#' className='signup-btn' onClick={redirectToLogin}> Sign Up</a>
                 </div>
+            </div>
+
+            <div className='menu-icon' onClick={handleSidebarToggle}>
+              <div className='bar'></div>
+              <div className='bar'></div>
+              <div className='bar'></div>
             </div>
 
             <div className='about-section'>
@@ -218,6 +214,7 @@ const AboutUs = () => {
           </div>
         </div>
       </div>
+
       <Footer />
       </div>
     </div>

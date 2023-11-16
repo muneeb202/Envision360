@@ -296,25 +296,48 @@
   .AboutUs-container {
     display: flex;
   }
-  
-  .sidebar {
-    width: 200px;
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 20px;
-    color: white;
-    transition: transform 0.3s ease; /* Add a transition for a smoother appearance */
-    transform: translateX(0); /* Start with the sidebar hidden */
+  .menu-icon {
+    display: none; /* Initially hide the menu icon on larger screens */
   }
   
-  .sidebar p {
-    margin: 0;
-    padding: 10px;
+  /* Styling for the bars in the menu icon */
+  .bar {
+    width: 30px;
+    height: 3px;
+    background-color: white;
+    margin: 6px 0;
+    transition: 0.4s;
   }
   
-  .main-content {
-    flex: 1;
-  }
+  /* Media query to show the menu icon on smaller screens */
+  @media only screen and (max-width: 768px) {
+    .menu-icon {
+      display: block;
+      cursor: pointer;
+    }
   
-  .image-container {
-    width: 100%; /* Adjust the width of the image container */
+    .sidebar {
+      position: fixed;
+      height: 100%;
+      width: 200px;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      color: white;
+      transition: transform 0.3s ease;
+      transform: translateX(-100%);
+    }
+  
+    .sidebar.show {
+      transform: translateX(0);
+    }
+  
+    /* Adjust styles for the main content when the sidebar is open */
+    .main-content {
+      margin-left: 200px;
+      transition: margin-left 0.3s ease;
+    }
+  
+    .main-content.show-sidebar {
+      margin-left: 0;
+    }
   }
