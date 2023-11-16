@@ -15,39 +15,61 @@ const Home = () => {
         window.location.reload();
     }
 
+
     return (
+
         <div className='home-container'>
             <div className='image-container'>
                 <img src={background} alt='background' />
             </div>
-            <div className='home-navbar'>
+            <nav class="navbar navbar-expand-lg navbar-dark ">
                 <img src={logo} className='logo' alt='logo' />
-                <div className='links'>
-                    {user ? (
-                        <>
-                            <p>{user}</p>
-                            <a onClick={userLogout}>Logout</a>
-                        </>
-                    ) :
-                        (
-                            <a href='/start'>Get Started</a>
-                        )}
-                    <a href='/aboutus'>About Us</a>
-                    <a href='/blog'>Blog</a>
-                    <a href='/generate'>{user ? 'Generate' : 'Demo'}</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <div className='home-navbar'>
+                        <div className='links'>
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    {user ? (
+                                        <>
+                                            <p>{user}</p>
+                                            <a class="nav-link" onClick={userLogout}>Logout</a>
+                                        </>
+                                    ) :
+                                        (
+                                            <a class="nav-link" href='/start'>Get Started </a>
+                                        )}
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href='/aboutus'>About Us</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href='/blog'>Blog</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link demoButton" href='/generate'>{user ? 'Generate' : 'Demo'}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </nav>
+
             <div className='header'>
                 <h1>ENVISION360</h1>
                 <h2>Redefining Visual Perspectives</h2>
             </div>
-            <Particles
-                init={(main) => loadFull(main)}
-                options={particlesConfig}
-                width='30vw'
-                height='60vh'
-                style={{ position: 'absolute', right: '5vw', bottom: '20vh' }}
-            />
+            <div className="particles-display">
+                <Particles
+                    init={(main) => loadFull(main)}
+                    options={particlesConfig}
+                    width='30vw'
+                    height='60vh'
+                    style={{ position: 'absolute', right: '5vw', bottom: '20vh' }}
+                />
+            </div>
         </div>
     );
 }

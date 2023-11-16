@@ -155,9 +155,9 @@ const GetStarted = () => {
                 <div className="overlay-started">
                     <div className="content-container">
                         <div className='navbar'>
-                            <a href='/'><img src={logo} className='logo' alt="Logo" /></a>
+                            <a href='/'><img src={logo} className='logo' alt='background' /></a>
                         </div>
-                        <div className="container" style={{ minWidth: '80%', height: '100vh' }}>
+                        <div className="container" style={{ minWidth: '100%', height: '100vh' }}>
                             <div className='row getstarted-container d-flex align-items-center h-100'>
                                 <div className='col-md-6 socials-header'>
                                     <h2 style={{ marginBottom: '30px' }}>Get Started</h2>

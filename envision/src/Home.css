@@ -8,7 +8,9 @@
 }
 
 .image-container img {
-    max-width: 100vw;
+    height: 100vh;
+    width: 100vw;
+    object-fit: cover;
 }
 
 .logo{
@@ -16,7 +18,7 @@
 }
 .home-navbar {
     display: flex;
-    justify-content: space-between;
+    justify-content: end;
 }
 .home-navbar a {
     color: white;
@@ -30,13 +32,13 @@
     padding: 20px;
 }
 
-.links :last-child {
+.links .demoButton {
     background-color: #054D5D;
     padding: 5px 30px;
     border-radius: 20px;
     transition: padding 0.3s ease;
 }
-.links :last-child:hover {
+.links .demoButton:hover {
     background-color: #09687d;
     padding: 8px 35px;
     letter-spacing: 5px;
@@ -65,4 +67,27 @@
     position: absolute;
     left: 15vw;
     top: 40vh;
+}
+
+.navbar-expand-lg .navbar-collapse {
+    justify-content: end;
+}
+
+@media  (max-width: 986px) {
+    .particles-display{
+        display: none;
+    }
+    .home-navbar a{
+        margin: 5px;
+    }
+    .links{
+        padding-top: 0;
+    }
+    .home-container .image-container img{
+        max-width:max-content;
+    }
+}
+
+.navbar-toggler{
+    margin-right: 20px;
 }
