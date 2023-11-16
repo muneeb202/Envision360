@@ -164,14 +164,14 @@ const Generate = () => {
             </div>
 
             <div className='image-container'>
-                <img src={`${process.env.PUBLIC_URL}/images/generatebg.png`} alt='background' draggable='false'/>
+                <img src={`${process.env.PUBLIC_URL}/images/generatebg.png`} alt='background' draggable='false' />
             </div>
             <div className='overlay' />
             <div className='generate-container'>
 
-                <a href='/'><img src={`${process.env.PUBLIC_URL}/images/logo.png`} className='logo' alt='background' draggable='false'/></a>
+                <a href='/'><img src={`${process.env.PUBLIC_URL}/images/logo.png`} className='logo' alt='background' draggable='false' /></a>
                 <div className='row generate-row'>
-                    <div className='col-md-6 px-5'>
+                    <div className='col-md-6 px-5  order-2 order-md-1'>
                         <div className='generate-type'>
                             <button onClick={() => setGenerateType(1)} className={generateType === 1 ? 'active' : ''}>Location Search</button>
                             <button onClick={() => setGenerateType(2)} className={generateType === 2 ? 'active' : ''}>Coordinates</button>
@@ -225,10 +225,17 @@ const Generate = () => {
                         </div>
                         <Button variant='contained' onClick={() => setIsLoading(true)} color='secondary' sx={{ padding: '20px', margin: '0 10%', letterSpacing: '3px', fontSize: '18px', borderRadius: '50px', width: '80%' }}>Generate 360&deg; Image</Button>
                     </div>
-                    <div className='col-md-6 ps-5'>
+                    <div className='col-md-6 ps-5  order-1 order-md-2'>
                         <h1>Generate Image</h1>
-                        <p className='first'>Create breathtaking 360-degree images effortlessly.</p>
-                        <p className='second'>Explore real-time rendering and craft your panoramic masterpiece.</p>
+                        <p>
+                            <Typewriter
+                                onInit={(typewriter) => {
+                                    typewriter.typeString('Create breathtaking 360-degree images effortlessly and craft your panoramic masterpiece.')
+                                        .start();
+                                }}
+                                options={{delay:30}}
+                            />
+                        </p>
                     </div>
                 </div>
             </div>
