@@ -1,5 +1,3 @@
-import background from './images/homebg.png'
-import logo from './images/image.png'
 import './Home.css'
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
@@ -20,10 +18,10 @@ const Home = () => {
 
         <div className='home-container'>
             <div className='image-container'>
-                <img src={background} alt='background' />
+                <img src={`${process.env.PUBLIC_URL}/images/homebg.png`} alt='background' draggable='false'/>
             </div>
             <nav class="navbar navbar-expand-lg navbar-dark ">
-                <img src={logo} className='logo' alt='logo' />
+                <img src={`${process.env.PUBLIC_URL}/images/logo.png`} className='logo' alt='logo' draggable='false'/>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
