@@ -94,21 +94,19 @@ const AboutUs = () => {
           <img src={background} alt='background'/>
         </div>
 
-            <div className='AboutUs-navbar'>
-            
-            <img src={logo} className='logo' alt='logo' onClick={redirectToHome}/>
-                <div className='links'>
-                    <a href='#' className='specific-link' onClick={scrollToTeamMembers}> Contact Us </a>
-                    <a href='#' className='login-btn' onClick={redirectToLogin}> Log In</a>
-                    <a href='#' className='signup-btn' onClick={redirectToLogin}> Sign Up</a>
-                </div>
-            </div>
-
-            <div className='menu-icon' onClick={handleSidebarToggle}>
-              <div className='bar'></div>
-              <div className='bar'></div>
-              <div className='bar'></div>
-            </div>
+        <div className='AboutUs-navbar'>
+  <img src={logo} className='logo' alt='logo' onClick={redirectToHome}/>
+  <div className='links'>
+    <a href='#' className='specific-link' onClick={scrollToTeamMembers}> Contact Us </a>
+    <a href='#' className='login-btn' onClick={redirectToLogin}> Log In</a>
+    <a href='#' className='signup-btn' onClick={redirectToLogin}> Sign Up</a>
+  </div>
+  <div className='menu-icon' onClick={handleSidebarToggle}>
+    <div className='bar'></div>
+    <div className='bar'></div>
+    <div className='bar'></div>
+  </div>
+</div>
 
             <div className='about-section'>
                 <img src={introimage1} className='introimage1' alt='introimage1'/>
