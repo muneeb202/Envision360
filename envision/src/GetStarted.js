@@ -155,17 +155,20 @@ const GetStarted = () => {
                         <div className='navbar'>
                             <a href='/'><img src={`${process.env.PUBLIC_URL}/images/logo.png`} className='logo' alt="Logo" draggable='false'/></a>
                         </div>
-                        <div className="container" style={{ marginLeft: '80px', marginRight: '80px', minWidth: '80%', height: '100vh', position: 'absolute', top: '0' }}>
-                            <div className='row d-flex align-items-center h-100'>
+                        <div className="container" style={{ minWidth: '100%', height: '100vh' }}>
+                            <div className='row getstarted-container d-flex align-items-center h-100'>
                                 <div className='col-md-6 socials-header'>
                                     <h2 style={{ marginBottom: '30px' }}>Get Started</h2>
                                     <button className="social-button">Sign In With <i className="fab fa-google"></i></button>
                                     <button className="social-button">Sign In With <i className="fab fa-facebook"></i></button>
                                 </div>
+                                <div className="orClass">
+                                    <p>OR</p>
+                                </div>
                                 {showLogin ? (
                                     <>
                                         {showEmail ? (
-                                            <div className="col-md-6 d-flex flex-column justify-content-center px-5 pt-5">
+                                            <div className="showEmailClass col-md-6 d-flex flex-column justify-content-center">
                                                 <form onSubmit={handleEmailSubmit}>
                                                     <div className="form-group">
                                                         <TextField required color='secondary' error={checkEmail} helperText={checkEmail ? 'enter valid email' : ''} fullWidth label="Enter Email" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
