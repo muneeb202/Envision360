@@ -1,5 +1,5 @@
 // About.js
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from './Sidebar'; // Import the Sidebar component
 // import Particles from 'react-particles-js';
@@ -77,11 +77,29 @@ const AboutUs = () => {
         window.location.href = '/start';
       };
 
+
+      const [showSidebar, setShowSidebar] = useState(false);
+
+  const handleMouseMove = (e) => {
+    const mouseX = e.pageX;
+    const windowWidth = window.innerWidth;
+
+    // Set a threshold, you can adjust this value
+    const threshold = 50;
+
+    if (windowWidth - mouseX < threshold) {
+      setShowSidebar(true);
+    } else {
+      setShowSidebar(false);
+    }
+  };
+
     return (
 
         <div className='AboutUs-container'>
            {/* <Particles params={particlesOptions} className="particles" /> */}
-           <Sidebar />
+           {showSidebar && <Sidebar />}
+           <div className='main-content'>
             <div className='image-container'>
                 <img src={background} alt='background'/>
             </div>
@@ -201,6 +219,7 @@ const AboutUs = () => {
         </div>
       </div>
       <Footer />
+      </div>
     </div>
   );
 };

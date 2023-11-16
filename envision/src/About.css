@@ -293,15 +293,17 @@
   } */
 
   
+  .AboutUs-container {
+    display: flex;
+  }
+  
   .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
     width: 200px;
     background-color: rgba(0, 0, 0, 0.7);
     padding: 20px;
     color: white;
+    transition: transform 0.3s ease; /* Add a transition for a smoother appearance */
+    transform: translateX(0); /* Start with the sidebar hidden */
   }
   
   .sidebar p {
@@ -309,11 +311,10 @@
     padding: 10px;
   }
   
-  /* Adjust the content to make room for the sidebar */
-  .AboutUs-container {
-    display: flex;
+  .main-content {
+    flex: 1;
   }
   
   .image-container {
-    flex: 1;
+    width: 100%; /* Adjust the width of the image container */
   }
