@@ -19,9 +19,9 @@
 }
 .home-navbar {
     display: flex;
-    justify-content: end;
+    justify-content:space-between;
 }
-.home-navbar a {
+.links a {
     color: white;
     font-size: 18px;
     letter-spacing: 2px;
@@ -87,8 +87,21 @@
     .home-container .image-container img{
         max-width:max-content;
     }
+    .links .demoButton{
+        margin-top: 10px;
+    }
+    .links a {
+        margin: 5px;
+    }
 }
 
 .navbar-toggler{
     margin-right: 20px;
+}
+
+.home-sidebar .css-1160xiw-MuiPaper-root-MuiDrawer-paper{
+    background: rgb(41,2,22);
+    background: linear-gradient(90deg, rgb(2 33 45) 0%, rgba(0,0,0,1) 100%) !important;
+    box-shadow: -5px 0px 20px 0px rgb(1 15 22) !important;
+    width: 300px;
 }

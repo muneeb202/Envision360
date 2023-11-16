@@ -2,9 +2,13 @@ import './Home.css'
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
 import particlesConfig from "./config/particle-config";
+import { useState } from 'react';
+import { Avatar, Drawer, Tooltip } from '@mui/material'
 
 
 const Home = () => {
+
+    const [sidebar, setSidebar] = useState(false);
     const user = localStorage.getItem('user');
 
     const userLogout = (e) => {
@@ -12,29 +16,26 @@ const Home = () => {
         localStorage.setItem('user', '');
         window.location.reload();
     }
-
+    // const user = 'Ali'
 
     return (
 
         <div className='home-container'>
             <div className='image-container'>
-                <img src={`${process.env.PUBLIC_URL}/images/homebg.png`} alt='background' draggable='false'/>
+                <img src={`${process.env.PUBLIC_URL}/images/homebg.png`} alt='background' draggable='false' />
             </div>
-            <nav class="navbar navbar-expand-lg navbar-dark ">
-                <img src={`${process.env.PUBLIC_URL}/images/logo.png`} className='logo' alt='logo' draggable='false'/>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                    <div className='home-navbar'>
+            <div className='home-navbar'>
+                <img src={`${process.env.PUBLIC_URL}/images/logo.png`} className='logo' alt='logo' draggable='false' />
+                <div className='m-5' onClick={() => setSidebar(true)}><Tooltip title='Click to view more details'><i className="fa-solid fa-ellipsis-vertical" style={{ color: '#ffffff', fontSize: 'x-large' }}></i></Tooltip></div>
+                <Drawer className='home-sidebar' open={sidebar} anchor='right' onClose={() => setSidebar(false)}>
+                    <div className='sidebar'>
                         <div className='links'>
-                            <ul class="navbar-nav">
+                            <ul class="navbar-nav" style={{ textAlign: 'center' }}>
                                 <li class="nav-item">
                                     {user ? (
-                                        <>
-                                            <p>{user}</p>
-                                            <a class="nav-link" onClick={userLogout}>Logout</a>
-                                        </>
+                                        <div style={{ marginBottom: '10px', display: 'flex', justifyContent: 'center' }}>
+                                            <a href='/profile'><Avatar style={{ height: '80px', width: '80px', fontSize: 'x-large' }} sx={{ bgcolor: '#09687d' }}>{user.charAt(0).toUpperCase()}</Avatar></a>
+                                        </div>
                                     ) :
                                         (
                                             <a class="nav-link" href='/start'>Get Started </a>
@@ -50,10 +51,14 @@ const Home = () => {
                                     <a class="nav-link demoButton" href='/generate'>{user ? 'Generate' : 'Demo'}</a>
                                 </li>
                             </ul>
+
+                            <div class="nav-item logout-button" style={{ marginLeft: '30px', position: 'absolute', bottom: '0', textAlign: 'center' }} >
+                                {user && <a class="nav-link" href onClick={userLogout}>Logout</a>}
+                            </div>
                         </div>
                     </div>
-                </div>
-            </nav>
+                </Drawer>
+            </div>
 
             <div className='header'>
                 <h1>ENVISION360</h1>

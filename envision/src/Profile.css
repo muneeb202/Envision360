@@ -1,4 +1,4 @@
-.MuiDrawer-paperAnchorRight {
+.profile-container .MuiDrawer-paperAnchorRight {
     background: rgb(41,2,22);
     background: linear-gradient(90deg, rgba(41,2,22,1) 0%, rgba(0,0,0,1) 100%) !important; 
     box-shadow: -5px 0px 20px 0px rgb(41,2,22) !important;

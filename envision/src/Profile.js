@@ -179,8 +179,8 @@ const Profile = () => {
     }
 
     const deleteImage = () => {
-        const updatedImages = [...images.slice(undefined,selectedImageToDelete.id), ...images.slice(selectedImageToDelete.id + 1)];
-        setImages(updatedImages.map((image, index) => ({...image, id:index})));
+        const updatedImages = [...images.slice(undefined, selectedImageToDelete.id), ...images.slice(selectedImageToDelete.id + 1)];
+        setImages(updatedImages.map((image, index) => ({ ...image, id: index })));
         setDelAnchorEl(null);
     }
 
@@ -221,8 +221,8 @@ const Profile = () => {
             <div className='home-navbar'>
                 <a href='/'><img src={`${process.env.PUBLIC_URL}/images/logo.png`} className='logo' alt='background' draggable='false' /></a>
                 <div className='m-5' onClick={() => setSidebar(true)}><Tooltip title='Click to view more details'><Avatar sx={{ bgcolor: red[500] }}>R</Avatar></Tooltip></div>
-                <Drawer open={sidebar} anchor='right' onClose={() => setSidebar(false)}>
-                    <div className='sidebar'>
+                <Drawer className='profile-container' open={sidebar} anchor='right' onClose={() => setSidebar(false)}>
+                    <div className='sidebar '>
                         <Avatar sx={{ bgcolor: red[500], height: 100, width: 100, fontSize: 30 }}>R</Avatar><br />
                         <h4>Ramon Sanchez</h4><br />
                         <p>ramon_sanchez@gmail.com</p>
@@ -309,10 +309,10 @@ const Profile = () => {
                                             </IconButton>
                                     }
                                 />
-                                <IconButton sx={{position:'absolute'}} onClick={() => favImage(image)}>
+                                <IconButton sx={{ position: 'absolute' }} onClick={() => favImage(image)}>
                                     <i style={{ fontSize: 15 }} className={`${image.favourite ? 'fas' : 'far'} fa-star`} />
                                 </IconButton>
-                                <Tooltip title='Delete'><IconButton onClick={(e) => confirmDelete(image, e)} sx={{position:'absolute', right:0}}>
+                                <Tooltip title='Delete'><IconButton onClick={(e) => confirmDelete(image, e)} sx={{ position: 'absolute', right: 0 }}>
                                     <i style={{ fontSize: 15 }} class="fa-solid fa-trash"></i>
                                 </IconButton></Tooltip>
                                 <Popover id={index} open={delpopOpen} anchorEl={delanchorEl} onClose={handleDeleteClose}>
