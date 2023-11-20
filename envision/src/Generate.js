@@ -227,7 +227,7 @@ const Generate = () => {
                     </div>
                     <div className='col-md-6 ps-5  order-1 order-md-2'>
                         <h1>Generate Image</h1>
-                        <p>
+                        <p style={{height:'48px'}}>
                             <Typewriter
                                 onInit={(typewriter) => {
                                     typewriter.typeString('Create breathtaking 360-degree images effortlessly and craft your panoramic masterpiece.')

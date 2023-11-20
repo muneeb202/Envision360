@@ -187,3 +187,9 @@
     font-size: small;
     text-align: center;
 }
+
+@media (max-width: 769px) {
+    .generate-container {
+        height: 70vh;
+    }
+}
