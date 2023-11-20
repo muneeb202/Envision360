@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 // import Particles from 'react-particles-js';
-import background from './images/AboutUsBg.png';
+import background from './images/aboutbg.png';
 import logo from './images/Logo Small.png';
 import introimage1 from './images/1.png';
 import introimage2 from './images/2.png';
@@ -55,109 +55,110 @@ const Footer = () => (
 
 const AboutUs = () => {
 
-    const scrollToTeamMembers = () => {
-        const teamSection = document.querySelector('.team-section');
-        if (teamSection) {
-          teamSection.scrollIntoView({ behavior: 'smooth' });
-        }
-      };
+  const scrollToTeamMembers = () => {
+    const teamSection = document.querySelector('.team-section');
+    if (teamSection) {
+      teamSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
-    const openEmailCompose = (email) => {
-        window.open(`mailto:${email}`, '_blank');
-      };
+  const openEmailCompose = (email) => {
+    window.open(`mailto:${email}`, '_blank');
+  };
 
-      const redirectToHome = () => {
-        // Redirect to the homepage
-        window.location.href = '/';
-      };
+  const redirectToHome = () => {
+    // Redirect to the homepage
+    window.location.href = '/';
+  };
 
-      const redirectToLogin = () => {
-        // Redirect to the Get Started
-        window.location.href = '/start';
-      };
+  const redirectToLogin = () => {
+    // Redirect to the Get Started
+    window.location.href = '/start';
+  };
 
-    return (
+  return (
 
-        <div className='AboutUs-container'>
-           {/* <Particles params={particlesOptions} className="particles" /> */}
-            <div className='image-container'>
-                <img src={background} alt='background'/>
-            </div>
+    <div className='AboutUs-container'>
+      {/* <Particles params={particlesOptions} className="particles" /> */}
+      <div className='image-container'>
+        <img src={background} alt='background' />
+      </div>
 
-            <div className='AboutUs-navbar'>
-            
-            <img src={logo} className='logo' alt='logo' onClick={redirectToHome}/>
-                <div className='links'>
-                    <a href='#' className='specific-link' onClick={scrollToTeamMembers}> Contact Us </a>
-                    <a href='#' className='login-btn' onClick={redirectToLogin}> Log In</a>
-                    <a href='#' className='signup-btn' onClick={redirectToLogin}> Sign Up</a>
-                </div>
-            </div>
+      <div className='AboutUs-navbar'>
 
-            <div className='about-section'>
-                <img src={introimage1} className='introimage1' alt='introimage1'/>
-                <img src={introimage2} className='introimage2' alt='introimage2'/>
-            </div>
+        <img src={logo} className='logo' alt='logo' onClick={redirectToHome} />
+        <div className='links'>
+          <a href='#' className='specific-link' onClick={scrollToTeamMembers}> Contact Us </a>
+          <a href='#' className='login-btn' onClick={redirectToLogin}> Log In</a>
+          <a href='#' className='signup-btn' onClick={redirectToLogin}> Sign Up</a>
+        </div>
+      </div>
 
-            <div className='about-section'>
-                    <img src={introimage3} className='introimage3' alt='introimage3'/>
-                <div className='about-content'>
-                    <h2>About Us</h2>
-                    <p>
-                        At Envision360, we are on a passionate journey to redefine the way we 
-                        perceive and explore the visual world. Our team comprises visionaries, 
-                        developers, and explorers who share a common belief: that immersive digital 
-                        experiences should be accessible to all. Our story began with a desire to 
-                        empower travel enthusiasts, educators, researchers, and urban planners with 
-                        a versatile tool that seamlessly combines the marvel of wanderlust with the 
-                        power of cutting-edge technology. We're here to transform passive viewing 
-                        into an interactive and meaningful journey of discovery, transcending the 
-                        boundaries of physical travel.
-                    </p>
-                </div>
-            </div>
+      <div className='about-section'>
+        <img src={introimage1} className='introimage1' alt='introimage1' />
+        <img src={introimage2} className='introimage2' alt='introimage2' />
+      </div>
 
-            <div className='mission-section'>
-                <div className='mission-content'>
-                    <h2>Our Mission</h2>
-                    <p>
-                        Our mission at Envision360 is crystal clear - to empower you to craft 
-                        and explore captivating 360-degree panoramic views effortlessly. We aim
-                        to reshape the landscape of visual exploration, making it accessible to
-                        a diverse audience. We're here to bridge the gap between existing applications
-                        by offering user-friendly and versatile solutions that address their limitations.
-                        By harnessing the potential of AI, web scraping, and full-stack web development,
-                        we're committed to expanding your horizons, whether you're a budget-conscious
-                        traveller with a thirst for adventure, an educator seeking immersive teaching
-                        tools, a researcher in need of in-depth visuals, or an urban planner envisioning
-                        the future.
-                    </p>
-                </div>
-                <img src={introimage5} className='introimage5' alt='introimage5'/>
-            </div>
+      <div className='about-section'>
+        <img src={introimage3} className='introimage3' alt='introimage3' />
+        <div className='about-content'>
+          <h2>About Us</h2>
+          <p>
+            At Envision360, we are on a passionate journey to redefine the way we
+            perceive and explore the visual world. Our team comprises visionaries,
+            developers, and explorers who share a common belief: that immersive digital
+            experiences should be accessible to all. Our story began with a desire to
+            empower travel enthusiasts, educators, researchers, and urban planners with
+            a versatile tool that seamlessly combines the marvel of wanderlust with the
+            power of cutting-edge technology. We're here to transform passive viewing
+            into an interactive and meaningful journey of discovery, transcending the
+            boundaries of physical travel.
+          </p>
+        </div>
+      </div>
+
+      <div className='mission-section'>
+        <div className='mission-content'>
+          <h2>Our Mission</h2>
+          <p>
+            Our mission at Envision360 is crystal clear - to empower you to craft
+            and explore captivating 360-degree panoramic views effortlessly. We aim
+            to reshape the landscape of visual exploration, making it accessible to
+            a diverse audience. We're here to bridge the gap between existing applications
+            by offering user-friendly and versatile solutions that address their limitations.
+            By harnessing the potential of AI, web scraping, and full-stack web development,
+            we're committed to expanding your horizons, whether you're a budget-conscious
+            traveller with a thirst for adventure, an educator seeking immersive teaching
+            tools, a researcher in need of in-depth visuals, or an urban planner envisioning
+            the future.
+          </p>
+        </div>
+        <img src={introimage5} className='introimage5' alt='introimage5' />
+      </div>
 
 
-            <div className='story-section'>
-            <img src={introimage4} className='introimage4' alt='introimage4'/>
-                <div className='story-content'>
-                    <h2>Our Story</h2>
-                    <p>
-                        Our story is one of innovation, curiosity, and the relentless pursuit of redefining
-                        visual perspectives. It all began with a simple yet profound question: How can we make
-                        the world's wonders accessible to everyone, regardless of their physical or financial
-                        limitations? The answer lay in the fusion of technology and imagination. We embarked on
-                        a journey to create Envision360, a web application that seamlessly combines artificial
-                        intelligence, web scraping, and full-stack web development. This was not just about creating
-                        another app but about changing the way we explore our world. Our story is a testament to the
-                        endless possibilities that come to life when visionaries and developers collaborate with the
-                        shared goal of making immersive digital experiences a reality for all.searcher in need of
-                        in-depth visuals, or an urban planner envisioning the future.
-                    </p>
-                </div>
-            </div>
-
-            <div className='team-section'>
-        <h1 className='centered-heading'>Meet the Talented Team behind Envision360</h1>
+      <div className='story-section'>
+        <img src={introimage4} className='introimage4' alt='introimage4' />
+        <div className='story-content'>
+          <h2>Our Story</h2>
+          <p>
+            Our story is one of innovation, curiosity, and the relentless pursuit of redefining
+            visual perspectives. It all began with a simple yet profound question: How can we make
+            the world's wonders accessible to everyone, regardless of their physical or financial
+            limitations? The answer lay in the fusion of technology and imagination. We embarked on
+            a journey to create Envision360, a web application that seamlessly combines artificial
+            intelligence, web scraping, and full-stack web development. This was not just about creating
+            another app but about changing the way we explore our world. Our story is a testament to the
+            endless possibilities that come to life when visionaries and developers collaborate with the
+            shared goal of making immersive digital experiences a reality for all.searcher in need of
+            in-depth visuals, or an urban planner envisioning the future.
+          </p>
+        </div>
+      </div>
+      <div className='centered-heading'>
+        <h1>Meet the Talented Team behind Envision360</h1>
+      </div>
+      <div className='team-section'>
 
         <div className='team-member1' onClick={() => openEmailCompose('l202147@lhr.nu.edu.pk')}>
           <img src={teamMember1} alt='Team Member 1' />
