@@ -59,12 +59,11 @@ const AboutUs = () => {
   return (
 
     <div className='AboutUs-container'>
-      {/* <Particles params={particlesOptions} className="particles" /> */}
       <div className='image-container'>
         <img src={`${process.env.PUBLIC_URL}/images/aboutbg.png`} alt='background' />
       </div>
       <div className='d-flex justify-content-between'>
-        <img src={`${process.env.PUBLIC_URL}/images/Logo Small.png`} className='logo' alt='logo' onClick={redirectToHome} />
+      <a href='/'><img src={`${process.env.PUBLIC_URL}/images/Logo Small.png`} className='logo' alt='background' draggable='false' /></a>
         <div className='home-navbar'>
           <div className='links'>
             <a href='/start'>Get Started</a>
