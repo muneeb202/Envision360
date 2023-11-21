@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import emptyAnimation from './animations/empty.json'
 import './Profile.css'
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
+import Footer from './components/Footer';
 
 const theme = createTheme({
     palette: {
@@ -218,8 +219,8 @@ const Profile = () => {
             <div className='image-container'>
                 <img src={`${process.env.PUBLIC_URL}/images/profilebg.png`} alt='background' draggable='false' />
             </div>
-            <div className='home-navbar'>
-                <a href='/'><img src={`${process.env.PUBLIC_URL}/images/logo.png`} className='logo' alt='background' draggable='false' /></a>
+            <div className='home-navbar d-flex justify-content-between'>
+                <a href='/'><img src={`${process.env.PUBLIC_URL}/images/Logo Small.png`} className='logo' alt='background' draggable='false' /></a>
                 <div className='m-5' onClick={() => setSidebar(true)}><Tooltip title='Click to view more details'><Avatar sx={{ bgcolor: red[500] }}>R</Avatar></Tooltip></div>
                 <Drawer open={sidebar} anchor='right' onClose={() => setSidebar(false)}>
                     <div className='sidebar'>
@@ -352,6 +353,7 @@ const Profile = () => {
                 message={message}
                 action={<IconButton onClick={() => setOpen(false)}><i style={{ color: 'gray' }} className="fa-solid fa-xmark"></i></IconButton>}
             />
+            <Footer top='25vh'/>
         </ThemeProvider>
     )
 }

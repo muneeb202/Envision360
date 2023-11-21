@@ -2,6 +2,7 @@ import { Avatar, Badge, Box, Button, Card, CardContent, CardHeader, CardMedia, C
 import { forwardRef, useState } from 'react';
 import { blue, purple, red } from '@mui/material/colors';
 import './Blog.css'
+import Footer from './components/Footer';
 
 const theme = createTheme({
     palette: {
@@ -55,7 +56,7 @@ const Blog = () => {
             <div className='image-container'>
                 <img src={`${process.env.PUBLIC_URL}/images/blogbg.png`} alt='background' draggable='false'/>
             </div>
-            <a href='/'><img src={`${process.env.PUBLIC_URL}/images/logo.png`} className='logo' alt='background' draggable='false'/></a>
+            <a href='/'><img src={`${process.env.PUBLIC_URL}/images/Logo Small.png`} className='logo' alt='background' draggable='false'/></a>
             <div className='d-flex flex-column align-items-center'>
                 <Card sx={{ width: '50vw', backgroundColor: '#000000b5' }} elevation={2}>
                     <CardHeader
@@ -137,6 +138,7 @@ const Blog = () => {
                 </Dialog>
 
             </div>
+            <Footer top='50vh'/>
         </ThemeProvider>
     )
 }

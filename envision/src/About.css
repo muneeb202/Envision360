@@ -25,6 +25,10 @@
     padding: 20px;
 }
 
+.AboutUs-container img{
+    opacity: 0.8;
+}
+
 .AboutUs-navbar img:hover{
     max-width: 205px;
 }
@@ -48,15 +52,15 @@
 }
 
 
-.links :first-child {
+/* .links :first-child {
     font-weight: bold;
     text-decoration: underline;
-}
+} */
 
 .centered-heading{
     color: #000000;
     text-align: center;
-    background-color: rgba(255, 255, 255,0.9);
+    background-color: rgba(255, 255, 255,0.6);
     border-radius: 80px;
     padding: 35px;
     margin: 35px;
@@ -107,13 +111,6 @@
     color: #fff;
 }
 
-.about-content p {
-    font-size: 18px;
-    color: #fff;
-    line-height: 2;
-}
-
-
 .mission-section img, .mission-content {
     max-width: 45%;
 }
@@ -134,12 +131,6 @@
 .mission-content h2 {
     font-size: 36px;
     color: #fff;
-}
-
-.mission-content p {
-    font-size: 18px;
-    color: #fff;
-    line-height: 2;
 }
 
 
@@ -165,10 +156,11 @@
     color: #fff;
 }
 
-.story-content p {
+.story-content p, .about-content p, .mission-content p {
     font-size: 18px;
     color: #fff;
     line-height: 2;
+    font-weight: 200;
 }
 
 /* 
@@ -216,14 +208,19 @@
     max-width: 20%;
   }
   
-  .team-member1 .team-member-details, .team-member3 .team-member-details, .team-member2 .team-member-details {
+ .team-member-details {
     flex: 1;
     color: #000000;
     padding: 25px;
-    background-color: rgba(255, 255, 255, 0.9); 
+    background-color: rgba(255, 255, 255, 0.5); 
     border-radius: 50px;
     margin-left: 180px;
     margin-right: 180px;
+  }
+
+  .team-member-details a{
+    color: #000000;
+    letter-spacing: 1;
   }
   .team-member-details h2{
     font-weight: 800;
@@ -292,6 +289,9 @@
     }
     .story-content, .mission-content, .about-content {
         max-width: 90%;
+    }
+    .nav-item {
+        padding: 10px 0;
     }
     .about-section{
         margin-top: 0;

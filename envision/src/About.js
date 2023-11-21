@@ -2,17 +2,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 // import Particles from 'react-particles-js';
-import background from './images/aboutbg.png';
-import logo from './images/Logo Small.png';
-import introimage1 from './images/1.png';
-import introimage2 from './images/2.png';
-import introimage3 from './images/3.png';
-import introimage4 from './images/4.png';
-import introimage5 from './images/5.png';
-import teamMember1 from './images/6.png';
-import teamMember2 from './images/7.png';
-import teamMember3 from './images/8.png';
 import './About.css';
+import Footer from './components/Footer';
 
 // const particlesOptions = {
 //   particles: {
@@ -40,17 +31,6 @@ import './About.css';
 //   },
 // };
 
-
-const Footer = () => (
-  <div className="footer">
-    <p>&copy; 2023 Envision360. All rights reserved.</p>
-    <div>
-      <Link to="/privacy">Privacy Policy</Link>
-      <span>|</span>
-      <Link to="/terms">Terms of Service</Link>
-    </div>
-  </div>
-);
 
 
 const AboutUs = () => {
@@ -81,24 +61,26 @@ const AboutUs = () => {
     <div className='AboutUs-container'>
       {/* <Particles params={particlesOptions} className="particles" /> */}
       <div className='image-container'>
-        <img src={background} alt='background' />
+        <img src={`${process.env.PUBLIC_URL}/images/aboutbg.png`} alt='background' />
       </div>
-
-      <div className='home-navbar'>
-        <img src={logo} className='logo' alt='logo' onClick={redirectToHome} />
-        <div className='links'>
-          <a href='/start'>Get Started</a>
-          <a href='#' onClick={scrollToTeamMembers}> Contact Us </a>
+      <div className='d-flex justify-content-between'>
+        <img src={`${process.env.PUBLIC_URL}/images/Logo Small.png`} className='logo' alt='logo' onClick={redirectToHome} />
+        <div className='home-navbar'>
+          <div className='links'>
+            <a href='/start'>Get Started</a>
+            <a href='#' onClick={scrollToTeamMembers}> Contact Us </a>
+          </div>
         </div>
       </div>
 
+
       <div className='about-section'>
-        <img src={introimage1} className='introimage1' alt='introimage1' />
-        <img src={introimage2} className='introimage2' alt='introimage2' />
+        <img src={`${process.env.PUBLIC_URL}/images/1.png`} className='introimage1' alt='introimage1' />
+        <img src={`${process.env.PUBLIC_URL}/images/2.png`} className='introimage2' alt='introimage2' />
       </div>
 
       <div className='about-section'>
-        <img src={introimage3} className='introimage3' alt='introimage3' />
+        <img src={`${process.env.PUBLIC_URL}/images/3.png`} className='introimage3' alt='introimage3' />
         <div className='about-content'>
           <h2>About Us</h2>
           <p>
@@ -131,12 +113,12 @@ const AboutUs = () => {
             the future.
           </p>
         </div>
-        <img src={introimage5} className='introimage5' alt='introimage5' />
+        <img src={`${process.env.PUBLIC_URL}/images/5.png`} className='introimage5' alt='introimage5' />
       </div>
 
 
       <div className='story-section'>
-        <img src={introimage4} className='introimage4' alt='introimage4' />
+        <img src={`${process.env.PUBLIC_URL}/images/4.png`} className='introimage4' alt='introimage4' />
         <div className='story-content'>
           <h2>Our Story</h2>
           <p>
@@ -159,7 +141,7 @@ const AboutUs = () => {
       <div className='team-section'>
 
         <div className=' team-member1' onClick={() => openEmailCompose('l202147@lhr.nu.edu.pk')}>
-          <img src={teamMember1} alt='Team Member 1' />
+          <img src={`${process.env.PUBLIC_URL}/images/6.png`} alt='Team Member 1' />
           <div className='team-member-details'>
             <h2>Mohammad Muneeb Arshad</h2>
             <h3>BSCS 2020</h3>
@@ -181,11 +163,11 @@ const AboutUs = () => {
               </a>
             </p>
           </div>
-          <img src={teamMember2} alt='Team Member 2' />
+          <img src={`${process.env.PUBLIC_URL}/images/7.png`} alt='Team Member 2' />
         </div>
 
         <div className='team-member3' onClick={() => openEmailCompose('l201164@lhr.nu.edu.pk')}>
-          <img src={teamMember3} alt='Team Member 3' />
+          <img src={`${process.env.PUBLIC_URL}/images/8.png`} alt='Team Member 3' />
           <div className='team-member-details'>
             <h2>Abdul Rehman Sodais</h2>
             <h3>BSCS 2020</h3>
@@ -197,6 +179,7 @@ const AboutUs = () => {
           </div>
         </div>
       </div>
+      <br/><br/><br/>
       <Footer />
     </div>
   );

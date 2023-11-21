@@ -2,6 +2,7 @@ import './Home.css'
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
 import particlesConfig from "./config/particle-config";
+import Footer from './components/Footer';
 
 
 const Home = () => {
@@ -18,10 +19,10 @@ const Home = () => {
 
         <div className='home-container'>
             <div className='image-container'>
-                <img src={`${process.env.PUBLIC_URL}/images/homebg.png`} alt='background' draggable='false'/>
+                <img src={`${process.env.PUBLIC_URL}/images/homebg.png`} alt='background' draggable='false' />
             </div>
             <nav class="navbar navbar-expand-lg navbar-dark ">
-                <img src={`${process.env.PUBLIC_URL}/images/logo.png`} className='logo' alt='logo' draggable='false'/>
+                <img src={`${process.env.PUBLIC_URL}/images/Logo Small.png`} className='logo' alt='logo' draggable='false' />
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -37,17 +38,17 @@ const Home = () => {
                                         </>
                                     ) :
                                         (
-                                            <a class="nav-link" href='/start'>Get Started </a>
+                                            <a href='/start'>Get Started </a>
                                         )}
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href='/aboutus'>About Us</a>
+                                    <a href='/about'>About Us</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href='/blog'>Blog</a>
+                                    <a href='/blog'>Blog</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link demoButton" href='/generate'>{user ? 'Generate' : 'Demo'}</a>
+                                    <a class="demoButton" href='/generate'>{user ? 'Generate' : 'Demo'}</a>
                                 </li>
                             </ul>
                         </div>
@@ -56,9 +57,8 @@ const Home = () => {
             </nav>
 
             <div className='header'>
-                {/* <h1>ENVISION360</h1>
-                <h2>Redefining Visual Perspectives</h2> */}
-                 <img src={newlogo} className='newlogo' alt='newlogo'/>
+                <h1>ENVISION360</h1>
+                <h2>Redefining Visual Perspectives</h2>
             </div>
             <div className="particles-display">
                 <Particles
@@ -69,6 +69,7 @@ const Home = () => {
                     style={{ position: 'absolute', right: '5vw', bottom: '20vh' }}
                 />
             </div>
+            <Footer top='85vh'/>
         </div>
     );
 }

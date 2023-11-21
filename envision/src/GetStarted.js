@@ -7,6 +7,7 @@ import Particles from "react-tsparticles";
 import axios from "axios"
 import { useNavigate } from 'react-router-dom'
 import LoadingBar from 'react-top-loading-bar'
+import Footer from "./components/Footer";
 
 const theme = createTheme({
     palette: {
@@ -146,14 +147,13 @@ const GetStarted = () => {
         <ThemeProvider theme={theme}>
             <MemoizedParticles options={particlesConfig3} />
             <div className='started-container'>
-
                 <div className='image-container'>
                     <img src={`${process.env.PUBLIC_URL}/images/startbg.png`} alt="background" draggable='false'/>
                 </div>
                 <div className="overlay-started">
                     <div className="content-container">
                         <div className='navbar'>
-                            <a href='/'><img src={`${process.env.PUBLIC_URL}/images/logo.png`} className='logo' alt="Logo" draggable='false'/></a>
+                            <a href='/'><img src={`${process.env.PUBLIC_URL}/images/Logo Small.png`} className='logo' alt="Logo" draggable='false'/></a>
                         </div>
                         <div className="container" style={{ minWidth: '100%', height: '100vh' }}>
                             <div className='row getstarted-container d-flex align-items-center h-100'>
@@ -284,6 +284,7 @@ const GetStarted = () => {
                     </div>
                 </div>
             </div>
+            <Footer/>
         </ThemeProvider>
     );
 }

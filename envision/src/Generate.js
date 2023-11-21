@@ -8,6 +8,7 @@ import robotAnimation from './animations/robot.json';
 import successAnimation from './animations/success.json';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react'
 import Typewriter from 'typewriter-effect';
+import Footer from './components/Footer';
 
 const theme = createTheme({
     palette: {
@@ -239,6 +240,7 @@ const Generate = () => {
                     </div>
                 </div>
             </div>
+            <Footer />
         </ThemeProvider>
     )
 }
