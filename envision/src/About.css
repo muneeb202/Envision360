@@ -15,7 +15,6 @@
 
 .logo {
     max-width: 200px;
-    margin-right: 200px;
 }
 
 .AboutUs-navbar {
@@ -48,38 +47,11 @@
     border: 2px solid transparent; 
 }
 
-.links .login-btn {
-    border-color: #2a90d3;
-}
-
-.links .login-btn:hover {
-    background-color: #2a90d3;
-    letter-spacing: 5px;
-}
-
-.links .signup-btn {
-    border-color: #14a24b; 
-}
-
-.links .signup-btn:hover {
-    background-color: #14a24b;
-    letter-spacing: 5px;
-}
-
-.links .specific-link:hover {
-    background-color: #09687d;
-    letter-spacing: 5px;
-}
 
 .links :first-child {
     font-weight: bold;
     text-decoration: underline;
 }
-
-/* .body {
-    color: white;
-    font-family: 'Poppins', sans-serif;
-} */
 
 .centered-heading{
     color: #000000;
@@ -227,6 +199,7 @@
     text-align: center;
     margin-top: 120px;
     margin-left: 10vw;
+    flex-wrap: nowrap;
   }
 
 .team-member2 {
@@ -236,6 +209,7 @@
     text-align: center;
     margin-top: 120px;
     margin-right: 10vw;
+    flex-wrap: nowrap;
   }
   
   .team-member1 img, .team-member2 img, .team-member3 img {
@@ -329,4 +303,18 @@
     .AboutUs-navbar .logo{
         margin-right: 0;
     }
+
+    .team-member1, .team-member3, .team-member2  {
+        /* flex-direction: column; */
+        margin-left: 20px;
+        margin-right: 20px;
+        margin-top: 20px;
+      }
+
+    
+  .team-member1 .team-member-details, .team-member3 .team-member-details, .team-member2 .team-member-details{
+    
+    margin-left: 100px;
+    margin-right: 100px;
+  }
 }

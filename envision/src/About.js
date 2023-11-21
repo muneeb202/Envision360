@@ -84,13 +84,11 @@ const AboutUs = () => {
         <img src={background} alt='background' />
       </div>
 
-      <div className='AboutUs-navbar'>
-
+      <div className='home-navbar'>
         <img src={logo} className='logo' alt='logo' onClick={redirectToHome} />
         <div className='links'>
-          <a href='#' className='specific-link' onClick={scrollToTeamMembers}> Contact Us </a>
-          <a href='#' className='login-btn' onClick={redirectToLogin}> Log In</a>
-          <a href='#' className='signup-btn' onClick={redirectToLogin}> Sign Up</a>
+          <a href='/start'>Get Started</a>
+          <a href='#' onClick={scrollToTeamMembers}> Contact Us </a>
         </div>
       </div>
 
@@ -160,7 +158,7 @@ const AboutUs = () => {
       </div>
       <div className='team-section'>
 
-        <div className='team-member1' onClick={() => openEmailCompose('l202147@lhr.nu.edu.pk')}>
+        <div className=' team-member1' onClick={() => openEmailCompose('l202147@lhr.nu.edu.pk')}>
           <img src={teamMember1} alt='Team Member 1' />
           <div className='team-member-details'>
             <h2>Mohammad Muneeb Arshad</h2>
