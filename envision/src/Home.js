@@ -61,8 +61,9 @@ const Home = () => {
             </div>
 
             <div className='header'>
-                <h1>ENVISION360</h1>
-                <h2>Redefining Visual Perspectives</h2>
+                {/* <h1>ENVISION360</h1>
+                <h2>Redefining Visual Perspectives</h2> */}
+                 <img src={newlogo} className='newlogo' alt='newlogo'/>
             </div>
             <div className="particles-display">
                 <Particles

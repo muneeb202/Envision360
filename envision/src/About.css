@@ -1,0 +1,320 @@
+/* About.css */
+
+.image-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -100;
+    overflow: hidden;
+    max-height: 100vh;
+}
+
+.image-container img {
+    max-width: 100vw;
+}
+
+.logo {
+    max-width: 200px;
+}
+
+.AboutUs-navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background:linear-gradient(to bottom, rgb(0, 0, 0), rgba(13, 95, 113, 0));
+    padding: 20px;
+}
+
+.AboutUs-navbar img:hover{
+    max-width: 205px;
+}
+
+.links {
+    display: flex;
+    align-items: center;
+}
+
+.links a {
+    color: white;
+    font-size: 18px;
+    letter-spacing: 2px;
+    margin: 0 10px;
+    font-weight: 200;
+    text-decoration: none;
+    padding: 5px 20px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+    border: 2px solid transparent; 
+}
+
+
+.links :first-child {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.centered-heading{
+    color: #000000;
+    text-align: center;
+    background-color: rgba(255, 255, 255,0.9);
+    border-radius: 80px;
+    padding: 35px;
+    margin: 35px;
+}
+
+.centered-heading h1{
+    font-weight: 800;
+}
+
+/* .AboutUs-container h1 {
+    font-size: 50px;
+    font-weight: 700;
+    letter-spacing: 10px;
+    margin: 0 auto;
+} */
+/* 
+.AboutUs-container h2 {
+    font-size: 30px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    margin: 0 auto;
+} */
+
+.intro {
+    position: relative;
+    margin-top: 80px;
+}
+
+.about-section img, .about-content {
+    max-width: 45%;
+}
+
+.about-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    text-align: center;
+    margin-top: 100px; 
+}
+
+.about-content {
+    flex: 1;
+}
+
+.about-content h2 {
+    font-size: 36px;
+    color: #fff;
+}
+
+.about-content p {
+    font-size: 18px;
+    color: #fff;
+    line-height: 2;
+}
+
+
+.mission-section img, .mission-content {
+    max-width: 45%;
+}
+
+.mission-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    text-align: center;
+    margin-top: 120px; 
+}
+
+.mission-content {
+    flex: 1;
+}
+
+.mission-content h2 {
+    font-size: 36px;
+    color: #fff;
+}
+
+.mission-content p {
+    font-size: 18px;
+    color: #fff;
+    line-height: 2;
+}
+
+
+.story-section img, .story-content {
+    max-width: 45%;
+}
+
+.story-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    text-align: center;
+    margin-top: 120px;
+}
+
+.story-content {
+    flex: 1;
+}
+
+.story-content h2 {
+    font-size: 36px;
+    color: #fff;
+}
+
+.story-content p {
+    font-size: 18px;
+    color: #fff;
+    line-height: 2;
+}
+
+/* 
+.team-section h1{
+    text-align: center;
+    margin-top: 120px;
+    position: relative;
+    color: #000000;
+} */
+
+/* .team-section h1::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80vw; 
+    height: 20vh;
+    background-color: rgba(255, 255, 255,0.9);
+    border-radius: 80px;
+    z-index: -1;
+  } */
+
+.team-member1, .team-member3 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    margin-top: 120px;
+    margin-left: 10vw;
+    flex-wrap: nowrap;
+  }
+
+.team-member2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-top: 120px;
+    margin-right: 10vw;
+    flex-wrap: nowrap;
+  }
+  
+  .team-member1 img, .team-member2 img, .team-member3 img {
+    max-width: 20%;
+  }
+  
+  .team-member1 .team-member-details, .team-member3 .team-member-details, .team-member2 .team-member-details {
+    flex: 1;
+    color: #000000;
+    padding: 25px;
+    background-color: rgba(255, 255, 255, 0.9); 
+    border-radius: 50px;
+    margin-left: 180px;
+    margin-right: 180px;
+  }
+  .team-member-details h2{
+    font-weight: 800;
+  }
+
+  /* 
+  .team-member1 h2, .team-member2 h2, .team-member3 h2,
+  .team-member1 h3, .team-member2 h3, .team-member3 h3 {
+    text-align: center;
+    color: #000000;
+  }
+
+  .team-member1 p, .team-member2 p, .team-member3 p {
+    text-align: center;
+    color: #000000;
+    text-decoration: underline;
+  }
+  
+  .team-member1 h2, .team-member2 h2, .team-member3 h2 {
+    font-size: 35px;
+    font-weight: bold;
+  }
+  
+  .team-member1 h3, .team-member2 h3, .team-member3 h3 {
+    font-size: 25px;
+    
+  } */
+
+
+
+  .footer {
+    
+    background:linear-gradient(to top, rgb(0, 0, 0), rgba(13, 95, 113, 0));
+    color: white;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    margin-top: 20vh;
+  }
+  
+  .footer a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+  }
+  
+  .footer a:hover {
+    text-decoration: underline;
+  }
+
+  /* .particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  } */
+
+
+  @media (max-width: 768px) {
+    .about-section, .story-section, .mission-section {
+      flex-direction: column; 
+    }
+    .story-content, .mission-content, .about-content {
+        max-width: 90%;
+    }
+    .about-section{
+        margin-top: 0;
+    }
+    .introimage1,.introimage2,.introimage5{
+        display: none;
+    }
+
+    .AboutUs-navbar .logo{
+        margin-right: 0;
+    }
+
+    .team-member1, .team-member3, .team-member2  {
+        /* flex-direction: column; */
+        margin-left: 20px;
+        margin-right: 20px;
+        margin-top: 20px;
+      }
+
+    
+  .team-member1 .team-member-details, .team-member3 .team-member-details, .team-member2 .team-member-details{
+    
+    margin-left: 100px;
+    margin-right: 100px;
+  }
+}
