@@ -188,35 +188,8 @@
     text-align: center;
 }
 
-.first{
-    white-space: nowrap;
-    overflow: hidden;
-    border-right: 2px solid transparent;
-    animation: typewriter 4s steps(44) 1s 1 normal both, blinkTextCursor 500ms 8;
+@media (max-width: 769px) {
+    .generate-container {
+        height: 70vh;
+    }
 }
-
-.second{
-    white-space: nowrap;
-    overflow: hidden;
-    border-right: 2px solid transparent;
-    animation-delay: 4s;
-    animation: typewriter 4s steps(44) 4s 1 normal both, blinkTextCursor 500ms infinite 4s;
-}
-
-@keyframes typewriter {
-    from {
-      width: 0%;
-    }
-    to {
-      width: 100%;
-    }
-  }
-
-  @keyframes blinkTextCursor {
-    from {
-      border-right-color: hsl(0, 0%, 80%);
-    }
-    to {
-      border-right-color: transparent;
-    }
-  }

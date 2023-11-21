@@ -2,7 +2,7 @@
     padding: 8px;
 }
 
-.fa-expand {
+/* .fa-expand {
     position: absolute;
     color: #9b7d7d;
     bottom: 10px;
@@ -18,7 +18,7 @@
 
 .fa-expand:active {
     color: whitesmoke;
-}
+} */
 
 .MuiListItemText-secondary {
     font-size: 0.65rem !important;
