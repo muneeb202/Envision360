@@ -103,7 +103,7 @@ const GetStarted = () => {
         }
         try {
             setProgress(progress + 30)
-            await axios.post('http://localhost:8000/api/create_user/', formData);
+            await axios.post('http://localhost:8000/api/create_user/', {formData});
             localStorage.setItem('user', formData.username)
             setProgress(progress + 50)
             navigate('/')
@@ -283,8 +283,8 @@ const GetStarted = () => {
                         </div>
                     </div>
                 </div>
+                <Footer/>
             </div>
-            <Footer/>
         </ThemeProvider>
     );
 }

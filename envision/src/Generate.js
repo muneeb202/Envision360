@@ -180,7 +180,7 @@ const Generate = () => {
                         </div>
                         <div className='input-container'>
 
-                            <div className='w-75'>
+                            <div className='w-75'> 
                                 {generateType === 1 && (
                                     <TextField color='secondary' fullWidth multiline maxRows={7} label="Search Query" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
                                 )}
