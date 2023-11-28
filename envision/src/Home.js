@@ -24,7 +24,7 @@ const Home = () => {
             <div className='image-container'>
                 <img src={`${process.env.PUBLIC_URL}/images/homebg.png`} alt='background' draggable='false' />
             </div>
-            <div className='home-navbar'>
+            <div className='home-navbar d-md-none'>
                 <img src={`${process.env.PUBLIC_URL}/images/logo.png`} className='logo' alt='logo' draggable='false' />
                 <div className='m-5' onClick={() => setSidebar(true)}><Tooltip title='Click to view more details'><i className="fa-solid fa-ellipsis-vertical" style={{ color: '#ffffff', fontSize: 'x-large' }}></i></Tooltip></div>
                 <Drawer className='home-sidebar' open={sidebar} anchor='right' onClose={() => setSidebar(false)}>
@@ -60,10 +60,30 @@ const Home = () => {
                 </Drawer>
             </div>
 
+            <div className='home-navbar d-none d-md-block'>
+                <img src={`${process.env.PUBLIC_URL}/images/logo.png`} className='logo' alt='logo' draggable='false' />
+                <div className='links'>
+                    {user ? (
+                        <div style={{ marginBottom: '10px', display: 'flex', justifyContent: 'center' }}>
+                            <a href='/profile'><Avatar style={{ height: '80px', width: '80px', fontSize: 'x-large' }} sx={{ bgcolor: '#09687d' }}>{user.charAt(0).toUpperCase()}</Avatar></a>
+                        </div>
+                    ) :
+                        (
+                            <a class="nav-link" href='/start'>Get Started </a>
+                        )}
+                    <a href='/aboutus'>About Us</a>
+                    <a href='/blog'>Blog</a>
+                    <a class="demoButton" href='/generate'>{user ? 'Generate' : 'Demo'}</a>
+
+                    <div class="logout-button" style={{ marginLeft: '30px', position: 'absolute', bottom: '0', textAlign: 'center' }} >
+                        {user && <a href onClick={userLogout}>Logout</a>}
+                    </div>
+                </div>
+            </div>
+
             <div className='header'>
-                {/* <h1>ENVISION360</h1>
-                <h2>Redefining Visual Perspectives</h2> */}
-                 <img src={newlogo} className='newlogo' alt='newlogo'/>
+                <h1>ENVISION360</h1>
+                <h2>Redefining Visual Perspectives</h2>
             </div>
             <div className="particles-display">
                 <Particles
