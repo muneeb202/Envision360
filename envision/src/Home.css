@@ -52,6 +52,13 @@
     font-family: 'Poppins', sans-serif;
 }
 
+.home-sidebar .css-1160xiw-MuiPaper-root-MuiDrawer-paper{
+    background: rgb(41,2,22);
+    background: linear-gradient(90deg, rgb(2 33 45) 0%, rgba(0,0,0,1) 100%) !important;
+    box-shadow: -5px 0px 20px 0px rgb(1 15 22) !important;
+    width: 300px;
+}
+
 .home-container h1{
     font-size: 50px;
     font-weight: 700;
