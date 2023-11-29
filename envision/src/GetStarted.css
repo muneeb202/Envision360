@@ -7,7 +7,7 @@
 .started-container {
     height: 100vh;
     max-width: 100vw;
-    background:linear-gradient(to left, rgba(13, 95, 113, 1), rgba(13, 95, 113, 0));
+    background:linear-gradient(to left, rgba(13, 95, 113, 0.5), rgba(13, 95, 113, 0));
 }
 
 .social-button{
@@ -102,6 +102,12 @@
     font-weight: 200;
     position: relative;
     z-index: 10;
+}
+
+.MuiFormControlLabel-label {
+    font-weight: 200;
+    letter-spacing: 2px;
+    color: lightgray;
 }
 
 .submit-button:focus {
@@ -201,4 +207,8 @@
     .started-container{
         height: 140vh;
     }
+}
+
+input:-internal-autofill-selected {
+    background-color: black !important;
 }

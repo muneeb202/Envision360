@@ -8,6 +8,7 @@ import robotAnimation from './animations/robot.json';
 import successAnimation from './animations/success.json';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react'
 import Typewriter from 'typewriter-effect';
+import Footer from './components/Footer';
 
 const theme = createTheme({
     palette: {
@@ -169,7 +170,7 @@ const Generate = () => {
             <div className='overlay' />
             <div className='generate-container'>
 
-                <a href='/'><img src={`${process.env.PUBLIC_URL}/images/logo.png`} className='logo' alt='background' draggable='false' /></a>
+                <a href='/'><img src={`${process.env.PUBLIC_URL}/images/Logo Small.png`} className='logo' alt='background' draggable='false' /></a>
                 <div className='row generate-row'>
                     <div className='col-md-6 px-5  order-2 order-md-1'>
                         <div className='generate-type'>
@@ -179,7 +180,7 @@ const Generate = () => {
                         </div>
                         <div className='input-container'>
 
-                            <div className='w-75'>
+                            <div className='w-75'> 
                                 {generateType === 1 && (
                                     <TextField color='secondary' fullWidth multiline maxRows={7} label="Search Query" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
                                 )}
@@ -239,6 +240,7 @@ const Generate = () => {
                     </div>
                 </div>
             </div>
+            <Footer  top='20vh'/>
         </ThemeProvider>
     )
 }
