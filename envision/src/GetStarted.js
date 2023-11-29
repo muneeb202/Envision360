@@ -1,6 +1,6 @@
 import particlesConfig3 from "./config/particle-config-3";
 import './GetStarted.css'
-import { IconButton, InputAdornment, TextField, ThemeProvider, createTheme } from '@mui/material';
+import { Checkbox, FormControlLabel, IconButton, InputAdornment, TextField, ThemeProvider, createTheme } from '@mui/material';
 import React, { useState } from "react";
 import { loadFull } from "tsparticles";
 import Particles from "react-tsparticles";
@@ -43,20 +43,14 @@ const GetStarted = () => {
 
     const [showLogin, setShowLogin] = useState(true);
     const [showEmail, setShowEmail] = useState(false);
-
     const [checkUsername, setCheckUsername] = useState(false);
-
     const [checkPassword, setCheckPassword] = useState(false);
-
     const [checkEmail, setCheckEmail] = useState(false);
-
     const [showPassword, setShowPassword] = useState(false);
-
     const [showRePassword, setReShowPassword] = useState(false);
-
     const [isLoading, setIsLoading] = useState(false);
-
     const [progress, setProgress] = useState(0);
+    const [refresh, setRefresh] = useState(false)
 
     const toggleLogin = (e) => {
         e.preventDefault();
@@ -66,6 +60,7 @@ const GetStarted = () => {
         setCheckPassword(false);
         setCheckEmail(false);
         setIsLoading(false);
+        setRefresh(false)
     };
 
     const toggleSignUp = () => {
@@ -74,6 +69,7 @@ const GetStarted = () => {
         setCheckPassword(false);
         setCheckEmail(false);
         setIsLoading(false);
+        setRefresh(false)
     };
 
     const toggleEnterEmail = () => {
@@ -83,6 +79,7 @@ const GetStarted = () => {
         setCheckPassword(false);
         setCheckEmail(false);
         setIsLoading(false);
+        setRefresh(false)
     };
 
     const handleInputChange = (e) => {
@@ -103,8 +100,8 @@ const GetStarted = () => {
         }
         try {
             setProgress(progress + 30)
-            await axios.post('http://localhost:8000/api/create_user/', {formData});
-            localStorage.setItem('user', formData.username)
+            const response = await axios.post('http://localhost:8000/api/create_user/', { ...formData, refresh: refresh });
+            localStorage.setItem('user', response.data['user'])
             setProgress(progress + 50)
             navigate('/')
 
@@ -123,8 +120,8 @@ const GetStarted = () => {
         setProgress(progress + 10)
         try {
             setProgress(progress + 30)
-            await axios.post('http://localhost:8000/api/login/', formData);
-            localStorage.setItem('user', formData.username)
+            const response = await axios.post('http://localhost:8000/api/login/', {...formData, refresh:refresh});
+            localStorage.setItem('user', response.data['user'])
             setProgress(progress + 50)
             navigate('/')
 
@@ -148,12 +145,12 @@ const GetStarted = () => {
             <MemoizedParticles options={particlesConfig3} />
             <div className='started-container'>
                 <div className='image-container'>
-                    <img src={`${process.env.PUBLIC_URL}/images/startbg.png`} alt="background" draggable='false'/>
+                    <img src={`${process.env.PUBLIC_URL}/images/startbg.png`} alt="background" draggable='false' />
                 </div>
                 <div className="overlay-started">
                     <div className="content-container">
                         <div className='navbar'>
-                            <a href='/'><img src={`${process.env.PUBLIC_URL}/images/Logo Small.png`} className='logo' alt="Logo" draggable='false'/></a>
+                            <a href='/'><img src={`${process.env.PUBLIC_URL}/images/Logo Small.png`} className='logo' alt="Logo" draggable='false' /></a>
                         </div>
                         <div className="container" style={{ minWidth: '100%', height: '100vh' }}>
                             <div className='row getstarted-container d-flex align-items-center h-100'>
@@ -205,6 +202,9 @@ const GetStarted = () => {
                                                             }} />
 
                                                     </div>
+                                                    <div className="form-group">
+                                                        <FormControlLabel control={<Checkbox onChange={() => setRefresh(!refresh)} color="default" />} label="Remember Me" />
+                                                    </div>
                                                     <div className="forgot-password d-flex justify-content-between">
                                                         <p onClick={toggleEnterEmail}>Forgot Password?</p>
                                                         <p onClick={toggleSignUp}>Not A Member Yet?</p>
@@ -225,7 +225,6 @@ const GetStarted = () => {
                                             </div>
                                             <div className="form-group">
                                                 <TextField required error={checkUsername} helperText={checkUsername ? 'username already exists' : ''} onChange={handleInputChange} name="username" color='secondary' fullWidth label="Username" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
-
                                             </div>
                                             <div className="form-group">
                                                 <TextField required onChange={handleInputChange} name="password" color='secondary' fullWidth label="Password" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} type={showPassword ? "text" : "password"}
@@ -271,6 +270,9 @@ const GetStarted = () => {
                                                     }} />
 
                                             </div>
+                                            <div className="form-group">
+                                                <FormControlLabel control={<Checkbox onChange={() => setRefresh(!refresh)} color="default" />} label="Remember Me" />
+                                            </div>
                                             <div className="forgot-password">
                                                 <p style={{ float: 'right' }} onClick={toggleLogin}>Already Have An Account?</p>
                                             </div>
@@ -283,7 +285,7 @@ const GetStarted = () => {
                         </div>
                     </div>
                 </div>
-                <Footer/>
+                <Footer top='90vh' />
             </div>
         </ThemeProvider>
     );

@@ -3,10 +3,29 @@ import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
 import particlesConfig from "./config/particle-config";
 import Footer from './components/Footer';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 
 const Home = () => {
     const user = localStorage.getItem('user');
+    console.log(user)
+    const [name , setName] = useState('');
+
+    useEffect(() => {
+        const getUser = async () => {
+            try {
+                const response = await axios.post('http://localhost:8000/api/get_user/', {token: user})
+                console.log(response)
+                setName(response.data['name']);
+            }
+            catch(e) {
+                console.log(e);
+            }
+        }
+        getUser();
+    }, [])
+
 
     const userLogout = (e) => {
         e.preventDefault();
@@ -31,9 +50,9 @@ const Home = () => {
                         <div className='links'>
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    {user ? (
+                                    {name ? (
                                         <>
-                                            <p>{user}</p>
+                                            <p>{name}</p>
                                             <a class="nav-link" onClick={userLogout}>Logout</a>
                                         </>
                                     ) :

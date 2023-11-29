@@ -40,7 +40,7 @@ class UserCreate(APIView):
             )
             refresh = RefreshToken.for_user(user)
             response_data = {
-                'token': str(refresh) if request.data.get('refresh') else str(refresh.access_token),
+                'user': str(refresh) if request.data.get('refresh') else str(refresh.access_token),
                 'message': 'Signup successful',
             }
             return Response(response_data, status=status.HTTP_200_OK)
@@ -59,13 +59,19 @@ class UserLogin(APIView):
         password = data.get("password")
         user = User.objects.get(username=username)
         if user and user.check_password(password):
-            return Response("login successful", status=status.HTTP_200_OK)
+            refresh = RefreshToken.for_user(user)
+            response_data = {
+                'user': str(refresh) if request.data.get('refresh') else str(refresh.access_token),
+                'message': 'Login successful',
+            }
+            return Response(response_data, status=status.HTTP_200_OK)
         else:
             return Response("login failed", status=status.HTTP_400_BAD_REQUEST)
 
 class GetUser(APIView):
     def post(self, request):
         user_response = get_token_user(request.data.get('token'))
+        print(request.data)
         if 'error' in user_response:
             return Response(user_response['error'], user_response['status'])
-        return Response({'name': user_response['user'].name, 'email': user_response['user'].email}, user_response['status'])
+        return Response({'name': user_response['user'].username, 'email': user_response['user'].email}, user_response['status'])
