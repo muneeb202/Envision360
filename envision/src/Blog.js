@@ -56,7 +56,7 @@ const Blog = () => {
                 <div className='image-container'>
                     <img src={`${process.env.PUBLIC_URL}/images/blogbg.png`} alt='background' draggable='false' />
                 </div>
-                <a href='/'><img src={`${process.env.PUBLIC_URL}/images/Logo Small.png`} className='logo' alt='background' draggable='false' /></a>
+                <a href='/'><img src={`${process.env.PUBLIC_URL}/images/newLogo.png`} className='logo' alt='background' draggable='false' /></a>
                 <div className='d-flex flex-column align-items-center'>
                     <Card sx={{ width: '50vw', backgroundColor: '#000000b5' }} elevation={2}>
                         <CardHeader

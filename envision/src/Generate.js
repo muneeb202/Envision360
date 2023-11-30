@@ -171,7 +171,7 @@ const Generate = () => {
                 <div className='overlay' />
                 <div className='generate-container'>
 
-                    <a href='/'><img src={`${process.env.PUBLIC_URL}/images/Logo Small.png`} className='logo' alt='background' draggable='false' /></a>
+                    <a href='/'><img src={`${process.env.PUBLIC_URL}/images/newLogo.png`} className='logo' alt='background' draggable='false' /></a>
                     <div className='row generate-row'>
                         <div className='col-md-6 px-5  order-2 order-md-1'>
                             <div className='generate-type'>

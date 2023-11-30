@@ -220,7 +220,7 @@ const Profile = () => {
                     <img src={`${process.env.PUBLIC_URL}/images/profilebg.png`} alt='background' draggable='false' />
                 </div>
                 <div className='home-navbar d-flex justify-content-between'>
-                    <a href='/'><img src={`${process.env.PUBLIC_URL}/images/Logo Small.png`} className='logo' alt='background' draggable='false' /></a>
+                    <a href='/'><img src={`${process.env.PUBLIC_URL}/images/newLogo.png`} className='logo' alt='background' draggable='false' /></a>
                     <div className='m-5' onClick={() => setSidebar(true)}><Tooltip title='Click to view more details'><Avatar sx={{ bgcolor: red[500] }}>R</Avatar></Tooltip></div>
                     <Drawer className='profile-container' open={sidebar} anchor='right' onClose={() => setSidebar(false)}>
                         <div className='sidebar '>

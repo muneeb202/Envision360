@@ -48,7 +48,7 @@ const Home = () => {
                         <img src={`${process.env.PUBLIC_URL}/images/homebg.png`} alt='background' draggable='false' />
                     </div>
                     <div className='navbar'>
-                        <img src={`${process.env.PUBLIC_URL}/images/Logo Small.png`} className='logo' alt='logo' draggable='false' />
+                        <img src={`${process.env.PUBLIC_URL}/images/newLogo.png`} className='logo' alt='logo' draggable='false' />
                         <div className=' d-none d-md-block'>
                             <div className='links'>
                                 {name ? (
