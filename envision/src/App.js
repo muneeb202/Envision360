@@ -16,7 +16,7 @@ function App() {
           <Route path="/start" element={<GetStarted />} />
           <Route path='/generate' element={<Generate/>}/>
           <Route path='/blog' element={<Blog/>}/>
-          <Route path='/about' element={<AboutUs/>}/> 
+          <Route path='/aboutus' element={<AboutUs/>}/> 
           <Route path='/profile' element={<Profile/>}/>
         </Routes>
       </Router>

@@ -35,16 +35,17 @@
     padding: 20px;
 }
 
+.links a:hover{
+    color: lightgray;
+}
+
 .links .demoButton {
     background-color: #054D5D;
     padding: 5px 30px;
     border-radius: 20px;
-    transition: padding 0.3s ease;
 }
 .links .demoButton:hover {
     background-color: #09687d;
-    padding: 8px 35px;
-    letter-spacing: 5px;
 }
 
 .body {

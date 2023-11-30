@@ -50,7 +50,7 @@ const Home = () => {
                 <div className='links'>
                     {name ? (
                         <>
-                            <a onClick={userLogout}>Logout</a>
+                            <a href='#' onClick={userLogout}>Logout</a>
                         </>
                     ) :
                         (
