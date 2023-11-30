@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
+import os
 
 class Image(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -14,6 +17,12 @@ class Image(models.Model):
     def __str__(self):
         return self.title
 
+@receiver(pre_delete, sender=Image)
+def delete_image_file(sender, instance, **kwargs):
+    if instance.image:
+        if os.path.isfile(instance.image.path):
+            os.remove(instance.image.path)
+
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ForeignKey(Image, on_delete=models.CASCADE)
@@ -22,3 +31,4 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Comment by {self.user.username} on {self.image.title}"
+

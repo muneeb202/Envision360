@@ -91,53 +91,58 @@ const Profile = () => {
     const delpopOpen = Boolean(delanchorEl);
 
     const [images, setImages] = useState([
-        {
-            id: 0,
-            src: 'canyon.jpg',
-            title: 'Grand Canyon',
-            date: '20th September 2023',
-            posted: true,
-            favourite: false
-        },
-        {
-            id: 1,
-            src: 'eiffel.png',
-            title: 'Eiffel Tower',
-            date: '3rd October 2023',
-            posted: true,
-            favourite: true
-        },
-        {
-            id: 2,
-            src: 'petra.jpg',
-            title: 'Petra',
-            date: '12th November 2023',
-            posted: false,
-            favourite: true
-        },
-        {
-            id: 3,
-            src: 'pyramids.png',
-            title: 'Great Pyramids of Giza',
-            date: '8th December 2023',
-            posted: false,
-            favourite: false
-        },
-        {
-            id: 4,
-            src: 'machu pichu.jpg',
-            title: 'Machu Picchu',
-            date: '5th January 2024',
-            posted: false,
-            favourite: false
-        }
+        // {
+        //     id: 0,
+        //     src: 'canyon.jpg',
+        //     title: 'Grand Canyon',
+        //     date: '20th September 2023',
+        //     posted: true,
+        //     favourite: false
+        // },
+        // {
+        //     id: 1,
+        //     src: 'eiffel.png',
+        //     title: 'Eiffel Tower',
+        //     date: '3rd October 2023',
+        //     posted: true,
+        //     favourite: true
+        // },
+        // {
+        //     id: 2,
+        //     src: 'petra.jpg',
+        //     title: 'Petra',
+        //     date: '12th November 2023',
+        //     posted: false,
+        //     favourite: true
+        // },
+        // {
+        //     id: 3,
+        //     src: 'pyramids.png',
+        //     title: 'Great Pyramids of Giza',
+        //     date: '8th December 2023',
+        //     posted: false,
+        //     favourite: false
+        // },
+        // {
+        //     id: 4,
+        //     src: 'machu pichu.jpg',
+        //     title: 'Machu Picchu',
+        //     date: '5th January 2024',
+        //     posted: false,
+        //     favourite: false
+        // }
     ])
 
     useEffect(() => {
         const fetchImages = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/user_image/');
+                const response = await axios.get('http://localhost:8000/api/user_image/', {
+                    params: {
+                        token: localStorage.getItem('user')
+                    }
+                });
                 console.log(response.data);
+                setImages(response.data)
             } catch (error) {
                 console.error('Error fetching images:', error);
             }
@@ -193,10 +198,17 @@ const Profile = () => {
         setOpen(true);
     }
 
-    const deleteImage = () => {
-        const updatedImages = [...images.slice(undefined,selectedImageToDelete.id), ...images.slice(selectedImageToDelete.id + 1)];
-        setImages(updatedImages.map((image, index) => ({...image, id:index})));
-        setDelAnchorEl(null);
+    const deleteImage = async () => {
+        await axios.post('http://localhost:8000/api/delete_image/', {
+            token: localStorage.getItem('user'),
+            image_id: selectedImageToDelete.id
+        }).then(() => {
+            const updatedImages = images.filter((image, i) => image.id !== selectedImageToDelete.id)
+            setImages(updatedImages);
+            setDelAnchorEl(null);
+        }).catch((error => {
+            console.log(error)
+        }));
     }
 
     useEffect(() => {
@@ -300,11 +312,11 @@ const Profile = () => {
                         </>
                     ) : (
                         filteredImages.map((image, index) => (
-                            <ImageListItem key={image.src} >
-                                <img src={`${process.env.PUBLIC_URL}/images/${image.src}`} alt={image.title} />
+                            <ImageListItem key={index} >
+                                <img src={'http://127.0.0.1:8000' + image.image} alt={image.title} />
                                 <ImageListItemBar
                                     title={image.title}
-                                    subtitle={image.date}
+                                    subtitle={image.created_date}
                                     actionIcon={
                                         image.posted ? <>
                                             <IconButton onClick={handleClick}>

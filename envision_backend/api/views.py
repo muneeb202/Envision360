@@ -196,6 +196,48 @@ class UpdatePostedStatus(APIView):
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
+class BulkUpdateImages(APIView):
+    def post(self, request):
+        user_response = get_token_user(request.data.get('token'))
+        if 'error' in user_response:
+            return Response(user_response['error'], user_response['status'])
+
+        user = user_response['user']
+        images_data = request.data.get('images')
+
+        if not images_data or not isinstance(images_data, list):
+            return Response({'error': 'Invalid or missing image data'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            for image_data in images_data:
+                image_id = image_data.get('id')
+                new_title = image_data.get('title')
+                likes_increment = image_data.get('likes', 0)
+                favourite_toggle = image_data.get('favourite')
+                posted_toggle = image_data.get('posted')
+
+                try:
+                    image = Image.objects.get(id=image_id, user=user)
+                    if new_title is not None:
+                        image.title = new_title
+                    image.likes += likes_increment
+                    if favourite_toggle is not None:
+                        image.favourite = favourite_toggle
+                    if posted_toggle is not None:
+                        image.posted = posted_toggle
+
+                    image.save()
+
+                except Image.DoesNotExist:
+                    return Response({'error': f'Image with ID {image_id} not found'}, status=status.HTTP_404_NOT_FOUND)
+
+            return Response({'message': 'Successfully updated images'}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
 class DeleteImage(APIView):
     def post(self, request):
         user_response = get_token_user(request.data.get('token'))
@@ -206,7 +248,7 @@ class DeleteImage(APIView):
         image_id = request.data.get('image_id')
 
         try:
-            image = Image.objects.get(id=image_id)
+            image = Image.objects.get(user=user,id=image_id)
             image.delete()
             return Response({'message': 'Image deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
         except Image.DoesNotExist:

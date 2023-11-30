@@ -49,7 +49,6 @@ const ImageViewer = ({ image }) => {
         }).catch((error => {
             console.log(error)
         }));
-
     }
 
     return (
