@@ -214,13 +214,13 @@ const Profile = () => {
     }
 
     return (
-        <div style={{ height: '100vh' }}>
+        <div style={{ height: 'max-content', minHeight: '100vh' }}>
             <ThemeProvider theme={theme}>
                 <div className='image-container'>
                     <img src={`${process.env.PUBLIC_URL}/images/profilebg.png`} alt='background' draggable='false' />
                 </div>
                 <div className='home-navbar d-flex justify-content-between'>
-                    <a href='/'><img src={`${process.env.PUBLIC_URL}/images/newLogo.png`} className='logo' alt='background' draggable='false' /></a>
+                    <a href='/'><img style={{ paddingTop: '10px' }} src={`${process.env.PUBLIC_URL}/images/newLogo.png`} className='logo' alt='background' draggable='false' /></a>
                     <div className='m-5' onClick={() => setSidebar(true)}><Tooltip title='Click to view more details'><Avatar sx={{ bgcolor: red[500] }}>R</Avatar></Tooltip></div>
                     <Drawer className='profile-container' open={sidebar} anchor='right' onClose={() => setSidebar(false)}>
                         <div className='sidebar '>

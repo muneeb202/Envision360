@@ -149,7 +149,7 @@ const GetStarted = () => {
                 <div className="overlay-started">
                     <div className="content-container">
                         <div className='navbar'>
-                            <a href='/'><img src={`${process.env.PUBLIC_URL}/images/newLogo.png`} className='logo' alt="Logo" draggable='false' /></a>
+                            <a href='/'><img style={{ paddingTop: '10px' }} src={`${process.env.PUBLIC_URL}/images/newLogo.png`} className='logo' alt="Logo" draggable='false' /></a>
                         </div>
                         <div className="container" style={{ minWidth: '100%', height: '100vh' }}>
                             <div className='row getstarted-container d-flex align-items-center h-100'>

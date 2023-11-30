@@ -62,7 +62,7 @@ const AboutUs = () => {
         <img src={`${process.env.PUBLIC_URL}/images/aboutbg.png`} alt='background' />
       </div>
       <div className='d-flex justify-content-between'>
-        <a href='/'><img src={`${process.env.PUBLIC_URL}/images/newLogo.png`} className='logo' alt='background' draggable='false' /></a>
+        <a href='/'><img style={{ paddingTop: '10px' }} src={`${process.env.PUBLIC_URL}/images/newLogo.png`} className='logo' alt='background' draggable='false' /></a>
         <div className='home-navbar'>
           <div className='links'>
             <a href='/start'>Get Started</a>
