@@ -7,7 +7,6 @@ import Particles from "react-tsparticles";
 import axios from "axios"
 import { useNavigate } from 'react-router-dom'
 import LoadingBar from 'react-top-loading-bar'
-import Footer from "./components/Footer";
 
 const theme = createTheme({
     palette: {
@@ -120,7 +119,7 @@ const GetStarted = () => {
         setProgress(progress + 10)
         try {
             setProgress(progress + 30)
-            const response = await axios.post('http://localhost:8000/api/login/', {...formData, refresh:refresh});
+            const response = await axios.post('http://localhost:8000/api/login/', { ...formData, refresh: refresh });
             localStorage.setItem('user', response.data['user'])
             setProgress(progress + 50)
             navigate('/')
@@ -285,7 +284,6 @@ const GetStarted = () => {
                         </div>
                     </div>
                 </div>
-                <Footer top='90vh' />
             </div>
         </ThemeProvider>
     );

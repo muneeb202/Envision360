@@ -122,126 +122,127 @@ const Generate = () => {
     }
 
     return (
-        <ThemeProvider theme={theme}>
-            <MemoizedParticles options={particlesConfig2} />
+        <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+            <ThemeProvider theme={theme}>
+                <MemoizedParticles options={particlesConfig2} />
 
-            <div>
-                {isLoading && (
-                    <div className={isLoading ? 'loading-screen active' : 'loading-screen'} onClick={handleClick}>
-                        {playSuccessAnimation ? (
-                            <Lottie
-                                animationData={successAnimation}
-                                loop={false}
-                                style={{ width: 200, height: 200 }}
-                            />
-                        ) : (
-                            <Lottie
-                                lottieRef={animationRef}
-                                animationData={robotAnimation}
-                                loop={false}
-                                style={{ width: 200, height: 200 }}
-                                onComplete={() => setIsPlaying(false)}
-                            />
-                        )}
-                        <br />
-                        <Box sx={{ width: '50%' }}>
-                            <LinearProgress variant="buffer" value={progress} valueBuffer={buffer} />
-                        </Box>
-                        <br />
-                        <p>
-                            <Typewriter
-                                options={{
-                                    strings: facts,
-                                    autoStart: true,
-                                    loop: true,
-                                    delay: 30,
-                                    deleteSpeed: 0,
-                                    pauseFor: 5000
-                                }}
-                            />
-                        </p>
-                    </div>
-                )}
-            </div>
-
-            <div className='image-container'>
-                <img src={`${process.env.PUBLIC_URL}/images/generatebg.png`} alt='background' draggable='false' />
-            </div>
-            <div className='overlay' />
-            <div className='generate-container'>
-
-                <a href='/'><img src={`${process.env.PUBLIC_URL}/images/Logo Small.png`} className='logo' alt='background' draggable='false' /></a>
-                <div className='row generate-row'>
-                    <div className='col-md-6 px-5  order-2 order-md-1'>
-                        <div className='generate-type'>
-                            <button onClick={() => setGenerateType(1)} className={generateType === 1 ? 'active' : ''}>Location Search</button>
-                            <button onClick={() => setGenerateType(2)} className={generateType === 2 ? 'active' : ''}>Coordinates</button>
-                            <button onClick={() => setGenerateType(3)} className={generateType === 3 ? 'active' : ''}>Upload Images</button>
-                        </div>
-                        <div className='input-container'>
-
-                            <div className='w-75'> 
-                                {generateType === 1 && (
-                                    <TextField color='secondary' fullWidth multiline maxRows={7} label="Search Query" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
-                                )}
-                                {generateType === 2 && (
-                                    <>
-                                        <TextField color='secondary' type='number' fullWidth label="Latitude" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
-                                        <br /><br />
-                                        <TextField color='secondary' type='number' fullWidth label="Longitude" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
-                                    </>
-                                )}
-                            </div>
-
-
-                            {generateType === 3 && (
-                                <label
-                                    className={`drag-drop-box ${isDragging ? 'drag-over' : ''}`}
-                                    onDragEnter={handleDragEnter}
-                                    onDragOver={handleDragEnter}
-                                    onDragLeave={handleDragLeave}
-                                    onDrop={handleDrop}
-                                >
-                                    {selectedFiles.length === 0 && (
-                                        <>Drag images here or click to upload</>
-                                    )}
-                                    <input
-                                        type="file"
-                                        className="file-input"
-                                        multiple
-                                        onChange={handleFileInputChange}
-                                    />
-
-                                    <ImageList className='image-list' cols={3} sx={{ marginBottom: '0', maxHeight: '350px', overflowY: 'auto' }}>
-                                        {selectedFiles.map((file, index) => (
-                                            <ImageListItem className='image-item' key={index}>
-                                                <img src={URL.createObjectURL(file)} alt={`uploaded-${index}`} draggable='false' />
-                                                <i className="fas fa-times-circle delete-button" onClick={(e) => handleDelete(index, e)} style={{ color: 'white' }}></i>
-                                            </ImageListItem>
-                                        ))}
-                                    </ImageList>
-                                </label>
+                <div>
+                    {isLoading && (
+                        <div className={isLoading ? 'loading-screen active' : 'loading-screen'} onClick={handleClick}>
+                            {playSuccessAnimation ? (
+                                <Lottie
+                                    animationData={successAnimation}
+                                    loop={false}
+                                    style={{ width: 200, height: 200 }}
+                                />
+                            ) : (
+                                <Lottie
+                                    lottieRef={animationRef}
+                                    animationData={robotAnimation}
+                                    loop={false}
+                                    style={{ width: 200, height: 200 }}
+                                    onComplete={() => setIsPlaying(false)}
+                                />
                             )}
-
+                            <br />
+                            <Box sx={{ width: '50%' }}>
+                                <LinearProgress variant="buffer" value={progress} valueBuffer={buffer} />
+                            </Box>
+                            <br />
+                            <p>
+                                <Typewriter
+                                    options={{
+                                        strings: facts,
+                                        autoStart: true,
+                                        loop: true,
+                                        delay: 30,
+                                        deleteSpeed: 0,
+                                        pauseFor: 5000
+                                    }}
+                                />
+                            </p>
                         </div>
-                        <Button variant='contained' onClick={() => setIsLoading(true)} color='secondary' sx={{ padding: '20px', margin: '0 10%', letterSpacing: '3px', fontSize: '18px', borderRadius: '50px', width: '80%' }}>Generate 360&deg; Image</Button>
-                    </div>
-                    <div className='col-md-6 ps-5  order-1 order-md-2'>
-                        <h1>Generate Image</h1>
-                        <p style={{height:'48px'}}>
-                            <Typewriter
-                                onInit={(typewriter) => {
-                                    typewriter.typeString('Create breathtaking 360-degree images effortlessly and craft your panoramic masterpiece.')
-                                        .start();
-                                }}
-                                options={{delay:30}}
-                            />
-                        </p>
+                    )}
+                </div>
+
+                <div className='image-container'>
+                    <img src={`${process.env.PUBLIC_URL}/images/generatebg.png`} alt='background' draggable='false' />
+                </div>
+                <div className='overlay' />
+                <div className='generate-container'>
+
+                    <a href='/'><img src={`${process.env.PUBLIC_URL}/images/Logo Small.png`} className='logo' alt='background' draggable='false' /></a>
+                    <div className='row generate-row'>
+                        <div className='col-md-6 px-5  order-2 order-md-1'>
+                            <div className='generate-type'>
+                                <button onClick={() => setGenerateType(1)} className={generateType === 1 ? 'active' : ''}>Location Search</button>
+                                <button onClick={() => setGenerateType(2)} className={generateType === 2 ? 'active' : ''}>Coordinates</button>
+                                <button onClick={() => setGenerateType(3)} className={generateType === 3 ? 'active' : ''}>Upload Images</button>
+                            </div>
+                            <div className='input-container'>
+
+                                <div className='w-75'>
+                                    {generateType === 1 && (
+                                        <TextField color='secondary' fullWidth multiline maxRows={7} label="Search Query" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                    )}
+                                    {generateType === 2 && (
+                                        <>
+                                            <TextField color='secondary' type='number' fullWidth label="Latitude" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                            <br /><br />
+                                            <TextField color='secondary' type='number' fullWidth label="Longitude" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                        </>
+                                    )}
+                                </div>
+
+
+                                {generateType === 3 && (
+                                    <label
+                                        className={`drag-drop-box ${isDragging ? 'drag-over' : ''}`}
+                                        onDragEnter={handleDragEnter}
+                                        onDragOver={handleDragEnter}
+                                        onDragLeave={handleDragLeave}
+                                        onDrop={handleDrop}
+                                    >
+                                        {selectedFiles.length === 0 && (
+                                            <>Drag images here or click to upload</>
+                                        )}
+                                        <input
+                                            type="file"
+                                            className="file-input"
+                                            multiple
+                                            onChange={handleFileInputChange}
+                                        />
+
+                                        <ImageList className='image-list' cols={3} sx={{ marginBottom: '0', maxHeight: '350px', overflowY: 'auto' }}>
+                                            {selectedFiles.map((file, index) => (
+                                                <ImageListItem className='image-item' key={index}>
+                                                    <img src={URL.createObjectURL(file)} alt={`uploaded-${index}`} draggable='false' />
+                                                    <i className="fas fa-times-circle delete-button" onClick={(e) => handleDelete(index, e)} style={{ color: 'white' }}></i>
+                                                </ImageListItem>
+                                            ))}
+                                        </ImageList>
+                                    </label>
+                                )}
+
+                            </div>
+                            <Button variant='contained' onClick={() => setIsLoading(true)} color='secondary' sx={{ padding: '20px', margin: '0 10%', letterSpacing: '3px', fontSize: '18px', borderRadius: '50px', width: '80%' }}>Generate 360&deg; Image</Button>
+                        </div>
+                        <div className='col-md-6 ps-5  order-1 order-md-2'>
+                            <h1>Generate Image</h1>
+                            <p style={{ height: '48px' }}>
+                                <Typewriter
+                                    onInit={(typewriter) => {
+                                        typewriter.typeString('Create breathtaking 360-degree images effortlessly and craft your panoramic masterpiece.')
+                                            .start();
+                                    }}
+                                    options={{ delay: 30 }}
+                                />
+                            </p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <Footer  top='20vh'/>
-        </ThemeProvider>
+            </ThemeProvider>
+        </div >
     )
 }
 
