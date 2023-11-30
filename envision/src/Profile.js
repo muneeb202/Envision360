@@ -5,6 +5,7 @@ import emptyAnimation from './animations/empty.json'
 import './Profile.css'
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
 import Footer from './components/Footer';
+import axios from 'axios';
 
 const theme = createTheme({
     palette: {
@@ -131,6 +132,19 @@ const Profile = () => {
             favourite: false
         }
     ])
+
+    useEffect(() => {
+        const fetchImages = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/api/user_image/');
+                console.log(response.data);
+            } catch (error) {
+                console.error('Error fetching images:', error);
+            }
+        };
+
+        fetchImages();
+    }, []);
 
     const togglePosts = () => {
         setShowPosts(!showPosts)
