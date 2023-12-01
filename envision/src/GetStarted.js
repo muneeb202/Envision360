@@ -7,7 +7,6 @@ import Particles from "react-tsparticles";
 import axios from "axios"
 import { useNavigate } from 'react-router-dom'
 import LoadingBar from 'react-top-loading-bar'
-import Footer from "./components/Footer";
 
 const theme = createTheme({
     palette: {
@@ -120,7 +119,7 @@ const GetStarted = () => {
         setProgress(progress + 10)
         try {
             setProgress(progress + 30)
-            const response = await axios.post('http://localhost:8000/api/login/', {...formData, refresh:refresh});
+            const response = await axios.post('http://localhost:8000/api/login/', { ...formData, refresh: refresh });
             localStorage.setItem('user', response.data['user'])
             setProgress(progress + 50)
             navigate('/')
@@ -150,7 +149,7 @@ const GetStarted = () => {
                 <div className="overlay-started">
                     <div className="content-container">
                         <div className='navbar'>
-                            <a href='/'><img src={`${process.env.PUBLIC_URL}/images/Logo Small.png`} className='logo' alt="Logo" draggable='false' /></a>
+                            <a href='/'><img style={{ paddingTop: '10px' }} src={`${process.env.PUBLIC_URL}/images/newLogo.png`} className='logo' alt="Logo" draggable='false' /></a>
                         </div>
                         <div className="container" style={{ minWidth: '100%', height: '100vh' }}>
                             <div className='row getstarted-container d-flex align-items-center h-100'>
@@ -285,7 +284,6 @@ const GetStarted = () => {
                         </div>
                     </div>
                 </div>
-                <Footer top='90vh' />
             </div>
         </ThemeProvider>
     );

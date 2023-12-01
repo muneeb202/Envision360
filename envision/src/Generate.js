@@ -7,8 +7,6 @@ import particlesConfig2 from "./config/particle-config2";
 import robotAnimation from './animations/robot.json';
 import successAnimation from './animations/success.json';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react'
-import Typewriter from 'typewriter-effect';
-import Footer from './components/Footer';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'
 
@@ -252,22 +250,24 @@ const Generate = () => {
                     <ThemeProvider theme={theme}>
                         <MemoizedParticles options={particlesConfig2} />
 
-                        <LoadingScreen loading={isLoading} completion={handleCompletion} />
-
-                        <div className='image-container'>
-                            <img src={`${process.env.PUBLIC_URL}/images/generatebg.png`} alt='background' draggable='false' />
-                        </div>
-                        <div className='overlay' />
-                        <div className='generate-container'>
-
-                            <a href='/'><img src={`${process.env.PUBLIC_URL}/images/Logo Small.png`} className='logo' alt='background' draggable='false' /></a>
-                            <div className='row generate-row'>
-                                <div className='col-md-6 px-5  order-2 order-md-1'>
-                                    <div className='generate-type'>
-                                        <button onClick={() => setGenerateType(1)} className={generateType === 1 ? 'active' : ''}>Location Search</button>
-                                        <button onClick={() => setGenerateType(2)} className={generateType === 2 ? 'active' : ''}>Coordinates</button>
-                                        <button onClick={() => setGenerateType(3)} className={generateType === 3 ? 'active' : ''}>Upload Images</button>
+                        <LoadingScreen loading={isLoading} completion={handleCompletion} />\
+                        <div className='gen-container'>
+                            <div className='image-container' >
+                                <img src={`${process.env.PUBLIC_URL}/images/generatebg.png`} alt="background" draggable='false' />
+                            </div>
+                            <div className="overlay">
+                                <div className="generate-container">
+                                    <div className='navbar'>
+                                        <a href='/'><img style={{ paddingTop: '10px' }} src={`${process.env.PUBLIC_URL}/images/newLogo.png`} className='logo' alt="Logo" draggable='false' /></a>
                                     </div>
+                                    <div className="container" style={{ minWidth: '100%', height: '100vh' }}>
+                                        <div className='row generate-row d-flex align-items-center h-100'>
+                                          <div className='col-md-6 px-5  order-2 order-md-1'>
+                                              <div className='generate-type'>
+                                                  <button onClick={() => setGenerateType(1)} className={generateType === 1 ? 'active' : ''}>Location Search</button>
+                                                  <button onClick={() => setGenerateType(2)} className={generateType === 2 ? 'active' : ''}>Coordinates</button>
+                                                  <button onClick={() => setGenerateType(3)} className={generateType === 3 ? 'active' : ''}>Upload Images</button>
+
                                     <div className='input-container'>
 
                                         <div className='w-75'>
@@ -328,7 +328,6 @@ const Generate = () => {
                                                     className="file-input"
                                                     multiple
                                                     onChange={handleFileInputChange}
-                                                    required
                                                 />
 
                                                 <ImageList className='image-list' cols={3} sx={{ marginBottom: '0', maxHeight: '350px', overflowY: 'auto' }}>
@@ -342,7 +341,7 @@ const Generate = () => {
                                             </label>
                                         )}
 
-                                    </div>
+
                                     <Button variant='contained' onClick={generateImage} color='secondary' sx={{ padding: '20px', margin: '0 10%', letterSpacing: '3px', fontSize: '18px', borderRadius: '50px', width: '80%' }}>Generate 360&deg; Image</Button>
                                 </div>
                                 <div className='col-md-6 ps-5  order-1 order-md-2'>
@@ -359,7 +358,10 @@ const Generate = () => {
                                 </div>
                             </div>
                         </div>
-                        <Snackbar
+                    </div>
+                </div>
+            </div>
+            <Snackbar
                             open={open}
                             autoHideDuration={6000}
                             onClose={() => setOpen(false)}
@@ -368,11 +370,9 @@ const Generate = () => {
                                 {message}
                             </Alert>
                         </Snackbar>
-                        <Footer top='20vh' />
-                    </ThemeProvider>
+        </ThemeProvider>
                 )}
         </>
-
     )
 }
 

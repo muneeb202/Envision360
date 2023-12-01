@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import emptyAnimation from './animations/empty.json'
 import './Profile.css'
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
-import Footer from './components/Footer';
 import axios from 'axios';
 
 const theme = createTheme({
@@ -222,72 +221,73 @@ const Profile = () => {
     }
 
     return (
-        <ThemeProvider theme={theme}>
-            <div className='image-container'>
-                <img src={`${process.env.PUBLIC_URL}/images/profilebg.png`} alt='background' draggable='false' />
-            </div>
-            <div className='home-navbar d-flex justify-content-between'>
-                <a href='/'><img src={`${process.env.PUBLIC_URL}/images/Logo Small.png`} className='logo' alt='background' draggable='false' /></a>
-                <div className='m-5' onClick={() => setSidebar(true)}><Tooltip title='Click to view more details'><Avatar sx={{ bgcolor: red[500] }}>R</Avatar></Tooltip></div>
-                <Drawer open={sidebar} anchor='right' onClose={() => setSidebar(false)}>
-                    <div className='sidebar'>
-                        <Avatar sx={{ bgcolor: red[500], height: 100, width: 100, fontSize: 30 }}>R</Avatar><br />
-                        <h4>Ramon Sanchez</h4><br />
-                        <p>ramon_sanchez@gmail.com</p>
-                        <p><span>Joined: </span>20 October 2023</p>
-                    </div>
-                </Drawer>
-            </div>
-            <Box sx={{ width: '90vw', paddingLeft: '10vw' }}>
-                <AppBar position="static" sx={{ backgroundColor: 'transparent' }}>
-                    <Toolbar>
-                        <IconButton
-                            size="large"
-                            edge="start"
-                            color="inherit"
-                            aria-label="open drawer"
-                            sx={{ mr: 2 }}
-                        >
-                            <i className="fas fa-images"></i>
-                        </IconButton>
-                        <Typography
-                            variant="h6"
-                            noWrap
-                            component="div"
-                            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block', }, letterSpacing: 2, fontWeight: 200 }}
-                        >
-                            Your {showPosts ? 'Blog Posts' : showFav ? 'Favourite Images' : '360\u00B0 Images'}
-                        </Typography>
-                        <IconButton onClick={togglePosts} sx={{ backgroundColor: showPosts ? '#ffffff38' : 'transparent' }}>
-                            <Tooltip title={showPosts ? 'Show All' : 'Show Blog Posts'}><i className="fas fa-blog" /></Tooltip>
-                        </IconButton>
-                        <IconButton onClick={toggleFav}>
-                            <Tooltip title={showFav ? 'Show All' : 'Show Favourites'}><i className={showFav ? "fas fa-star" : "far fa-star"} /></Tooltip>
-                        </IconButton>
-                        <Search>
-                            <SearchIconWrapper>
-                                <i className="fas fa-search"></i>
-                            </SearchIconWrapper>
-                            <StyledInputBase
-                                placeholder="Search…"
-                                inputProps={{ 'aria-label': 'search' }}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                            />
-                        </Search>
-                    </Toolbar>
-                </AppBar>
-                <br />
-                <ImageList cols={matchDownMd ? 3 : 5} gap={8}>
-                    {filteredImages.length === 0 ? (
-                        <>
-                            <ImageListItem cols={matchDownMd ? 3 : 5}>
-                                <Lottie
-                                    style={{ maxHeight: 300 }}
-                                    lottieRef={animationRef}
-                                    loop={false}
-                                    onComplete={() => animationRef.current.goToAndPlay(162, true)}
-                                    animationData={emptyAnimation}
+        <div style={{ height: 'max-content', minHeight: '100vh' }}>
+            <ThemeProvider theme={theme}>
+                <div className='image-container'>
+                    <img src={`${process.env.PUBLIC_URL}/images/profilebg.png`} alt='background' draggable='false' />
+                </div>
+                <div className='home-navbar d-flex justify-content-between'>
+                    <a href='/'><img style={{ paddingTop: '10px' }} src={`${process.env.PUBLIC_URL}/images/newLogo.png`} className='logo' alt='background' draggable='false' /></a>
+                    <div className='m-5' onClick={() => setSidebar(true)}><Tooltip title='Click to view more details'><Avatar sx={{ bgcolor: red[500] }}>R</Avatar></Tooltip></div>
+                    <Drawer className='profile-container' open={sidebar} anchor='right' onClose={() => setSidebar(false)}>
+                        <div className='sidebar '>
+                            <Avatar sx={{ bgcolor: red[500], height: 100, width: 100, fontSize: 30 }}>R</Avatar><br />
+                            <h4>Ramon Sanchez</h4><br />
+                            <p>ramon_sanchez@gmail.com</p>
+                            <p><span>Joined: </span>20 October 2023</p>
+                        </div>
+                    </Drawer>
+                </div>
+                <Box sx={{ width: '90vw', paddingLeft: '10vw' }}>
+                    <AppBar position="static" sx={{ backgroundColor: 'transparent' }}>
+                        <Toolbar>
+                            <IconButton
+                                size="large"
+                                edge="start"
+                                color="inherit"
+                                aria-label="open drawer"
+                                sx={{ mr: 2 }}
+                            >
+                                <i className="fas fa-images"></i>
+                            </IconButton>
+                            <Typography
+                                variant="h6"
+                                noWrap
+                                component="div"
+                                sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block', }, letterSpacing: 2, fontWeight: 200 }}
+                            >
+                                Your {showPosts ? 'Blog Posts' : showFav ? 'Favourite Images' : '360\u00B0 Images'}
+                            </Typography>
+                            <IconButton onClick={togglePosts} sx={{ backgroundColor: showPosts ? '#ffffff38' : 'transparent' }}>
+                                <Tooltip title={showPosts ? 'Show All' : 'Show Blog Posts'}><i className="fas fa-blog" /></Tooltip>
+                            </IconButton>
+                            <IconButton onClick={toggleFav}>
+                                <Tooltip title={showFav ? 'Show All' : 'Show Favourites'}><i className={showFav ? "fas fa-star" : "far fa-star"} /></Tooltip>
+                            </IconButton>
+                            <Search>
+                                <SearchIconWrapper>
+                                    <i className="fas fa-search"></i>
+                                </SearchIconWrapper>
+                                <StyledInputBase
+                                    placeholder="Search…"
+                                    inputProps={{ 'aria-label': 'search' }}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
                                 />
+                            </Search>
+                        </Toolbar>
+                    </AppBar>
+                    <br />
+                    <ImageList cols={matchDownMd ? 3 : 5} gap={8}>
+                        {filteredImages.length === 0 ? (
+                            <>
+                                <ImageListItem cols={matchDownMd ? 3 : 5}>
+                                    <Lottie
+                                        style={{ maxHeight: 300 }}
+                                        lottieRef={animationRef}
+                                        loop={false}
+                                        onComplete={() => animationRef.current.goToAndPlay(162, true)}
+                                        animationData={emptyAnimation}
+                                    />
                                 <p className='empty'>You have no such images!</p>
                             </ImageListItem>
                         </>
@@ -361,7 +361,6 @@ const Profile = () => {
                 message={message}
                 action={<IconButton onClick={() => setOpen(false)}><i style={{ color: 'gray' }} className="fa-solid fa-xmark"></i></IconButton>}
             />
-            <Footer top='25vh'/>
         </ThemeProvider>
     )
 }
