@@ -90,48 +90,7 @@ const Profile = () => {
     const [delanchorEl, setDelAnchorEl] = useState(null);
     const delpopOpen = Boolean(delanchorEl);
 
-    const [images, setImages] = useState([
-        // {
-        //     id: 0,
-        //     src: 'canyon.jpg',
-        //     title: 'Grand Canyon',
-        //     date: '20th September 2023',
-        //     posted: true,
-        //     favourite: false
-        // },
-        // {
-        //     id: 1,
-        //     src: 'eiffel.png',
-        //     title: 'Eiffel Tower',
-        //     date: '3rd October 2023',
-        //     posted: true,
-        //     favourite: true
-        // },
-        // {
-        //     id: 2,
-        //     src: 'petra.jpg',
-        //     title: 'Petra',
-        //     date: '12th November 2023',
-        //     posted: false,
-        //     favourite: true
-        // },
-        // {
-        //     id: 3,
-        //     src: 'pyramids.png',
-        //     title: 'Great Pyramids of Giza',
-        //     date: '8th December 2023',
-        //     posted: false,
-        //     favourite: false
-        // },
-        // {
-        //     id: 4,
-        //     src: 'machu pichu.jpg',
-        //     title: 'Machu Picchu',
-        //     date: '5th January 2024',
-        //     posted: false,
-        //     favourite: false
-        // }
-    ])
+    const [images, setImages] = useState([])
 
     useEffect(() => {
         const fetchImages = async () => {
@@ -141,7 +100,6 @@ const Profile = () => {
                         token: localStorage.getItem('user')
                     }
                 });
-                console.log(response.data);
                 setImages(response.data)
             } catch (error) {
                 console.error('Error fetching images:', error);
@@ -162,6 +120,7 @@ const Profile = () => {
     }
 
     const filterImages = () => {
+        console.log(images)
         const filtered = images.filter((image) => {
             if (showFav && image.favourite)
                 return image.title.toLowerCase().includes(searchQuery.toLowerCase());
@@ -178,9 +137,16 @@ const Profile = () => {
         setFilteredImages(filtered);
     }
 
-    const favImage = (image) => {
-        images[image.id].favourite = !images[image.id].favourite;
-        filterImages();
+    const favImage = async (index) => {
+        await axios.post('http://localhost:8000/api/update_favourite/', {
+            token: localStorage.getItem('user'),
+            image_id: images[index].id
+        }).then(() => {
+            images[index].favourite = !images[index].favourite;
+            filterImages();
+        }).catch((error => {
+            console.log(error)
+        }));
     };
 
     const handleClose = () => setShowDialog(false)
@@ -190,12 +156,20 @@ const Profile = () => {
         setPost(image);
     }
 
-    const handlePost = () => {
-        images[post.id].posted = true;
-        filterImages();
-        setShowDialog(false);
-        setMessage("Posted Image to Blog");
-        setOpen(true);
+    const handlePost = async() => {
+        await axios.post('http://localhost:8000/api/update_posted_status/', {
+            token: localStorage.getItem('user'),
+            image_id: post.id,
+            description: post.description
+        }).then(() => {
+            images.forEach((image, i) => image.id === post.id ? images[i].posted = true: null)
+            filterImages();
+            setShowDialog(false);
+            setMessage("Posted Image to Blog");
+            setOpen(true);
+        }).catch((error => {
+            console.log(error)
+        }));
     }
 
     const deleteImage = async () => {
@@ -227,12 +201,19 @@ const Profile = () => {
         setDelAnchorEl(null);
     };
 
-    const handleDelete = (image) => {
-        images[image.id].posted = false;
-        filterImages();
-        setAnchorEl(null);
-        setMessage("Deleted Image from Blog");
-        setOpen(true);
+    const handleDelete = async(index) => {
+        await axios.post('http://localhost:8000/api/update_posted_status/', {
+            token: localStorage.getItem('user'),
+            image_id: images[index].id
+        }).then(() => {
+            images[index].posted = false;
+            filterImages();
+            setAnchorEl(null);
+            setMessage("Deleted Image from Blog");
+            setOpen(true);
+        }).catch((error => {
+            console.log(error)
+        }));
     }
 
     const confirmDelete = (image, e) => {
@@ -326,7 +307,7 @@ const Profile = () => {
                                                 <div className='d-flex align-items-center confirmation'>
                                                     <p>Confirm</p>
                                                     <Button onClick={handleRemoveClose} sx={{ minWidth: 0 }}><i style={{ color: red[500], fontSize: 20 }} className="fa-solid fa-xmark"></i></Button>
-                                                    <Button onClick={() => handleDelete(image)} sx={{ minWidth: 0 }}><i style={{ color: green[500], fontSize: 20 }} className="fa-solid fa-check"></i></Button>
+                                                    <Button onClick={() => handleDelete(index)} sx={{ minWidth: 0 }}><i style={{ color: green[500], fontSize: 20 }} className="fa-solid fa-check"></i></Button>
                                                 </div>
                                             </Popover>
                                         </>
@@ -336,7 +317,7 @@ const Profile = () => {
                                             </IconButton>
                                     }
                                 />
-                                <IconButton sx={{position:'absolute'}} onClick={() => favImage(image)}>
+                                <IconButton sx={{position:'absolute'}} onClick={() => favImage(index)}>
                                     <i style={{ fontSize: 15 }} className={`${image.favourite ? 'fas' : 'far'} fa-star`} />
                                 </IconButton>
                                 <Tooltip title='Delete'><IconButton onClick={(e) => confirmDelete(image, e)} sx={{position:'absolute', right:0}}>
@@ -358,13 +339,14 @@ const Profile = () => {
             <Dialog open={showDialog} onClose={handleClose} maxWidth='md'>
                 <DialogTitle>{post.title}</DialogTitle>
                 <DialogContent>
-                    <img style={{ maxWidth: '100%', maxHeight: '60vh' }} src={`${process.env.PUBLIC_URL}/images/${post.src}`} alt={post.title} /><br /><br />
+                    <img style={{ maxWidth: '100%', maxHeight: '60vh' }} src={'http://127.0.0.1:8000' + post.image} alt={post.title} /><br /><br />
                     <TextField
                         autoFocus
                         multiline
                         label="Caption"
                         fullWidth
                         variant="standard"
+                        onChange={(e) => setPost({...post, description: e.target.value})}
                     />
                 </DialogContent>
                 <DialogActions>

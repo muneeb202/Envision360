@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
+from django.utils import timezone
 import os
 
 class Image(models.Model):
@@ -9,7 +10,7 @@ class Image(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     image = models.ImageField(upload_to='images/')
-    created_date = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(default=timezone.now)
     posted = models.BooleanField(default=False)
     favourite = models.BooleanField(default=False)
     likes = models.PositiveIntegerField(default=0)

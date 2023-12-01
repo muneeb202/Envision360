@@ -65,7 +65,7 @@ const ImageViewer = ({ image }) => {
     )
 }
 
-const LoadingScreen = (props) => {
+function LoadingScreen(props) {
     const animationRef = useRef(<LottieRefCurrentProps />);
     const [buffer, setBuffer] = React.useState(10);
     const [progress, setProgress] = React.useState(0);
