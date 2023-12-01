@@ -50,6 +50,31 @@ const Home = () => {
                     <div className='navbar'>
                         <img src={`${process.env.PUBLIC_URL}/images/newLogo.png`} className='logo' alt='logo' draggable='false' />
                         <div className=' d-none d-md-block'>
+                <div className='links'>
+                    {name ? (
+                        <>
+                            <a href='#' onClick={userLogout}>Logout</a>
+                        </>
+                    ) :
+                        (
+                            <a href='/start'>Get Started</a>
+                        )}
+                    <a href='/aboutus'>About Us</a>
+                    <a href='/blog'>Blog</a>
+                    <a className='demoButton' href='/generate'>{name ? 'Generate' : 'Demo'}</a>
+                    {name && (
+                        <Tooltip title='Click to view profile'> 
+                            <IconButton onClick={() => navigate('/profile')}><Avatar sx={{ bgcolor: '#09687d' }}>{name.charAt(0).toUpperCase()}</Avatar></IconButton>
+                        </Tooltip>
+                    )}
+                </div>
+                </div>
+                <div className='home-navbar d-md-none'>
+                <Tooltip title='Click to view more details'> 
+                    <IconButton className='m-5' onClick={() => setSidebar(true)}><i className="fa-solid fa-ellipsis-vertical" style={{ color: '#ffffff', fontSize: 'x-large' }}></i></IconButton>
+                </Tooltip>
+                    <Drawer className='home-sidebar' open={sidebar} anchor='right' onClose={() => setSidebar(false)}>
+                        <div className='sidebar'>
                             <div className='links'>
                                 {name ? (
                                     <>

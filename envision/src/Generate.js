@@ -1,5 +1,5 @@
 import './Generate.css'
-import { Box, Button, ImageList, ImageListItem, LinearProgress, TextField, ThemeProvider, createTheme } from '@mui/material';
+import { Alert, Box, Button, IconButton, ImageList, ImageListItem, LinearProgress, Snackbar, TextField, ThemeProvider, createTheme, useThemeProps } from '@mui/material';
 import React, { useRef, useState } from 'react';
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
@@ -7,7 +7,8 @@ import particlesConfig2 from "./config/particle-config2";
 import robotAnimation from './animations/robot.json';
 import successAnimation from './animations/success.json';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react'
-import Typewriter from 'typewriter-effect';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom'
 
 const theme = createTheme({
     palette: {
@@ -28,16 +29,56 @@ const MemoizedParticles = React.memo(({ options }) => (
     <Particles init={(main) => loadFull(main)} options={options} />
 ));
 
-const Generate = () => {
-    const [generateType, setGenerateType] = useState(1);
-    const [isDragging, setIsDragging] = useState(false);
-    const [selectedFiles, setSelectedFiles] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [progress, setProgress] = React.useState(0);
-    const [buffer, setBuffer] = React.useState(10);
+const ImageViewer = ({ image }) => {
+    const [title, setTitle] = useState('');
+    const navigate = useNavigate();
+
+    const handleSave = async () => {
+        await axios.post('http://localhost:8000/api/user_image/', {
+            token: localStorage.getItem('user'),
+            image: image,
+            title: title
+        }, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        }).then(() => {
+            navigate('/profile')
+        }).catch((error => {
+            console.log(error)
+        }));
+    }
+
+    return (
+        <div className='image-viewer'>
+            <img src={URL.createObjectURL(image)}/> 
+            <div className='button-container'>
+                <ThemeProvider theme={theme}>
+                    <TextField id="outlined-basic" label="Title" variant="outlined" onChange={(e) => setTitle(e.target.value)}/>
+                    <Button onClick={handleSave} variant='contained' color='success' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px', margin: '30px 0px' }}>Save</Button>
+                    <Button variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px' }}>Re-Render</Button>
+                </ThemeProvider>
+            </div>
+        </div>
+    )
+}
+
+function LoadingScreen(props) {
     const animationRef = useRef(<LottieRefCurrentProps />);
+    const [buffer, setBuffer] = React.useState(10);
+    const [progress, setProgress] = React.useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
-    const [playSuccessAnimation, setPlaySuccessAnimation] = useState(false);
+    const progressRef = React.useRef(() => { });
+    React.useEffect(() => {
+        progressRef.current = () => {
+            if (progress < 100) {
+                const diff = Math.random() * 10;
+                const diff2 = Math.random() * 10;
+                setProgress(Math.min(progress + diff, 100));
+                setBuffer(progress + diff + diff2);
+            }
+        };
+    });
     const facts = [
         'The earliest known panorama was created in 1787 by Robert Barker, an Irish painter. It was a massive painting of Edinburgh, Scotland, that was displayed in a specially built rotunda.',
         'The word "panorama" comes from the Greek words "pan" (all) and "horama" (view).',
@@ -52,6 +93,26 @@ const Generate = () => {
         'The first 360-degree video was shot in 1995 by the Fraunhofer Institute for Computer Graphics Research.',
         '360-degree images are sometimes called "equirectangular projections" because they are projected onto a sphere.',
     ]
+    const [playSuccessAnimation, setPlaySuccessAnimation] = useState(false);
+
+    React.useEffect(() => {
+        const timerRef = { current: null }; // Create a ref to hold the timer
+
+        if (props.loading) {
+            timerRef.current = setInterval(() => {
+                progressRef.current();
+
+                if (progress >= 100) {
+                    clearInterval(timerRef.current); // Use the ref value to clear the interval
+                    setPlaySuccessAnimation(true);
+                }
+            }, 50);
+        }
+
+        return () => {
+            clearInterval(timerRef.current); // Clear the interval using the ref value
+        };
+    }, [props.loading, progress]);
 
     const handleClick = () => {
         if (!isPlaying) {
@@ -60,36 +121,62 @@ const Generate = () => {
         }
     };
 
-    const progressRef = React.useRef(() => { });
-    React.useEffect(() => {
-        progressRef.current = () => {
-            if (progress < 100) {
-                const diff = Math.random() * 10;
-                const diff2 = Math.random() * 10;
-                setProgress(Math.min(progress + diff, 100));
-                setBuffer(progress + diff + diff2);
-            }
-        };
-    });
 
-    React.useEffect(() => {
-        const timerRef = { current: null }; // Create a ref to hold the timer
+    return (
+        <div>
+            {props.loading && (
+                <div className={props.loading ? 'loading-screen active' : 'loading-screen'} onClick={handleClick}>
+                    {playSuccessAnimation ? (
+                        <Lottie
+                            animationData={successAnimation}
+                            loop={false}
+                            style={{ width: 200, height: 200 }}
+                            onComplete={props.completion}
+                        />
+                    ) : (
+                        <Lottie
+                            lottieRef={animationRef}
+                            animationData={robotAnimation}
+                            loop={false}
+                            style={{ width: 200, height: 200 }}
+                            onComplete={() => setIsPlaying(false)}
+                        />
+                    )}
+                    <br />
+                    <Box sx={{ width: '50%' }}>
+                        <LinearProgress variant="buffer" value={progress} valueBuffer={buffer} />
+                    </Box>
+                    <br />
+                    <p>
+                        <Typewriter
+                            options={{
+                                strings: facts,
+                                autoStart: true,
+                                loop: true,
+                                delay: 30,
+                                deleteSpeed: 0,
+                                pauseFor: 5000
+                            }}
+                        />
+                    </p>
+                </div>
+            )}
+        </div>
+    )
+}
 
-        if (isLoading) {
-            timerRef.current = setInterval(() => {
-                progressRef.current();
+const Generate = () => {
+    const [generateType, setGenerateType] = useState(1);
+    const [isDragging, setIsDragging] = useState(false);
+    const [selectedFiles, setSelectedFiles] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [completedImage, setCompletedImage] = useState(null);
+    const [open, setOpen] = useState(false);
+    const [message, setMessage] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
+    const [latitude, setLatitude] = useState('');
+    const [longitude, setLongitude] = useState('');
 
-                if (progress >= 100) {
-                    clearInterval(timerRef.current); // Use the ref value to clear the interval
-                    setPlaySuccessAnimation(true);
-                }
-            }, 1000);
-        }
-
-        return () => {
-            clearInterval(timerRef.current); // Clear the interval using the ref value
-        };
-    }, [isLoading, progress]);
 
     const handleDragEnter = (e) => {
         e.preventDefault();
@@ -120,75 +207,106 @@ const Generate = () => {
         });
     }
 
+    const handleCompletion = () => {
+        console.log('completed');
+        setCompletedImage(selectedFiles[0])
+    }
+
+    const generateImage = () => {
+        switch (generateType) {
+            case 1:
+                if (!searchQuery) {
+                    setMessage('Please enter a search query.');
+                    setOpen(true);
+                    return;
+                }
+                break;
+            case 2:
+                if (!latitude || !longitude) {
+                    setMessage('Please enter both latitude and longitude.');
+                    setOpen(true);
+                    return;
+                }
+                break;
+            case 3:
+                if (selectedFiles.length === 0) {
+                    setMessage('Must upload at least 1 image.');
+                    setOpen(true);
+                    return;
+                }
+                break;
+            default:
+                break;
+        }
+        setIsLoading(true);
+    }
+
     return (
-        <ThemeProvider theme={theme}>
-            <MemoizedParticles options={particlesConfig2} />
-            <div>
-                {isLoading && (
-                    <div className={isLoading ? 'loading-screen active' : 'loading-screen'} onClick={handleClick}>
-                        {playSuccessAnimation ? (
-                            <Lottie
-                                animationData={successAnimation}
-                                loop={false}
-                                style={{ width: 200, height: 200 }}
-                            />
-                        ) : (
-                            <Lottie
-                                lottieRef={animationRef}
-                                animationData={robotAnimation}
-                                loop={false}
-                                style={{ width: 200, height: 200 }}
-                                onComplete={() => setIsPlaying(false)}
-                            />
-                        )}
-                        <br />
-                        <Box sx={{ width: '50%' }}>
-                            <LinearProgress variant="buffer" value={progress} valueBuffer={buffer} />
-                        </Box>
-                        <br />
-                        <p>
-                            <Typewriter
-                                options={{
-                                    strings: facts,
-                                    autoStart: true,
-                                    loop: true,
-                                    delay: 30,
-                                    deleteSpeed: 0,
-                                    pauseFor: 5000
-                                }}
-                            />
-                        </p>
-                    </div>
-                )}
-            </div>
-            <div className='gen-container'>
-                <div className='image-container' >
-                    <img src={`${process.env.PUBLIC_URL}/images/generatebg.png`} alt="background" draggable='false' />
-                </div>
-                <div className="overlay">
-                    <div className="generate-container">
-                        <div className='navbar'>
-                            <a href='/'><img style={{ paddingTop: '10px' }} src={`${process.env.PUBLIC_URL}/images/newLogo.png`} className='logo' alt="Logo" draggable='false' /></a>
-                        </div>
-                        <div className="container" style={{ minWidth: '100%', height: '100vh' }}>
-                            <div className='row generate-row d-flex align-items-center h-100'>
-                                <div className='col-md-6 px-5  order-2 order-md-1'>
-                                    <div className='generate-type'>
-                                        <button onClick={() => setGenerateType(1)} className={generateType === 1 ? 'active' : ''}>Location Search</button>
-                                        <button onClick={() => setGenerateType(2)} className={generateType === 2 ? 'active' : ''}>Coordinates</button>
-                                        <button onClick={() => setGenerateType(3)} className={generateType === 3 ? 'active' : ''}>Upload Images</button>
+        <>
+            {completedImage ? (
+                <ImageViewer image={completedImage} />
+            ) :
+                (
+                    <ThemeProvider theme={theme}>
+                        <MemoizedParticles options={particlesConfig2} />
+
+                        <LoadingScreen loading={isLoading} completion={handleCompletion} />\
+                        <div className='gen-container'>
+                            <div className='image-container' >
+                                <img src={`${process.env.PUBLIC_URL}/images/generatebg.png`} alt="background" draggable='false' />
+                            </div>
+                            <div className="overlay">
+                                <div className="generate-container">
+                                    <div className='navbar'>
+                                        <a href='/'><img style={{ paddingTop: '10px' }} src={`${process.env.PUBLIC_URL}/images/newLogo.png`} className='logo' alt="Logo" draggable='false' /></a>
                                     </div>
-                                    <div className='input-container' style={{ marginTop: '100px', marginBottom: '100px' }}>
+                                    <div className="container" style={{ minWidth: '100%', height: '100vh' }}>
+                                        <div className='row generate-row d-flex align-items-center h-100'>
+                                          <div className='col-md-6 px-5  order-2 order-md-1'>
+                                              <div className='generate-type'>
+                                                  <button onClick={() => setGenerateType(1)} className={generateType === 1 ? 'active' : ''}>Location Search</button>
+                                                  <button onClick={() => setGenerateType(2)} className={generateType === 2 ? 'active' : ''}>Coordinates</button>
+                                                  <button onClick={() => setGenerateType(3)} className={generateType === 3 ? 'active' : ''}>Upload Images</button>
+
+                                    <div className='input-container'>
 
                                         <div className='w-75'>
                                             {generateType === 1 && (
-                                                <TextField color='secondary' fullWidth multiline maxRows={7} label="Search Query" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                                <TextField
+                                                    color='secondary'
+                                                    fullWidth
+                                                    multiline
+                                                    maxRows={7}
+                                                    label="Search Query"
+                                                    variant="standard"
+                                                    sx={{ color: 'white', letterSpacing: '2px' }}
+                                                    value={searchQuery}
+                                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                                />
                                             )}
                                             {generateType === 2 && (
                                                 <>
-                                                    <TextField color='secondary' type='number' fullWidth label="Latitude" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                                    <TextField
+                                                        color='secondary'
+                                                        type='number'
+                                                        fullWidth
+                                                        label="Latitude"
+                                                        variant="standard"
+                                                        sx={{ color: 'white', letterSpacing: '2px' }}
+                                                        value={latitude}
+                                                        onChange={(e) => setLatitude(e.target.value)}
+                                                    />
                                                     <br /><br />
-                                                    <TextField color='secondary' type='number' fullWidth label="Longitude" variant="standard" sx={{ color: 'white', letterSpacing: '2px' }} />
+                                                    <TextField
+                                                        color='secondary'
+                                                        type='number'
+                                                        fullWidth
+                                                        label="Longitude"
+                                                        variant="standard"
+                                                        sx={{ color: 'white', letterSpacing: '2px' }}
+                                                        value={longitude}
+                                                        onChange={(e) => setLongitude(e.target.value)}
+                                                    />
                                                 </>
                                             )}
                                         </div>
@@ -223,8 +341,8 @@ const Generate = () => {
                                             </label>
                                         )}
 
-                                    </div>
-                                    <Button variant='contained' onClick={() => setIsLoading(true)} color='secondary' sx={{ padding: '20px', margin: '0 10%', letterSpacing: '3px', fontSize: '18px', borderRadius: '50px', width: '80%' }}>Generate 360&deg; Image</Button>
+
+                                    <Button variant='contained' onClick={generateImage} color='secondary' sx={{ padding: '20px', margin: '0 10%', letterSpacing: '3px', fontSize: '18px', borderRadius: '50px', width: '80%' }}>Generate 360&deg; Image</Button>
                                 </div>
                                 <div className='col-md-6 ps-5  order-1 order-md-2'>
                                     <h1>Generate Image</h1>
@@ -243,7 +361,18 @@ const Generate = () => {
                     </div>
                 </div>
             </div>
+            <Snackbar
+                            open={open}
+                            autoHideDuration={6000}
+                            onClose={() => setOpen(false)}
+                        >
+                            <Alert onClose={() => setOpen(false)} severity="error" sx={{ fontSize: '17px', letterSpacing: '2px' }}>
+                                {message}
+                            </Alert>
+                        </Snackbar>
         </ThemeProvider>
+                )}
+        </>
     )
 }
 
