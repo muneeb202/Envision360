@@ -9,6 +9,7 @@ import successAnimation from './animations/success.json';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'
+import Typewriter from 'typewriter-effect';
 
 const theme = createTheme({
     palette: {
@@ -51,10 +52,10 @@ const ImageViewer = ({ image }) => {
 
     return (
         <div className='image-viewer'>
-            <img src={URL.createObjectURL(image)}/> 
+            <img src={URL.createObjectURL(image)} />
             <div className='button-container'>
                 <ThemeProvider theme={theme}>
-                    <TextField id="outlined-basic" label="Title" variant="outlined" onChange={(e) => setTitle(e.target.value)}/>
+                    <TextField id="outlined-basic" label="Title" variant="outlined" onChange={(e) => setTitle(e.target.value)} />
                     <Button onClick={handleSave} variant='contained' color='success' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px', margin: '30px 0px' }}>Save</Button>
                     <Button variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px' }}>Re-Render</Button>
                 </ThemeProvider>
@@ -250,7 +251,7 @@ const Generate = () => {
                     <ThemeProvider theme={theme}>
                         <MemoizedParticles options={particlesConfig2} />
 
-                        <LoadingScreen loading={isLoading} completion={handleCompletion} />\
+                        <LoadingScreen loading={isLoading} completion={handleCompletion} />
                         <div className='gen-container'>
                             <div className='image-container' >
                                 <img src={`${process.env.PUBLIC_URL}/images/generatebg.png`} alt="background" draggable='false' />
@@ -260,108 +261,106 @@ const Generate = () => {
                                     <div className='navbar'>
                                         <a href='/'><img style={{ paddingTop: '10px' }} src={`${process.env.PUBLIC_URL}/images/newLogo.png`} className='logo' alt="Logo" draggable='false' /></a>
                                     </div>
-                                    <div className="container" style={{ minWidth: '100%', height: '100vh' }}>
+                                    <div className="container pt-5" style={{ minWidth: '100%', minHeight:'80vh'}}>
                                         <div className='row generate-row d-flex align-items-center h-100'>
-                                          <div className='col-md-6 px-5  order-2 order-md-1'>
-                                              <div className='generate-type'>
-                                                  <button onClick={() => setGenerateType(1)} className={generateType === 1 ? 'active' : ''}>Location Search</button>
-                                                  <button onClick={() => setGenerateType(2)} className={generateType === 2 ? 'active' : ''}>Coordinates</button>
-                                                  <button onClick={() => setGenerateType(3)} className={generateType === 3 ? 'active' : ''}>Upload Images</button>
+                                            <div className='col-md-6 px-5  order-2 order-md-1'>
+                                                <div className='generate-type'>
+                                                    <button onClick={() => setGenerateType(1)} className={generateType === 1 ? 'active' : ''}>Location Search</button>
+                                                    <button onClick={() => setGenerateType(2)} className={generateType === 2 ? 'active' : ''}>Coordinates</button>
+                                                    <button onClick={() => setGenerateType(3)} className={generateType === 3 ? 'active' : ''}>Upload Images</button>
+                                                </div>
+                                                <div className='input-container'>
 
-                                    <div className='input-container'>
+                                                    <div className='w-75'>
+                                                        {generateType === 1 && (
+                                                            <TextField
+                                                                color='secondary'
+                                                                fullWidth
+                                                                multiline
+                                                                maxRows={7}
+                                                                label="Search Query"
+                                                                variant="standard"
+                                                                sx={{ color: 'white', letterSpacing: '2px' }}
+                                                                value={searchQuery}
+                                                                onChange={(e) => setSearchQuery(e.target.value)}
+                                                            />
+                                                        )}
+                                                        {generateType === 2 && (
+                                                            <>
+                                                                <TextField
+                                                                    color='secondary'
+                                                                    type='number'
+                                                                    fullWidth
+                                                                    label="Latitude"
+                                                                    variant="standard"
+                                                                    sx={{ color: 'white', letterSpacing: '2px' }}
+                                                                    value={latitude}
+                                                                    onChange={(e) => setLatitude(e.target.value)}
+                                                                />
+                                                                <br /><br />
+                                                                <TextField
+                                                                    color='secondary'
+                                                                    type='number'
+                                                                    fullWidth
+                                                                    label="Longitude"
+                                                                    variant="standard"
+                                                                    sx={{ color: 'white', letterSpacing: '2px' }}
+                                                                    value={longitude}
+                                                                    onChange={(e) => setLongitude(e.target.value)}
+                                                                />
+                                                            </>
+                                                        )}
+                                                    </div>
 
-                                        <div className='w-75'>
-                                            {generateType === 1 && (
-                                                <TextField
-                                                    color='secondary'
-                                                    fullWidth
-                                                    multiline
-                                                    maxRows={7}
-                                                    label="Search Query"
-                                                    variant="standard"
-                                                    sx={{ color: 'white', letterSpacing: '2px' }}
-                                                    value={searchQuery}
-                                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                                />
-                                            )}
-                                            {generateType === 2 && (
-                                                <>
-                                                    <TextField
-                                                        color='secondary'
-                                                        type='number'
-                                                        fullWidth
-                                                        label="Latitude"
-                                                        variant="standard"
-                                                        sx={{ color: 'white', letterSpacing: '2px' }}
-                                                        value={latitude}
-                                                        onChange={(e) => setLatitude(e.target.value)}
+                                                    {generateType === 3 && (
+                                                        <label
+                                                            className={`drag-drop-box ${isDragging ? 'drag-over' : ''}`}
+                                                            onDragEnter={handleDragEnter}
+                                                            onDragOver={handleDragEnter}
+                                                            onDragLeave={handleDragLeave}
+                                                            onDrop={handleDrop}
+                                                        >
+                                                            {selectedFiles.length === 0 && (
+                                                                <>Drag images here or click to upload</>
+                                                            )}
+                                                            <input
+                                                                type="file"
+                                                                className="file-input"
+                                                                multiple
+                                                                onChange={handleFileInputChange}
+                                                            />
+
+                                                            <ImageList className='image-list' cols={3} sx={{ marginBottom: '0', maxHeight: '350px', overflowY: 'auto' }}>
+                                                                {selectedFiles.map((file, index) => (
+                                                                    <ImageListItem className='image-item' key={index}>
+                                                                        <img src={URL.createObjectURL(file)} alt={`uploaded-${index}`} draggable='false' />
+                                                                        <i className="fas fa-times-circle delete-button" onClick={(e) => handleDelete(index, e)} style={{ color: 'white' }}></i>
+                                                                    </ImageListItem>
+                                                                ))}
+                                                            </ImageList>
+                                                        </label>
+                                                    )}
+                                                </div>
+                                                <Button variant='contained' onClick={generateImage} color='secondary' sx={{ padding: '20px', margin: '0 10%', letterSpacing: '3px', fontSize: '18px', borderRadius: '50px', width: '80%' }}>Generate 360&deg; Image</Button>
+                                            </div>
+                                            <div className='col-md-6 ps-5  order-1 order-md-2'>
+                                                <h1>Generate Image</h1>
+                                                <p style={{ height: '48px' }}>
+                                                    <Typewriter
+                                                        onInit={(typewriter) => {
+                                                            typewriter.typeString('Create breathtaking 360-degree images effortlessly and craft your panoramic masterpiece.')
+                                                                .start();
+                                                        }}
+                                                        options={{ delay: 30 }}
                                                     />
-                                                    <br /><br />
-                                                    <TextField
-                                                        color='secondary'
-                                                        type='number'
-                                                        fullWidth
-                                                        label="Longitude"
-                                                        variant="standard"
-                                                        sx={{ color: 'white', letterSpacing: '2px' }}
-                                                        value={longitude}
-                                                        onChange={(e) => setLongitude(e.target.value)}
-                                                    />
-                                                </>
-                                            )}
+                                                </p>
+                                            </div>
                                         </div>
-
-
-                                        {generateType === 3 && (
-                                            <label
-                                                className={`drag-drop-box ${isDragging ? 'drag-over' : ''}`}
-                                                onDragEnter={handleDragEnter}
-                                                onDragOver={handleDragEnter}
-                                                onDragLeave={handleDragLeave}
-                                                onDrop={handleDrop}
-                                            >
-                                                {selectedFiles.length === 0 && (
-                                                    <>Drag images here or click to upload</>
-                                                )}
-                                                <input
-                                                    type="file"
-                                                    className="file-input"
-                                                    multiple
-                                                    onChange={handleFileInputChange}
-                                                />
-
-                                                <ImageList className='image-list' cols={3} sx={{ marginBottom: '0', maxHeight: '350px', overflowY: 'auto' }}>
-                                                    {selectedFiles.map((file, index) => (
-                                                        <ImageListItem className='image-item' key={index}>
-                                                            <img src={URL.createObjectURL(file)} alt={`uploaded-${index}`} draggable='false' />
-                                                            <i className="fas fa-times-circle delete-button" onClick={(e) => handleDelete(index, e)} style={{ color: 'white' }}></i>
-                                                        </ImageListItem>
-                                                    ))}
-                                                </ImageList>
-                                            </label>
-                                        )}
-
-
-                                    <Button variant='contained' onClick={generateImage} color='secondary' sx={{ padding: '20px', margin: '0 10%', letterSpacing: '3px', fontSize: '18px', borderRadius: '50px', width: '80%' }}>Generate 360&deg; Image</Button>
-                                </div>
-                                <div className='col-md-6 ps-5  order-1 order-md-2'>
-                                    <h1>Generate Image</h1>
-                                    <p style={{ height: '48px' }}>
-                                        <Typewriter
-                                            onInit={(typewriter) => {
-                                                typewriter.typeString('Create breathtaking 360-degree images effortlessly and craft your panoramic masterpiece.')
-                                                    .start();
-                                            }}
-                                            options={{ delay: 30 }}
-                                        />
-                                    </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <Snackbar
+                        <Snackbar
                             open={open}
                             autoHideDuration={6000}
                             onClose={() => setOpen(false)}
@@ -370,7 +369,7 @@ const Generate = () => {
                                 {message}
                             </Alert>
                         </Snackbar>
-        </ThemeProvider>
+                    </ThemeProvider>
                 )}
         </>
     )

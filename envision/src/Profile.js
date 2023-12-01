@@ -362,6 +362,7 @@ const Profile = () => {
                 action={<IconButton onClick={() => setOpen(false)}><i style={{ color: 'gray' }} className="fa-solid fa-xmark"></i></IconButton>}
             />
         </ThemeProvider>
+        </div>
     )
 }
 
