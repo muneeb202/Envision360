@@ -234,12 +234,6 @@ const Profile = () => {
         setDelAnchorEl(e.currentTarget)
         setSelectedImageToDelete(image)
     }
-    const fullName = authUser['name'];
-    const formattedName = fullName
-        .split(' ')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
-
 
     return (
         <div style={{ height: 'max-content', minHeight: '100vh' }}>
@@ -249,12 +243,14 @@ const Profile = () => {
                 </div>
                 <div className='home-navbar d-flex justify-content-between'>
                     <a href='/'><img style={{ paddingTop: '10px' }} src={`${process.env.PUBLIC_URL}/images/newLogo.png`} className='logo' alt='background' draggable='false' /></a>
-                    <div className='m-5' onClick={() => setSidebar(true)}><Tooltip title='Click to view more details'><Avatar sx={{ bgcolor: red[500] }}>{authUser['name'].charAt(0).toUpperCase()}</Avatar></Tooltip></div>
+                    <div className='m-5' onClick={() => setSidebar(true)}><Tooltip title='Click to view more details'><Avatar sx={{ bgcolor: red[500] }}>{authUser.name.charAt(0).toUpperCase()}</Avatar></Tooltip></div>
                     <Drawer className='profile-container' open={sidebar} anchor='right' onClose={() => setSidebar(false)}>
                         <div className='sidebar '>
-                            <Avatar sx={{ bgcolor: red[500], height: 100, width: 100, fontSize: 30 }}>{authUser['name'].charAt(0).toUpperCase()}</Avatar><br />
-                            <h4>{formattedName}</h4><br />
-                            <p>{authUser['email']}</p>
+                            <Avatar sx={{ bgcolor: red[500], height: 100, width: 100, fontSize: 30 }}>{authUser.name.charAt(0).toUpperCase()}</Avatar><br />
+                            <h4>{authUser.name.split(' ')
+                                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                                .join(' ')}</h4><br />
+                            <p>{authUser.email}</p>
                             <p><span>Joined: </span>20 October 2023</p>
                         </div>
                     </Drawer>

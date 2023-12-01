@@ -3,9 +3,22 @@ from .models import Image, Comment
 
 
 class ImageSerializer(serializers.ModelSerializer):
+    username = serializers.ReadOnlyField(source="user.username")
+
     class Meta:
         model = Image
-        fields = "__all__"
+        fields = [
+            "id",
+            "title",
+            "description",
+            "image",
+            "created_date",
+            "posted",
+            "favourite",
+            "likes",
+            "user",
+            "username",
+        ]
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
@@ -16,6 +29,15 @@ class ImageSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    username = serializers.ReadOnlyField(source="user.username")
+
     class Meta:
         model = Comment
-        fields = "__all__"
+        fields = [
+            "id",
+            "description",
+            "image",
+            "created_date",
+            "user",
+            "username",
+        ]

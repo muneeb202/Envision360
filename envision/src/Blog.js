@@ -30,17 +30,14 @@ const Transition = forwardRef(function Transition(props, ref) {
 
 const Blog = () => {
 
-    const [likes, setLikes] = useState(Math.floor(Math.random() * 200));
+    const [likes, setLikes] = useState(0);
     const [liked, setLiked] = useState(false);
     const [open, setOpen] = useState(false);
     const [comments, setComments] = useState([]);
     const [Showcomments, setShowComments] = useState(false);
     const [blogPosts, setBlogPosts] = useState([]);
-    const user = localStorage.getItem('user');
-
-    // const handleClickOpen = () => {
-    //     setOpen(true);
-    // };
+    const [selectedPost, setSelectedPost] = useState(null);
+    const [comment, setComment] = useState('');
 
     const handleClose = () => {
         setOpen(false);
@@ -67,15 +64,10 @@ const Blog = () => {
         fetchBlogPosts();
     }, []);
 
-    const [selectedPost, setSelectedPost] = useState(null);
-
-
     const handleOpenDialog = (post) => {
         setSelectedPost(post);
         setOpen(true);
     };
-
-    const [comment, setComment] = useState('');
 
     const handleCommentChange = (event) => {
         setComment(event.target.value);
@@ -116,6 +108,8 @@ const Blog = () => {
             console.error('Error fetching comments:', error);
         }
     };
+
+
     return (
         <div style={{ height: 'max-content', minHeight: '100vh' }}>
             <ThemeProvider theme={theme}>
@@ -127,7 +121,7 @@ const Blog = () => {
                     {blogPosts.map((post) => (
                         <Card key={post.id} sx={{ width: '50vw', backgroundColor: '#000000b5' }} elevation={2}>
                             <CardHeader
-                                avatar={<Tooltip title={post.user}><Avatar sx={{ bgcolor: red[500] }}>{post.user}</Avatar></Tooltip>}
+                                avatar={<Tooltip title={post.username}><Avatar sx={{ bgcolor: red[500] }}>{post.username.charAt(0).toUpperCase()}</Avatar></Tooltip>}
                                 action={
                                     <Badge badgeContent={likes} max={99}>
                                         <i style={{ fontSize: '24px', color: 'red' }} onClick={likePost} class={liked ? "fas fa-heart" : "far fa-heart"}></i>
@@ -157,7 +151,7 @@ const Blog = () => {
                         {selectedPost && (
                             <Card elevation={2}>
                                 <CardHeader
-                                    avatar={<Tooltip title={selectedPost.user}><Avatar sx={{ bgcolor: red[500] }}>{selectedPost.user}</Avatar></Tooltip>}
+                                    avatar={<Tooltip title={selectedPost.username}><Avatar sx={{ bgcolor: red[500] }}>{selectedPost.username.charAt(0).toUpperCase()}</Avatar></Tooltip>}
                                     action={
                                         <Badge badgeContent={likes} max={99}>
                                             <IconButton style={{ fontSize: '24px', color: 'red' }} onClick={likePost}>
@@ -181,7 +175,7 @@ const Blog = () => {
                                             <ListItem key={comment.id}>
                                                 <ListItemAvatar>
                                                     <Avatar sx={{ bgcolor: index % 2 === 0 ? blue[700] : purple[700], height: '2vw', width: '2vw', fontSize: '15px' }}>
-                                                        {comment.user}
+                                                        {comment.username.charAt(0).toUpperCase()}
                                                     </Avatar>
                                                 </ListItemAvatar>
                                                 <ListItemText primary={comment.description} secondary={comment.created_date.slice(0, 10)} />
