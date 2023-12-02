@@ -163,10 +163,19 @@ class UpdateLikes(APIView):
         image_id = request.data.get("image_id")
 
         try:
-            image = Image.objects.get(user=user, id=image_id)
-            image.likes += 1
+            image = Image.objects.get(id=image_id, posted=True)
+
+            if user in image.liked_by.all():
+                # User has already liked, unlike
+                image.liked_by.remove(user)
+                image.likes -= 1
+            else:
+                # User hasn't liked, like
+                image.liked_by.add(user)
+                image.likes += 1
+
             image.save()
-            serializer = ImageSerializer(image)
+            serializer = ImageSerializer(image, context={"request": request})
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Image.DoesNotExist:
             return Response(
@@ -174,6 +183,29 @@ class UpdateLikes(APIView):
             )
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+# class UpdateLikes(APIView):
+#     def post(self, request):
+#         user_response = get_token_user(request.data.get("token"))
+#         if "error" in user_response:
+#             return Response(user_response["error"], user_response["status"])
+
+#         user = user_response["user"]
+#         image_id = request.data.get("image_id")
+
+#         try:
+#             image = Image.objects.get(user=user, id=image_id)
+#             image.likes += 1
+#             image.save()
+#             serializer = ImageSerializer(image)
+#             return Response(serializer.data, status=status.HTTP_200_OK)
+#         except Image.DoesNotExist:
+#             return Response(
+#                 {"error": "Image not found"}, status=status.HTTP_404_NOT_FOUND
+#             )
+#         except Exception as e:
+#             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UpdateFavourite(APIView):

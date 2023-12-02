@@ -30,8 +30,7 @@ const Transition = forwardRef(function Transition(props, ref) {
 
 const Blog = () => {
 
-    const [likes, setLikes] = useState(0);
-    const [liked, setLiked] = useState(false);
+    const [liked, setLiked] = useState([]);
     const [open, setOpen] = useState(false);
     const [comments, setComments] = useState([]);
     const [Showcomments, setShowComments] = useState(false);
@@ -39,17 +38,20 @@ const Blog = () => {
     const [selectedPost, setSelectedPost] = useState(null);
     const [comment, setComment] = useState('');
 
+    const likePost = async (post_id) => {
+        try {
+            const response = await axios.post('http://127.0.0.1:8000/api/update_likes/', {
+                token: localStorage.getItem('user'),
+                image_id: post_id,
+            });
+        } catch (error) {
+            console.error('Error updating likes:', error);
+        }
+    };
+
     const handleClose = () => {
         setOpen(false);
     };
-
-    const likePost = () => {
-        if (liked)
-            setLikes(likes - 1);
-        else
-            setLikes(likes + 1);
-        setLiked(!liked);
-    }
 
     useEffect(() => {
         const fetchBlogPosts = async () => {
@@ -109,7 +111,7 @@ const Blog = () => {
         }
     };
 
-
+    console.log(blogPosts)
     return (
         <div style={{ height: 'max-content', minHeight: '100vh' }}>
             <ThemeProvider theme={theme}>
@@ -123,8 +125,8 @@ const Blog = () => {
                             <CardHeader
                                 avatar={<Tooltip title={post.username}><Avatar sx={{ bgcolor: red[500] }}>{post.username.charAt(0).toUpperCase()}</Avatar></Tooltip>}
                                 action={
-                                    <Badge badgeContent={likes} max={99}>
-                                        <i style={{ fontSize: '24px', color: 'red' }} onClick={likePost} class={liked ? "fas fa-heart" : "far fa-heart"}></i>
+                                    <Badge badgeContent={post.likes} max={99}>
+                                        <i style={{ fontSize: '24px', color: 'red' }} onClick={() => likePost(post.id)} class={post.liked_by_user ? "fas fa-heart" : "far fa-heart"}></i>
                                     </Badge>
                                 }
                                 title={post.title}
@@ -153,8 +155,8 @@ const Blog = () => {
                                 <CardHeader
                                     avatar={<Tooltip title={selectedPost.username}><Avatar sx={{ bgcolor: red[500] }}>{selectedPost.username.charAt(0).toUpperCase()}</Avatar></Tooltip>}
                                     action={
-                                        <Badge badgeContent={likes} max={99}>
-                                            <IconButton style={{ fontSize: '24px', color: 'red' }} onClick={likePost}>
+                                        <Badge badgeContent={selectedPost.likes} max={99}>
+                                            <IconButton style={{ fontSize: '24px', color: 'red' }} onClick={() => likePost(selectedPost.id)}>
                                                 <i className={liked ? "fas fa-heart" : "far fa-heart"}></i>
                                             </IconButton>
                                         </Badge>
