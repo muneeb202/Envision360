@@ -88,7 +88,8 @@ const Profile = () => {
     const popOpen = Boolean(anchorEl);
     const [delanchorEl, setDelAnchorEl] = useState(null);
     const delpopOpen = Boolean(delanchorEl);
-
+    const [authUser, setUser] = useState('');
+    const user = localStorage.getItem('user');
     const [images, setImages] = useState([])
 
     useEffect(() => {
@@ -155,13 +156,13 @@ const Profile = () => {
         setPost(image);
     }
 
-    const handlePost = async() => {
+    const handlePost = async () => {
         await axios.post('http://localhost:8000/api/update_posted_status/', {
             token: localStorage.getItem('user'),
             image_id: post.id,
             description: post.description
         }).then(() => {
-            images.forEach((image, i) => image.id === post.id ? images[i].posted = true: null)
+            images.forEach((image, i) => image.id === post.id ? images[i].posted = true : null)
             filterImages();
             setShowDialog(false);
             setMessage("Posted Image to Blog");
@@ -185,6 +186,20 @@ const Profile = () => {
     }
 
     useEffect(() => {
+        const getUser = async () => {
+            try {
+                const response = await axios.post('http://localhost:8000/api/get_user/', { token: user })
+                console.log(response)
+                setUser(response.data);
+            }
+            catch (e) {
+                console.log(e);
+            }
+        }
+        getUser();
+    }, [])
+
+    useEffect(() => {
         filterImages();
     }, [searchQuery, showFav, showPosts, images]);
 
@@ -200,7 +215,7 @@ const Profile = () => {
         setDelAnchorEl(null);
     };
 
-    const handleDelete = async(index) => {
+    const handleDelete = async (index) => {
         await axios.post('http://localhost:8000/api/update_posted_status/', {
             token: localStorage.getItem('user'),
             image_id: images[index].id
@@ -228,12 +243,14 @@ const Profile = () => {
                 </div>
                 <div className='home-navbar d-flex justify-content-between'>
                     <a href='/'><img style={{ paddingTop: '10px' }} src={`${process.env.PUBLIC_URL}/images/newLogo.png`} className='logo' alt='background' draggable='false' /></a>
-                    <div className='m-5' onClick={() => setSidebar(true)}><Tooltip title='Click to view more details'><Avatar sx={{ bgcolor: red[500] }}>R</Avatar></Tooltip></div>
+                    <div className='m-5' onClick={() => setSidebar(true)}><Tooltip title='Click to view more details'><Avatar sx={{ bgcolor: red[500] }}>{authUser.name.charAt(0).toUpperCase()}</Avatar></Tooltip></div>
                     <Drawer className='profile-container' open={sidebar} anchor='right' onClose={() => setSidebar(false)}>
                         <div className='sidebar '>
-                            <Avatar sx={{ bgcolor: red[500], height: 100, width: 100, fontSize: 30 }}>R</Avatar><br />
-                            <h4>Ramon Sanchez</h4><br />
-                            <p>ramon_sanchez@gmail.com</p>
+                            <Avatar sx={{ bgcolor: red[500], height: 100, width: 100, fontSize: 30 }}>{authUser.name.charAt(0).toUpperCase()}</Avatar><br />
+                            <h4>{authUser.name.split(' ')
+                                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                                .join(' ')}</h4><br />
+                            <p>{authUser.email}</p>
                             <p><span>Joined: </span>20 October 2023</p>
                         </div>
                     </Drawer>
@@ -288,80 +305,80 @@ const Profile = () => {
                                         onComplete={() => animationRef.current.goToAndPlay(162, true)}
                                         animationData={emptyAnimation}
                                     />
-                                <p className='empty'>You have no such images!</p>
-                            </ImageListItem>
-                        </>
-                    ) : (
-                        filteredImages.map((image, index) => (
-                            <ImageListItem key={index} >
-                                <img src={'http://127.0.0.1:8000' + image.image} alt={image.title} />
-                                <ImageListItemBar
-                                    title={image.title}
-                                    subtitle={image.created_date}
-                                    actionIcon={
-                                        image.posted ? <>
-                                            <IconButton onClick={handleClick}>
-                                                <Tooltip title='Remove from Blog'><i className="fa-solid fa-xmark"></i></Tooltip>
-                                            </IconButton>
-                                            <Popover open={popOpen} anchorEl={anchorEl} onClose={handleRemoveClose}>
-                                                <div className='d-flex align-items-center confirmation'>
-                                                    <p>Confirm</p>
-                                                    <Button onClick={handleRemoveClose} sx={{ minWidth: 0 }}><i style={{ color: red[500], fontSize: 20 }} className="fa-solid fa-xmark"></i></Button>
-                                                    <Button onClick={() => handleDelete(index)} sx={{ minWidth: 0 }}><i style={{ color: green[500], fontSize: 20 }} className="fa-solid fa-check"></i></Button>
-                                                </div>
-                                            </Popover>
-                                        </>
-                                            :
-                                            <IconButton onClick={() => handleOpen(image)}>
-                                                <Tooltip title='Post to Blog'><i className="fa-solid fa-cloud-arrow-up"></i></Tooltip>
-                                            </IconButton>
-                                    }
-                                />
-                                <IconButton sx={{position:'absolute'}} onClick={() => favImage(index)}>
-                                    <i style={{ fontSize: 15 }} className={`${image.favourite ? 'fas' : 'far'} fa-star`} />
-                                </IconButton>
-                                <Tooltip title='Delete'><IconButton onClick={(e) => confirmDelete(image, e)} sx={{position:'absolute', right:0}}>
-                                    <i style={{ fontSize: 15 }} class="fa-solid fa-trash"></i>
-                                </IconButton></Tooltip>
-                                <Popover id={index} open={delpopOpen} anchorEl={delanchorEl} onClose={handleDeleteClose}>
-                                    <div className='d-flex align-items-center confirmation'>
-                                        <p>Delete</p>
-                                        <Button onClick={handleDeleteClose} sx={{ minWidth: 0 }}><i style={{ color: red[500], fontSize: 20 }} className="fa-solid fa-xmark"></i></Button>
-                                        <Button onClick={() => deleteImage(image)} sx={{ minWidth: 0 }}><i style={{ color: green[500], fontSize: 20 }} className="fa-solid fa-check"></i></Button>
-                                    </div>
-                                </Popover>
+                                    <p className='empty'>You have no such images!</p>
+                                </ImageListItem>
+                            </>
+                        ) : (
+                            filteredImages.map((image, index) => (
+                                <ImageListItem key={index} >
+                                    <img src={'http://127.0.0.1:8000' + image.image} alt={image.title} />
+                                    <ImageListItemBar
+                                        title={image.title}
+                                        subtitle={image.created_date}
+                                        actionIcon={
+                                            image.posted ? <>
+                                                <IconButton onClick={handleClick}>
+                                                    <Tooltip title='Remove from Blog'><i className="fa-solid fa-xmark"></i></Tooltip>
+                                                </IconButton>
+                                                <Popover open={popOpen} anchorEl={anchorEl} onClose={handleRemoveClose}>
+                                                    <div className='d-flex align-items-center confirmation'>
+                                                        <p>Confirm</p>
+                                                        <Button onClick={handleRemoveClose} sx={{ minWidth: 0 }}><i style={{ color: red[500], fontSize: 20 }} className="fa-solid fa-xmark"></i></Button>
+                                                        <Button onClick={() => handleDelete(index)} sx={{ minWidth: 0 }}><i style={{ color: green[500], fontSize: 20 }} className="fa-solid fa-check"></i></Button>
+                                                    </div>
+                                                </Popover>
+                                            </>
+                                                :
+                                                <IconButton onClick={() => handleOpen(image)}>
+                                                    <Tooltip title='Post to Blog'><i className="fa-solid fa-cloud-arrow-up"></i></Tooltip>
+                                                </IconButton>
+                                        }
+                                    />
+                                    <IconButton sx={{ position: 'absolute' }} onClick={() => favImage(index)}>
+                                        <i style={{ fontSize: 15 }} className={`${image.favourite ? 'fas' : 'far'} fa-star`} />
+                                    </IconButton>
+                                    <Tooltip title='Delete'><IconButton onClick={(e) => confirmDelete(image, e)} sx={{ position: 'absolute', right: 0 }}>
+                                        <i style={{ fontSize: 15 }} class="fa-solid fa-trash"></i>
+                                    </IconButton></Tooltip>
+                                    <Popover id={index} open={delpopOpen} anchorEl={delanchorEl} onClose={handleDeleteClose}>
+                                        <div className='d-flex align-items-center confirmation'>
+                                            <p>Delete</p>
+                                            <Button onClick={handleDeleteClose} sx={{ minWidth: 0 }}><i style={{ color: red[500], fontSize: 20 }} className="fa-solid fa-xmark"></i></Button>
+                                            <Button onClick={() => deleteImage(image)} sx={{ minWidth: 0 }}><i style={{ color: green[500], fontSize: 20 }} className="fa-solid fa-check"></i></Button>
+                                        </div>
+                                    </Popover>
 
-                            </ImageListItem>
-                        ))
-                    )}
-                </ImageList>
-            </Box>
-            <Dialog open={showDialog} onClose={handleClose} maxWidth='md'>
-                <DialogTitle>{post.title}</DialogTitle>
-                <DialogContent>
-                    <img style={{ maxWidth: '100%', maxHeight: '60vh' }} src={'http://127.0.0.1:8000' + post.image} alt={post.title} /><br /><br />
-                    <TextField
-                        autoFocus
-                        multiline
-                        label="Caption"
-                        fullWidth
-                        variant="standard"
-                        onChange={(e) => setPost({...post, description: e.target.value})}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handlePost}>Post</Button>
-                </DialogActions>
-            </Dialog>
-            <Snackbar
-                open={open}
-                autoHideDuration={6000}
-                onClose={() => setOpen(false)}
-                message={message}
-                action={<IconButton onClick={() => setOpen(false)}><i style={{ color: 'gray' }} className="fa-solid fa-xmark"></i></IconButton>}
-            />
-        </ThemeProvider>
+                                </ImageListItem>
+                            ))
+                        )}
+                    </ImageList>
+                </Box>
+                <Dialog open={showDialog} onClose={handleClose} maxWidth='md'>
+                    <DialogTitle>{post.title}</DialogTitle>
+                    <DialogContent>
+                        <img style={{ maxWidth: '100%', maxHeight: '60vh' }} src={'http://127.0.0.1:8000' + post.image} alt={post.title} /><br /><br />
+                        <TextField
+                            autoFocus
+                            multiline
+                            label="Caption"
+                            fullWidth
+                            variant="standard"
+                            onChange={(e) => setPost({ ...post, description: e.target.value })}
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose}>Cancel</Button>
+                        <Button onClick={handlePost}>Post</Button>
+                    </DialogActions>
+                </Dialog>
+                <Snackbar
+                    open={open}
+                    autoHideDuration={6000}
+                    onClose={() => setOpen(false)}
+                    message={message}
+                    action={<IconButton onClick={() => setOpen(false)}><i style={{ color: 'gray' }} className="fa-solid fa-xmark"></i></IconButton>}
+                />
+            </ThemeProvider>
         </div>
     )
 }
