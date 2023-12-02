@@ -195,7 +195,7 @@ const GetStarted = () => {
                                                                             onClick={() => setShowPassword(!showPassword)}
                                                                             onMouseDown={() => setShowPassword(!showPassword)}
                                                                         >
-                                                                            <i class={showPassword ? "far fa-eye" : "far fa-eye-slash"}></i>                                                              </IconButton>
+                                                                            <i className={showPassword ? "far fa-eye" : "far fa-eye-slash"}></i>                                                              </IconButton>
                                                                     </InputAdornment>
                                                                 )
                                                             }} />
@@ -236,7 +236,7 @@ const GetStarted = () => {
                                                                     onClick={() => setShowPassword(!showPassword)}
                                                                     onMouseDown={() => setShowPassword(!showPassword)}
                                                                 >
-                                                                    <i class={showPassword ? "far fa-eye" : "far fa-eye-slash"}></i>                                                              </IconButton>
+                                                                    <i className={showPassword ? "far fa-eye" : "far fa-eye-slash"}></i>                                                              </IconButton>
                                                             </InputAdornment>
                                                         )
                                                     }} />
@@ -262,7 +262,7 @@ const GetStarted = () => {
                                                                     onClick={() => setReShowPassword(!showRePassword)}
                                                                     onMouseDown={() => setReShowPassword(!showRePassword)}
                                                                 >
-                                                                    <i class={showRePassword ? "far fa-eye" : "far fa-eye-slash"}></i>
+                                                                    <i className={showRePassword ? "far fa-eye" : "far fa-eye-slash"}></i>
                                                                 </IconButton>
                                                             </InputAdornment>
                                                         )

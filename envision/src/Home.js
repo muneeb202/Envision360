@@ -76,8 +76,8 @@ const Home = () => {
                             <Drawer className='home-sidebar' open={sidebar} anchor='right' onClose={() => setSidebar(false)}>
                                 <div className='sidebar'>
                                     <div className='links'>
-                                        <ul class="navbar-nav" style={{ textAlign: 'center' }}>
-                                            <li class="nav-item">
+                                        <ul className="navbar-nav" style={{ textAlign: 'center' }}>
+                                            <li className="nav-item">
                                                 {name ? (
                                                     <div style={{ marginBottom: '10px', display: 'flex', justifyContent: 'center' }}>
                                                         <a href='/profile'><Avatar style={{ height: '80px', width: '80px', fontSize: 'x-large' }} sx={{ bgcolor: '#09687d' }}>{name.charAt(0).toUpperCase()}</Avatar></a>
@@ -85,22 +85,22 @@ const Home = () => {
                                                 ) :
                                                     (
                                                         <Link to={'/start'} >Get Started</Link>
-                                                        // <a class="nav-link" href='/start'>Get Started </a>
+                                                        // <a className="nav-link" href='/start'>Get Started </a>
                                                     )}
                                             </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href='/aboutus'>About Us</a>
+                                            <li className="nav-item">
+                                                <a className="nav-link" href='/aboutus'>About Us</a>
                                             </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href='/blog'>Blog</a>
+                                            <li className="nav-item">
+                                                <a className="nav-link" href='/blog'>Blog</a>
                                             </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href='/generate'>{user ? 'Generate' : 'Demo'}</a>
+                                            <li className="nav-item">
+                                                <a className="nav-link" href='/generate'>{user ? 'Generate' : 'Demo'}</a>
                                             </li>
                                         </ul>
 
-                                        <div class="nav-item logout-button" style={{ position: 'absolute', bottom: '0', textAlign: 'center' }} >
-                                            {user && <a class="nav-link" href onClick={userLogout}>Logout</a>}
+                                        <div className="nav-item logout-button" style={{ position: 'absolute', bottom: '0', textAlign: 'center' }} >
+                                            {user && <a className="nav-link" href onClick={userLogout}>Logout</a>}
                                         </div>
                                     </div>
                                 </div>

@@ -14,6 +14,7 @@ class Image(models.Model):
     posted = models.BooleanField(default=False)
     favourite = models.BooleanField(default=False)
     likes = models.PositiveIntegerField(default=0)
+    liked_by = models.ManyToManyField(User, related_name='liked_images', blank=True)
 
     def __str__(self):
         return self.title
@@ -32,3 +33,4 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Comment by {self.user.username} on {self.image.title}"
+ 
