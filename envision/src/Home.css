@@ -23,7 +23,7 @@
     display: flex;
     justify-content:space-between;
 }
-.links a {
+.links a{
     color: white;
     font-size: 18px;
     letter-spacing: 2px;
@@ -32,6 +32,21 @@
     padding: 5px 7px;
     text-decoration: none;
 }
+
+.sidebar a {
+    color: white;
+    font-size: 18px;
+    letter-spacing: 2px;
+    margin: 10px;
+    font-weight: 200;
+    padding: 5px 7px;
+    text-decoration: none;
+}
+
+.sidebar .active {
+    text-decoration:underline;
+}
+
 .links {
     padding: 20px;
 }

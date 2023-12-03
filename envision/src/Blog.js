@@ -1,7 +1,8 @@
-import { Avatar, Badge, Box, Button, Card, CardContent, CardHeader, CardMedia, CircularProgress, Collapse, Dialog, IconButton, InputAdornment, List, ListItem, ListItemAvatar, ListItemText, Slide, TextField, ThemeProvider, Tooltip, createTheme } from '@mui/material';
+import { Alert, Avatar, Badge, Box, Button, Card, CardContent, CardHeader, CardMedia, CircularProgress, Collapse, Dialog, IconButton, InputAdornment, List, ListItem, ListItemAvatar, ListItemText, Slide, Snackbar, TextField, ThemeProvider, Tooltip, createTheme } from '@mui/material';
 import { forwardRef, useEffect, useState } from 'react';
 import './Blog.css'
 import axios from 'axios';
+import Sidebar from './components/Sidebar';
 
 const theme = createTheme({
     palette: {
@@ -18,11 +19,6 @@ const theme = createTheme({
     }
 });
 
-// Use card initially with just picture and description
-// Use Dialog to display enlarged post with comments
-// Use List for comments
-// Use badge with heart icon for liking comments 
-// Use table for displaying all posts
 const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -35,6 +31,8 @@ const Blog = () => {
     const [selectedPost, setSelectedPost] = useState(null);
     const [comment, setComment] = useState('');
     const [isLoading, setIsLoading] = useState(false)
+    const [user, setUser] = useState(-1);
+    const [message, setMessage] = useState('');
 
     const likePost = async (post_id) => {
         try {
@@ -64,11 +62,13 @@ const Blog = () => {
                     likes: selectedPost.likes + (selectedPost.liked_by_user ? -1 : 1),
                 })
         } catch (error) {
-            console.error('Error updating likes:', error);
+            setMessage('You must be logged in to like posts!')
         }
     };
 
     const handleClose = () => {
+        setShowComments(false)
+        setComment('');
         setOpen(false);
     };
 
@@ -109,10 +109,10 @@ const Blog = () => {
                     comment_description: comment,
                 }
             );
-            setComments([...comments, response.data['comment']])
+            setComments([response.data['comment'], ...comments])
             setComment('')
         } catch (error) {
-            console.error('Error posting comment:', error.response.data);
+            setMessage('You must be logged in to comment!')
         }
         setIsLoading(false)
     };
@@ -127,16 +127,44 @@ const Blog = () => {
         try {
             const response = await axios.get('http://localhost:8000/api/comment/', {
                 params: {
-                    token: localStorage.getItem('user'),
                     post_id: post_id
                 }
             });
-            setComments(response.data);
-            console.log(response.data)
+
+            const sortedComments = response.data.sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
+
+            setComments(sortedComments);
+            console.log(sortedComments);
         } catch (error) {
             console.error('Error fetching comments:', error);
         }
     };
+
+    useEffect(() => {
+        const getUser = async () => {
+            try {
+                const response = await axios.post('http://localhost:8000/api/get_user/', { token: localStorage.getItem('user') })
+                console.log(response)
+                setUser(response.data['id']);
+            }
+            catch (e) {
+                console.log(e);
+            }
+        }
+        getUser();
+    }, [])
+
+    const deleteComment = async (id) => {
+        await axios.post('http://localhost:8000/api/delete_comment/', {
+            token: localStorage.getItem('user'),
+            comment: id
+        }).then((response) => {
+            console.log(response)
+            setComments(comments.filter((comment) => comment.id !== id))
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
 
     function stringToColor(string) {
         let hash = 0;
@@ -162,7 +190,7 @@ const Blog = () => {
                 <div className='image-container'>
                     <img src={`${process.env.PUBLIC_URL}/images/blogbg.png`} alt='background' draggable='false' />
                 </div>
-                <a href='/'><img style={{ paddingTop: '10px' }} src={`${process.env.PUBLIC_URL}/images/newLogo.png`} className='logo' alt='background' draggable='false' /></a>
+                <Sidebar />
                 <div className='d-flex flex-column align-items-center'>
                     {blogPosts.map((post, index) => (
                         <Card key={post.id} sx={{ width: '50vw', backgroundColor: '#000000b5', marginBottom: '50px' }} elevation={2}>
@@ -210,49 +238,69 @@ const Blog = () => {
                                     title={selectedPost.title}
                                     subheader={selectedPost.created_date}
                                 />
-                                <CardMedia component='img' sx={{ maxHeight: '400px', maxWidth: '100%' }} draggable='false' src={'http://127.0.0.1:8000' + selectedPost.image} alt={selectedPost.title} />
+                                <CardMedia component='img' sx={{ maxHeight: '400px', width:'60vw' }} draggable='false' src={'http://127.0.0.1:8000' + selectedPost.image} alt={selectedPost.title} />
                                 <CardContent>
                                     <p style={{ fontWeight: '200' }}>{selectedPost.description}</p>
                                 </CardContent>
                                 <Button variant='contained' onClick={() => setShowComments(!Showcomments)} sx={{ width: '100%', backgroundColor: '#6666667d', letterSpacing: '2px' }}>{Showcomments ? 'Hide' : 'View'} Comments</Button>
                                 <Collapse in={Showcomments} timeout="auto" unmountOnExit>
                                     <List dense={true} sx={{ bgcolor: '#66666630' }}>
+                                        <TextField style={{ width: '100%' }}
+                                            label="Add a comment"
+                                            variant="outlined"
+                                            value={comment}
+                                            onChange={handleCommentChange}
+                                            multiline
+                                            InputProps={{
+                                                endAdornment:
+                                                    <InputAdornment position='end'>
+                                                        {isLoading ? (
+                                                            <CircularProgress />
+                                                        ) : (
+                                                            <IconButton onClick={postComment} disabled={comment.length === 0}>
+                                                                <i className="fa-solid fa-paper-plane"></i>
+                                                            </IconButton>
+                                                        )}
+
+                                                    </InputAdornment>
+                                            }}
+                                        />
                                         {Object.values(comments).map((comment, index) => (
-                                            <ListItem key={comment.id}>
+                                            <ListItem key={comment.id}
+                                                secondaryAction={user === comment.user &&
+                                                    <Tooltip title='delete' placement='top-start'>
+                                                        <IconButton edge="end" onClick={() => deleteComment(comment.id)}>
+                                                            <i className="fa-solid fa-trash" style={{ fontSize: '15px' }}></i>
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                }
+                                            >
                                                 <ListItemAvatar>
-                                                    <Avatar sx={{ bgcolor: stringToColor(comment.username), height: '2vw', width: '2vw', fontSize: '15px' }}>
-                                                        {comment.username.charAt(0).toUpperCase()}
-                                                    </Avatar>
+                                                    <Tooltip title={comment.username} placement='top-end'>
+                                                        <Avatar sx={{ bgcolor: stringToColor(comment.username), height: '2vw', width: '2vw', fontSize: '15px' }}>
+                                                            {comment.username.charAt(0).toUpperCase()}
+                                                        </Avatar>
+                                                    </Tooltip>
                                                 </ListItemAvatar>
                                                 <ListItemText primary={comment.description} secondary={comment.created_date.slice(0, 10)} />
                                             </ListItem>
                                         ))}
                                     </List>
-                                    <TextField style={{ width: '100%' }}
-                                        label="Add a comment"
-                                        variant="outlined"
-                                        value={comment}
-                                        onChange={handleCommentChange}
-                                        InputProps={{
-                                            endAdornment:
-                                                <InputAdornment position='end'>
-                                                    {isLoading ? (
-                                                        <CircularProgress />
-                                                    ) : (
-                                                        <IconButton onClick={postComment} disabled={comment.length === 0}>
-                                                            <i className="fa-solid fa-paper-plane"></i>
-                                                        </IconButton>
-                                                    )}
-
-                                                </InputAdornment>
-                                        }}
-                                    />
                                 </Collapse>
                             </Card>
                         )}
                     </Dialog>
 
                 </div>
+                <Snackbar
+                    open={message}
+                    autoHideDuration={3000}
+                    onClose={() => setMessage('')}
+                >
+                    <Alert onClose={() => setMessage('')} severity="error" sx={{ fontSize: '17px', letterSpacing: '2px' }}>
+                        {message}
+                    </Alert>
+                </Snackbar>
             </ThemeProvider>
         </div>
     )

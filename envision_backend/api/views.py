@@ -83,6 +83,7 @@ class GetUser(APIView):
             return Response(user_response["error"], user_response["status"])
         return Response(
             {
+                "id": user_response['user'].id,
                 "name": user_response["user"].username,
                 "email": user_response["user"].email,
             },
@@ -260,14 +261,13 @@ class DeleteImage(APIView):
 
 class BlogPosts(APIView):
     def get(self, request):
-        user_response = get_token_user(request.query_params.get("token"))
-        if "error" in user_response:
-            return Response(user_response["error"], user_response["status"])
-
-        user = user_response["user"]
+        user_response = get_token_user(request.query_params.get("token", None))
         try:
             blog_posts = Image.objects.filter(posted=True)
-            serializer = ImageSerializer(blog_posts, many=True, context={'user': user})
+            if "error" not in user_response:
+                serializer = ImageSerializer(blog_posts, many=True, context={'user': user_response["user"]})
+            else:
+                serializer = ImageSerializer(blog_posts, many=True)
 
             return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -311,14 +311,6 @@ class CommentOnPost(APIView):
 
     def get(self, request):
         try:
-            # Validate and get the user from the token
-            user_response = get_token_user(request.query_params.get("token"))
-            if "error" in user_response:
-                return Response(
-                    {"error": user_response["error"]}, status=user_response["status"]
-                )
-
-            user = user_response["user"]
             post_id = request.query_params.get("post_id")
             if not post_id:
                 return Response(
@@ -343,3 +335,20 @@ class CommentOnPost(APIView):
             return Response(
                 {"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+class DeleteComment(APIView):
+    def post(self, request):
+        user_response = get_token_user(request.data.get("token"))
+        if "error" in user_response:
+            return Response(user_response["error"], user_response["status"])
+        user = user_response["user"]
+
+        comment_id = request.data.get("comment")
+
+        try:
+            comment = Comment.objects.get(id=comment_id, user=user)
+            comment.delete()
+            return Response({"message": "Comment deleted successfully"}, status=status.HTTP_200_OK)
+
+        except Comment.DoesNotExist:
+            return Response({"error": "Comment not found"}, status=status.HTTP_404_NOT_FOUND)
