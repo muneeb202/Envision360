@@ -33,6 +33,7 @@ const MemoizedParticles = React.memo(({ options }) => (
 
 const ImageViewer = ({ image }) => {
     const [title, setTitle] = useState('');
+    const [message, setMessage] = useState('')
     const navigate = useNavigate();
 
     const handleSave = async () => {
@@ -47,7 +48,7 @@ const ImageViewer = ({ image }) => {
         }).then(() => {
             navigate('/profile')
         }).catch((error => {
-            console.log(error)
+            setMessage('You must be logged in to save!')
         }));
     }
 
@@ -59,6 +60,16 @@ const ImageViewer = ({ image }) => {
                     <TextField id="outlined-basic" label="Title" variant="outlined" onChange={(e) => setTitle(e.target.value)} />
                     <Button onClick={handleSave} variant='contained' color='success' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px', margin: '30px 0px' }}>Save</Button>
                     <Button variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px' }}>Re-Render</Button>
+
+                    <Snackbar
+                        open={message}
+                        autoHideDuration={3000}
+                        onClose={() => navigate('/start')}
+                    >
+                        <Alert onClose={() => navigate('/start')} severity="error" sx={{ fontSize: '17px', letterSpacing: '1px' }}>
+                            {message}
+                        </Alert>
+                    </Snackbar>
                 </ThemeProvider>
             </div>
         </div>
@@ -259,8 +270,8 @@ const Generate = () => {
                             </div>
                             <div className="overlay">
                                 <div className="generate-container">
-                                    <Sidebar/>
-                                    <div className="container pt-3" style={{ minWidth: '100%', minHeight:'80vh'}}>
+                                    <Sidebar />
+                                    <div className="container pt-3" style={{ minWidth: '100%', minHeight: '80vh' }}>
                                         <div className='row generate-row d-flex align-items-center h-100'>
                                             <div className='col-md-6 px-5  order-2 order-md-1'>
                                                 <div className='generate-type'>

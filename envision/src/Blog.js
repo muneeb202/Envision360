@@ -297,7 +297,7 @@ const Blog = () => {
                     autoHideDuration={3000}
                     onClose={() => setMessage('')}
                 >
-                    <Alert onClose={() => setMessage('')} severity="error" sx={{ fontSize: '17px', letterSpacing: '2px' }}>
+                    <Alert onClose={() => setMessage('')} severity="error" sx={{ fontSize: '17px', letterSpacing: '1px' }}>
                         {message}
                     </Alert>
                 </Snackbar>
