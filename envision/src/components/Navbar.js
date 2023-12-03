@@ -67,14 +67,14 @@ const Navbar = () => {
                     <a className='demoButton' href='/generate'>{name ? 'Generate' : 'Demo'}</a>
                     {name && (
                         <Tooltip title='Click to view profile'>
-                            <Link to='/profile'><Avatar sx={{ bgcolor: stringToColor(name), color:'black' }}>{name.charAt(0).toUpperCase()}</Avatar></Link>
+                            <Link to='/profile'><Avatar sx={{ bgcolor: stringToColor(name), color: 'black' }}>{name.charAt(0).toUpperCase()}</Avatar></Link>
                         </Tooltip>
                     )}
                 </div>
             </div>
             <div className='home-navbar d-md-none'>
                 <Tooltip title='Click to view more details'>
-                    <IconButton className='m-5' onClick={() => setSidebar(true)}><i className="fa-solid fa-ellipsis-vertical" style={{ color: '#ffffff', fontSize: 'x-large' }}></i></IconButton>
+                    <IconButton className='m-5' onClick={() => setSidebar(true)}><i className="fa-solid fa-bars-staggered" style={{ color: '#ffffff', fontSize: 'x-large' }}></i></IconButton>
                 </Tooltip>
                 <Drawer className='home-sidebar' open={sidebar} anchor='right' onClose={() => setSidebar(false)}>
                     <div className='sidebar'>
@@ -84,7 +84,7 @@ const Navbar = () => {
                                     {name ? (
                                         <div style={{ marginBottom: '10px', display: 'flex', justifyContent: 'center' }}>
                                             <Tooltip title='Click to view profile'>
-                                                <Link to='/profile'><Avatar style={{ height: '80px', width: '80px', fontSize: 'x-large' }} sx={{ bgcolor: stringToColor(name), color:'black' }}>{name.charAt(0).toUpperCase()}</Avatar></Link>
+                                                <Link to='/profile'><Avatar style={{ height: '80px', width: '80px', fontSize: 'x-large' }} sx={{ bgcolor: stringToColor(name), color: 'black' }}>{name.charAt(0).toUpperCase()}</Avatar></Link>
                                             </Tooltip>
                                         </div>
                                     ) :
