@@ -44,7 +44,9 @@ const Sidebar = () => {
         }
         return color
     }
-
+    const JoinedDate = new Date(user.date_joined);
+    const options = { day: 'numeric', month: 'long', year: 'numeric' }
+    const formattedDate = new Intl.DateTimeFormat('en-GB', options).format(JoinedDate)
     return (
         <div className='home-navbar d-flex justify-content-between'>
             <a href='/'><img style={{ paddingTop: '10px' }} src={`${process.env.PUBLIC_URL}/images/newLogo.png`} className='logo' alt='background' draggable='false' /></a>
@@ -58,8 +60,9 @@ const Sidebar = () => {
                                 .map(word => word.charAt(0).toUpperCase() + word.slice(1))
                                 .join(' ')}</h4><br />
                             <p>{user.email}</p>
-                            <p><span>Joined: </span>20 October 2023</p>
+                            <p><span>Joined: </span>{formattedDate}</p>
                             <br />
+                            <Link to='/' className={isActive('/')}>Home</Link>
                             <Link to='/generate' className={isActive('/generate')}>Generate</Link>
                             <Link to='/blog' className={isActive('/blog')}>Blog</Link>
                             <Link to='/profile' className={isActive('/profile')}>Profile</Link>

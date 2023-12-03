@@ -86,6 +86,7 @@ class GetUser(APIView):
                 "id": user_response['user'].id,
                 "name": user_response["user"].username,
                 "email": user_response["user"].email,
+                "date_joined":user_response["user"].date_joined,
             },
             user_response["status"],
         )
