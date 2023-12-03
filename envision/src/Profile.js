@@ -5,6 +5,8 @@ import emptyAnimation from './animations/empty.json'
 import './Profile.css'
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
 import axios from 'axios';
+import Sidebar from './components/Sidebar';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme({
     palette: {
@@ -69,7 +71,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Profile = () => {
-    const [sidebar, setSidebar] = useState(false);
     const [showDialog, setShowDialog] = useState(false);
     const [showFav, setShowFav] = useState(false);
     const [post, setPost] = useState({})
@@ -78,7 +79,6 @@ const Profile = () => {
     const [message, setMessage] = useState('');
     const [selectedImageToDelete, setSelectedImageToDelete] = useState(null);
     const [filteredImages, setFilteredImages] = useState([]);
-    const [open, setOpen] = useState(false);
     const animationRef = useRef();
     useEffect(() => {
         animationRef.current = <LottieRefCurrentProps />;
@@ -88,9 +88,9 @@ const Profile = () => {
     const popOpen = Boolean(anchorEl);
     const [delanchorEl, setDelAnchorEl] = useState(null);
     const delpopOpen = Boolean(delanchorEl);
-    const [authUser, setUser] = useState({name:' ', email:' '});
-    const user = localStorage.getItem('user');
+    const [loaded, setLoaded] = useState(false)
     const [images, setImages] = useState([])
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchImages = async () => {
@@ -100,12 +100,15 @@ const Profile = () => {
                         token: localStorage.getItem('user')
                     }
                 });
-                setImages(response.data)
+    
+                setImages(response.data);
+
+                setTimeout(() => setLoaded(true), 1000);
             } catch (error) {
-                console.error('Error fetching images:', error);
+                navigate('/');
             }
         };
-
+    
         fetchImages();
     }, []);
 
@@ -166,7 +169,6 @@ const Profile = () => {
             filterImages();
             setShowDialog(false);
             setMessage("Posted Image to Blog");
-            setOpen(true);
         }).catch((error => {
             console.log(error)
         }));
@@ -184,20 +186,6 @@ const Profile = () => {
             console.log(error)
         }));
     }
-
-    useEffect(() => {
-        const getUser = async () => {
-            try {
-                const response = await axios.post('http://localhost:8000/api/get_user/', { token: user })
-                console.log(response)
-                setUser(response.data);
-            }
-            catch (e) {
-                console.log(e);
-            }
-        }
-        getUser();
-    }, [])
 
     useEffect(() => {
         filterImages();
@@ -224,7 +212,6 @@ const Profile = () => {
             filterImages();
             setAnchorEl(null);
             setMessage("Deleted Image from Blog");
-            setOpen(true);
         }).catch((error => {
             console.log(error)
         }));
@@ -241,20 +228,9 @@ const Profile = () => {
                 <div className='image-container'>
                     <img src={`${process.env.PUBLIC_URL}/images/profilebg.png`} alt='background' draggable='false' />
                 </div>
-                <div className='home-navbar d-flex justify-content-between'>
-                    <a href='/'><img style={{ paddingTop: '10px' }} src={`${process.env.PUBLIC_URL}/images/newLogo.png`} className='logo' alt='background' draggable='false' /></a>
-                    <div className='m-5' onClick={() => setSidebar(true)}><Tooltip title='Click to view more details'><Avatar sx={{ bgcolor: red[500] }}>{authUser.name.charAt(0).toUpperCase()}</Avatar></Tooltip></div>
-                    <Drawer className='profile-container' open={sidebar} anchor='right' onClose={() => setSidebar(false)}>
-                        <div className='sidebar '>
-                            <Avatar sx={{ bgcolor: red[500], height: 100, width: 100, fontSize: 30 }}>{authUser.name.charAt(0).toUpperCase()}</Avatar><br />
-                            <h4>{authUser.name.split(' ')
-                                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                                .join(' ')}</h4><br />
-                            <p>{authUser.email}</p>
-                            <p><span>Joined: </span>20 October 2023</p>
-                        </div>
-                    </Drawer>
-                </div>
+                
+                <Sidebar />
+
                 <Box sx={{ width: '90vw', paddingLeft: '10vw' }}>
                     <AppBar position="static" sx={{ backgroundColor: 'transparent' }}>
                         <Toolbar>
@@ -296,7 +272,7 @@ const Profile = () => {
                     <br />
                     <ImageList cols={matchDownMd ? 3 : 5} gap={8}>
                         {filteredImages.length === 0 ? (
-                            <>
+                            loaded && 
                                 <ImageListItem cols={matchDownMd ? 3 : 5}>
                                     <Lottie
                                         style={{ maxHeight: 300 }}
@@ -307,7 +283,7 @@ const Profile = () => {
                                     />
                                     <p className='empty'>You have no such images!</p>
                                 </ImageListItem>
-                            </>
+                            
                         ) : (
                             filteredImages.map((image, index) => (
                                 <ImageListItem key={index} >
@@ -372,11 +348,11 @@ const Profile = () => {
                     </DialogActions>
                 </Dialog>
                 <Snackbar
-                    open={open}
+                    open={message}
                     autoHideDuration={6000}
-                    onClose={() => setOpen(false)}
+                    onClose={() => setMessage('')}
                     message={message}
-                    action={<IconButton onClick={() => setOpen(false)}><i style={{ color: 'gray' }} className="fa-solid fa-xmark"></i></IconButton>}
+                    action={<IconButton onClick={() => setMessage('')}><i style={{ color: 'gray' }} className="fa-solid fa-xmark"></i></IconButton>}
                 />
             </ThemeProvider>
         </div>

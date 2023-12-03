@@ -10,6 +10,7 @@ import Lottie, { LottieRefCurrentProps } from 'lottie-react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'
 import Typewriter from 'typewriter-effect';
+import Sidebar from './components/Sidebar';
 
 const theme = createTheme({
     palette: {
@@ -258,10 +259,8 @@ const Generate = () => {
                             </div>
                             <div className="overlay">
                                 <div className="generate-container">
-                                    <div className='navbar'>
-                                        <a href='/'><img style={{ paddingTop: '10px' }} src={`${process.env.PUBLIC_URL}/images/newLogo.png`} className='logo' alt="Logo" draggable='false' /></a>
-                                    </div>
-                                    <div className="container pt-5" style={{ minWidth: '100%', minHeight:'80vh'}}>
+                                    <Sidebar/>
+                                    <div className="container pt-3" style={{ minWidth: '100%', minHeight:'80vh'}}>
                                         <div className='row generate-row d-flex align-items-center h-100'>
                                             <div className='col-md-6 px-5  order-2 order-md-1'>
                                                 <div className='generate-type'>
