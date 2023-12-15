@@ -7,6 +7,7 @@ import Blog from './Blog';
 import AboutUs from './About';
 import Profile from './Profile';
 import Footer from './components/Footer';
+import ImageViewer from './components/ImageViewer';
 
 function App() {
   // const location = useLocation()
@@ -20,8 +21,8 @@ function App() {
           <Route path='/blog' element={<Blog />} />
           <Route path='/aboutus' element={<AboutUs />} />
           <Route path='/profile' element={<Profile />} />
+          <Route path='/viewer' element={<ImageViewer />} />
         </Routes>
-        <Footer />
         {/* <Footer className={location.pathname === '/generate' && 'd-none'} /> */}
       </Router>
     </div>

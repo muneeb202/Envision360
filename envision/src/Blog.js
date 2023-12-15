@@ -3,6 +3,8 @@ import { forwardRef, useEffect, useState } from 'react';
 import './Blog.css'
 import axios from 'axios';
 import Sidebar from './components/Sidebar';
+import ImageViewer from './components/ImageViewer';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme({
     palette: {
@@ -33,6 +35,7 @@ const Blog = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [user, setUser] = useState(-1);
     const [message, setMessage] = useState('');
+    const navigate = useNavigate()
 
     const likePost = async (post_id) => {
         try {
@@ -238,7 +241,7 @@ const Blog = () => {
                                     title={selectedPost.title}
                                     subheader={selectedPost.created_date}
                                 />
-                                <CardMedia component='img' sx={{ maxHeight: '400px', width:'60vw' }} draggable='false' src={'http://127.0.0.1:8000' + selectedPost.image} alt={selectedPost.title} />
+                                <CardMedia onClick={() => navigate(`/viewer`)} component='img' sx={{ maxHeight: '400px', width:'60vw' }} draggable='false' src={'http://127.0.0.1:8000' + selectedPost.image} alt={selectedPost.title} />
                                 <CardContent>
                                     <p style={{ fontWeight: '200' }}>{selectedPost.description}</p>
                                 </CardContent>
@@ -306,4 +309,4 @@ const Blog = () => {
     )
 }
 
-export default Blog;
+export default Blog; 

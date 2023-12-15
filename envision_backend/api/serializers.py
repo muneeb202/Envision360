@@ -30,8 +30,9 @@ class ImageSerializer(serializers.ModelSerializer):
         return representation
 
     def get_liked_by_user(self, instance):
-        user = self.context.get('user')
+        user = self.context.get("user")
         return instance.liked_by.filter(pk=user.pk).exists() if user else False
+
 
 class CommentSerializer(serializers.ModelSerializer):
     username = serializers.ReadOnlyField(source="user.username")
