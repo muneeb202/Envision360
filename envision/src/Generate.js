@@ -1,5 +1,5 @@
 import './Generate.css'
-import { Alert, Box, Button, IconButton, ImageList, ImageListItem, LinearProgress, Snackbar, TextField, ThemeProvider, createTheme, useThemeProps } from '@mui/material';
+import { Alert, Box, Button, ImageList, ImageListItem, LinearProgress, Snackbar, TextField, ThemeProvider, createTheme } from '@mui/material';
 import React, { useRef, useState } from 'react';
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
@@ -54,7 +54,7 @@ const ImageViewer = ({ image }) => {
 
     return (
         <div className='image-viewer'>
-            <img src={URL.createObjectURL(image)} />
+            <img src={image} alt='StitchedImage' />
             <div className='button-container'>
                 <ThemeProvider theme={theme}>
                     <TextField id="outlined-basic" label="Title" variant="outlined" onChange={(e) => setTitle(e.target.value)} />
@@ -220,10 +220,31 @@ const Generate = () => {
         });
     }
 
-    const handleCompletion = () => {
+    const handleCompletion = async () => {
         console.log('completed');
-        setCompletedImage(selectedFiles[0])
+        await handleStitchImages();
     }
+
+    const handleStitchImages = async () => {
+        try {
+            const response = await axios.post('http://localhost:8000/api/stitch_images/', {
+                images: selectedFiles
+            }, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            console.log(response.data)
+            if (response.data.success) {
+                setCompletedImage('http://localhost:8000' + response.data.stitched_image_url);
+            } else {
+                console.error('Image stitching failed:', response.data.message);
+            }
+        } catch (error) {
+            console.error('Error uploading images:', error);
+        }
+    };
+
 
     const generateImage = () => {
         switch (generateType) {

@@ -7,6 +7,51 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.db.utils import IntegrityError
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
+from django.http import JsonResponse
+import cv2
+from django.http import HttpResponse
+from django.conf import settings
+
+
+class StitchImage(APIView):
+    parser_classes = [MultiPartParser]
+
+    def post(self, request):
+        uploaded_images = request.data.getlist("images[]")
+
+        if not uploaded_images:
+            return Response(
+                {"error": "Images not provided"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            images = []
+
+            for uploaded_file in uploaded_images:
+                img = cv2.imread(uploaded_file.temporary_file_path())
+                images.append(img)
+
+            image_stitcher = cv2.Stitcher_create()
+            print("stitching")
+            error, stitched_img = image_stitcher.stitch(images)
+
+            if not error:
+                stitched_image_path = os.path.join(
+                    settings.MEDIA_ROOT, "stitched_image.jpg"
+                )
+                cv2.imwrite(stitched_image_path, stitched_img)
+                stitched_image_url = os.path.join(
+                    settings.MEDIA_URL, "stitched_image.jpg"
+                ).replace("\\", "/")
+                return JsonResponse(
+                    {"success": True, "stitched_image_url": stitched_image_url}
+                )
+            else:
+                return JsonResponse(
+                    {"success": False, "message": "Image stitching failed"}
+                )
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 def get_token_user(token):
@@ -83,10 +128,10 @@ class GetUser(APIView):
             return Response(user_response["error"], user_response["status"])
         return Response(
             {
-                "id": user_response['user'].id,
+                "id": user_response["user"].id,
                 "name": user_response["user"].username,
                 "email": user_response["user"].email,
-                "date_joined":user_response["user"].date_joined,
+                "date_joined": user_response["user"].date_joined,
             },
             user_response["status"],
         )
@@ -163,7 +208,7 @@ class UpdateLikes(APIView):
 
         user = user_response["user"]
         image_id = request.data.get("image_id")
-        print('9999999')
+        print("9999999")
         try:
             image = Image.objects.get(id=image_id, posted=True)
             print(image.liked_by.all())
@@ -266,7 +311,9 @@ class BlogPosts(APIView):
         try:
             blog_posts = Image.objects.filter(posted=True)
             if "error" not in user_response:
-                serializer = ImageSerializer(blog_posts, many=True, context={'user': user_response["user"]})
+                serializer = ImageSerializer(
+                    blog_posts, many=True, context={"user": user_response["user"]}
+                )
             else:
                 serializer = ImageSerializer(blog_posts, many=True)
 
@@ -337,6 +384,7 @@ class CommentOnPost(APIView):
                 {"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
+
 class DeleteComment(APIView):
     def post(self, request):
         user_response = get_token_user(request.data.get("token"))
@@ -349,7 +397,11 @@ class DeleteComment(APIView):
         try:
             comment = Comment.objects.get(id=comment_id, user=user)
             comment.delete()
-            return Response({"message": "Comment deleted successfully"}, status=status.HTTP_200_OK)
+            return Response(
+                {"message": "Comment deleted successfully"}, status=status.HTTP_200_OK
+            )
 
         except Comment.DoesNotExist:
-            return Response({"error": "Comment not found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                {"error": "Comment not found"}, status=status.HTTP_404_NOT_FOUND
+            )
