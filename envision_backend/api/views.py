@@ -9,6 +9,7 @@ from django.db.utils import IntegrityError
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from django.http import JsonResponse
 import cv2
+import numpy as np
 from django.http import HttpResponse
 from django.conf import settings
 
@@ -17,6 +18,7 @@ class StitchImage(APIView):
     parser_classes = [MultiPartParser]
 
     def post(self, request):
+        print(request.data)
         uploaded_images = request.data.getlist("images[]")
 
         if not uploaded_images:
@@ -28,7 +30,12 @@ class StitchImage(APIView):
             images = []
 
             for uploaded_file in uploaded_images:
-                img = cv2.imread(uploaded_file.temporary_file_path())
+                if hasattr(uploaded_file, 'temporary_file_path'):
+                    # For TemporaryUploadedFile
+                    img = cv2.imread(uploaded_file.temporary_file_path())
+                else:
+                    # For InMemoryUploadedFile
+                    img = cv2.imdecode(np.fromstring(uploaded_file.read(), np.uint8), cv2.IMREAD_UNCHANGED)
                 images.append(img)
 
             image_stitcher = cv2.Stitcher_create()

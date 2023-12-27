@@ -21,9 +21,9 @@ function App() {
           <Route path='/blog' element={<Blog />} />
           <Route path='/aboutus' element={<AboutUs />} />
           <Route path='/profile' element={<Profile />} />
-          <Route path='/viewer' element={<ImageViewer />} />
+          <Route path='/viewer/:path' element={<ImageViewer />} />
         </Routes>
-        {/* <Footer className={location.pathname === '/generate' && 'd-none'} /> */}
+        {/* <Footer /> */}
       </Router>
     </div>
 

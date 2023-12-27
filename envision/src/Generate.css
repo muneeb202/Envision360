@@ -69,7 +69,8 @@
     margin-bottom: 20px;
 }
 
-.generate-row p {
+.generate-typewriter {
+    height: 48px;
     font-weight: 200;
     letter-spacing: 2px;
 }
@@ -213,7 +214,7 @@
     }
 }
 
-.loading-screen p {
+.loading-typewriter {
     width: 50%;
     height: 48px;
     font-weight: 200;
