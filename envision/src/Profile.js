@@ -287,7 +287,7 @@ const Profile = () => {
                         ) : (
                             filteredImages.map((image, index) => (
                                 <ImageListItem key={index} >
-                                    <img src={'http://127.0.0.1:8000' + image.image} alt={image.title} />
+                                    <img style={{height:'300px'}} src={'http://127.0.0.1:8000' + image.image} alt={image.title} />
                                     <ImageListItemBar
                                         title={image.title}
                                         subtitle={image.created_date}

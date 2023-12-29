@@ -8,10 +8,14 @@ from rest_framework import status
 from django.db.utils import IntegrityError
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from django.http import JsonResponse
+from django.core.files.uploadedfile import InMemoryUploadedFile
 import cv2
+import uuid
 import numpy as np
+from django.core.files.storage import default_storage
 from django.http import HttpResponse
 from django.conf import settings
+from stitching import Stitcher
 
 
 class StitchImage(APIView):
@@ -19,6 +23,7 @@ class StitchImage(APIView):
 
     def post(self, request):
         print(request.data)
+        start = int(request.data['thresh'])
         uploaded_images = request.data.getlist("images[]")
 
         if not uploaded_images:
@@ -28,35 +33,42 @@ class StitchImage(APIView):
 
         try:
             images = []
-
-            for uploaded_file in uploaded_images:
-                if hasattr(uploaded_file, 'temporary_file_path'):
-                    # For TemporaryUploadedFile
-                    img = cv2.imread(uploaded_file.temporary_file_path())
+            i = 0
+            for uploaded_image in uploaded_images:
+                if isinstance(uploaded_image, InMemoryUploadedFile):
+                    # If the file is in memory, handle it accordingly
+                    image = cv2.imdecode(np.fromstring(uploaded_image.read(), np.uint8), cv2.IMREAD_UNCHANGED)
+                    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+                    i += 1
                 else:
-                    # For InMemoryUploadedFile
-                    img = cv2.imdecode(np.fromstring(uploaded_file.read(), np.uint8), cv2.IMREAD_UNCHANGED)
-                images.append(img)
+                    # If the file is on disk, get its temporary file path
+                    image = uploaded_image.temporary_file_path()
 
-            image_stitcher = cv2.Stitcher_create()
-            print("stitching")
-            error, stitched_img = image_stitcher.stitch(images)
+                images.append(image)
 
-            if not error:
-                stitched_image_path = os.path.join(
-                    settings.MEDIA_ROOT, "stitched_image.jpg"
-                )
-                cv2.imwrite(stitched_image_path, stitched_img)
-                stitched_image_url = os.path.join(
-                    settings.MEDIA_URL, "stitched_image.jpg"
-                ).replace("\\", "/")
-                return JsonResponse(
-                    {"success": True, "stitched_image_url": stitched_image_url}
-                )
-            else:
-                return JsonResponse(
-                    {"success": False, "message": "Image stitching failed"}
-                )
+            for i in range(start, 0, -1):
+                print(i)
+                try:
+                    stitcher = Stitcher(confidence_threshold=i/10, blend_strength=20)  # Create an affine stitcher object
+                    stitched_img = stitcher.stitch(images)  # Stitch images
+                    # image_stitcher = cv2.Stitcher_create()
+                    # print("stitching")
+                    # error, stitched_img = image_stitcher.stitch(images)
+
+                    stitched_image_path = os.path.join(
+                        settings.MEDIA_ROOT, "stitched_image.jpg"
+                    )
+                    cv2.imwrite(stitched_image_path, stitched_img)
+                    stitched_image_url = os.path.join(
+                        settings.MEDIA_URL, "stitched_image.jpg"
+                    ).replace("\\", "/")
+                    return JsonResponse(
+                        {"success": True, "stitched_image_url": stitched_image_url, 'threshold' : i}
+                    )
+                except Exception as e:
+                    print(str(e))
+            return Response({"success": False, "message": "Image stitching failed"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -153,22 +165,29 @@ class UserImage(APIView):
             return Response(user_response["error"], user_response["status"])
 
         user = user_response["user"]
-        image = request.data.get("image")
+        uploaded_image = request.data.get("image")
         title = request.data.get("title")
+        print(request.data)
 
-        if not image:
+        if not uploaded_image:
             return Response(
                 {"error": "Image not provided"}, status=status.HTTP_400_BAD_REQUEST
             )
 
         try:
-            image_instance = Image(user=user, image=image, title=title)
+            # Save the image with a custom title in the assets/images folder
+            img = cv2.imread('assets/stitched_image.jpg')
+            path = f'images/{title}_{str(uuid.uuid4())[:8]}.jpg'
+            cv2.imwrite('assets/' + path, img)
+
+            image_instance = Image(user=user, image=path, title=title)
             image_instance.save()
 
             return Response(
                 {"message": "Successfully saved image"}, status=status.HTTP_201_CREATED
             )
         except Exception as e:
+            print(str(e))
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request):
@@ -296,6 +315,7 @@ class DeleteImage(APIView):
 
         user = user_response["user"]
         image_id = request.data.get("image_id")
+        print(request.data)
 
         try:
             image = Image.objects.get(user=user, id=image_id)

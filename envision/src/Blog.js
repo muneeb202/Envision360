@@ -213,7 +213,7 @@ const Blog = () => {
                                 subheader={post.created_date}
                             />
                             <Box sx={{ display: 'flex', position: 'relative' }}>
-                                <CardMedia component='img' sx={{ maxHeight: '200px', maxWidth: '200px' }} src={'http://127.0.0.1:8000' + post.image} draggable='false' alt={post.title} />
+                                <CardMedia component='img' sx={{ height: '200px', maxWidth: '200px' }} src={'http://127.0.0.1:8000' + post.image} draggable='false' alt={post.title} />
                                 <CardContent>
                                     <p style={{ fontWeight: '200' }}>{post.description}</p>
                                 </CardContent>
@@ -244,7 +244,8 @@ const Blog = () => {
                                     title={selectedPost.title}
                                     subheader={selectedPost.created_date}
                                 />
-                                <CardMedia onClick={() => navigate(`/viewer/${encodeURIComponent(CryptoJS.AES.encrypt('http://127.0.0.1:8000' + selectedPost.image, encryptionKey).toString())}`)} component='img' sx={{ maxHeight: '400px', width:'60vw' }} draggable='false' src={'http://127.0.0.1:8000' + selectedPost.image} alt={selectedPost.title} />
+                                <CardMedia component='img' sx={{ maxHeight: '400px', width:'60vw' }} draggable='false' src={'http://127.0.0.1:8000' + selectedPost.image} alt={selectedPost.title} />
+                                <a href={`/viewer/${encodeURIComponent(CryptoJS.AES.encrypt('http://127.0.0.1:8000' + selectedPost.image, encryptionKey).toString())}`} target="_blank"><i className="fa-solid fa-arrow-up-right-from-square" ></i></a>
                                 <CardContent>
                                     <p style={{ fontWeight: '200' }}>{selectedPost.description}</p>
                                 </CardContent>

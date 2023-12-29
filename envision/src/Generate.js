@@ -43,7 +43,7 @@ const Generate = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [latitude, setLatitude] = useState('');
     const [longitude, setLongitude] = useState('');
-
+    const [threshold, setThreshold] = useState(10)
 
     const handleDragEnter = (e) => {
         e.preventDefault();
@@ -82,7 +82,8 @@ const Generate = () => {
         try {
             console.log(selectedFiles)
             const response = await axios.post('http://localhost:8000/api/stitch_images/', {
-                images: selectedFiles
+                images: selectedFiles,
+                thresh: threshold
             }, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -90,11 +91,14 @@ const Generate = () => {
             });
             console.log(response.data)
             if (response.data.success) {
-                setCompletedImage('http://localhost:8000' + response.data.stitched_image_url);
+                setCompletedImage(response.data.stitched_image_url);
+                setThreshold(Math.max(1, response.data['threshold'] - 1))
             } else {
                 console.error('Image stitching failed:', response.data.message);
+                setIsLoading(false)
             }
         } catch (error) {
+            setIsLoading(false)
             console.error('Error uploading images:', error);
         }
     };
@@ -133,10 +137,8 @@ const Generate = () => {
     return (
         <>
             {completedImage ? (
-                <>
-                <PreviewImage image={completedImage} />
-                <img src={completedImage}/>
-                </>
+                <PreviewImage imagelist={selectedFiles} thresh={threshold} image={completedImage} />
+
             ) :
                 (
                     <ThemeProvider theme={theme}>
