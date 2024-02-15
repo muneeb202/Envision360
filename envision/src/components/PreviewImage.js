@@ -4,6 +4,7 @@ import * as PANOLENS from 'panolens';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Alert, Button, Snackbar, TextField, ThemeProvider, createTheme } from '@mui/material';
+import { Stage, Layer, Rect } from "react-konva";
 
 const theme = createTheme({
     palette: {
@@ -54,7 +55,8 @@ const PreviewImage = ({ imagelist, thresh, image }) => {
     const [threshold, setThreshold] = useState(thresh)
     const [rendering, setRendering] = useState(false)
     const [loggedIn, setLoggedIn] = useState(true)
-    console.log(thresh)
+    const [startCoord, setStartCoord] = useState({ x: 0, y: 0 })
+    const [endCoord, setEndCoord] = useState({ x: 0, y: 0 })
 
     const handleSave = async () => {
         if (title.trim() === '') {
@@ -112,13 +114,79 @@ const PreviewImage = ({ imagelist, thresh, image }) => {
         setMessage('')
     }
 
+    const [newAnnotation, setNewAnnotation] = useState([]);
+
+    const handleMouseDown = (event) => {
+        if (newAnnotation.length === 0) {
+            const { x, y } = event.target.getStage().getPointerPosition();
+            setNewAnnotation([{ x, y, width: 0, height: 0, key: "0" }]);
+        }
+    };
+
+    const handleMouseUp = (event) => {
+        if (newAnnotation.length === 1) {
+            const sx = newAnnotation[0].x;
+            const sy = newAnnotation[0].y;
+            const { x, y } = event.target.getStage().getPointerPosition();
+            const annotationToAdd = {
+                x: sx,
+                y: sy,
+                width: x - sx,
+                height: y - sy,
+                key: '0',
+            };
+            setNewAnnotation([annotationToAdd])
+        }
+        setTimeout(() => setNewAnnotation([]), 1000)
+    };
+
+    const handleMouseMove = (event) => {
+        if (newAnnotation.length === 1) {
+            const sx = newAnnotation[0].x;
+            const sy = newAnnotation[0].y;
+            const { x, y } = event.target.getStage().getPointerPosition();
+            setNewAnnotation([
+                {
+                    x: sx,
+                    y: sy,
+                    width: x - sx,
+                    height: y - sy,
+                    key: "0",
+                },
+            ]);
+        }
+    };
 
     return (
         <>
             <div className='image-viewer'>
-                {!rendering &&
+                {/* {!rendering &&
                     <ImageViewer src={'http://localhost:8000' + completedImage} />
-                }
+                } */}
+                <img id='image' src={'http://localhost:8000' + completedImage} draggable={false}>
+                </img>
+                <Stage
+                    onMouseDown={handleMouseDown}
+                    onMouseUp={handleMouseUp}
+                    onMouseMove={handleMouseMove}
+                    width={window.innerWidth - 10}
+                    height={window.innerHeight}
+                >
+                    <Layer >
+                        {newAnnotation.map((value) => {
+                            return (
+                                <Rect
+                                    x={value.x}
+                                    y={value.y}
+                                    width={value.width}
+                                    height={value.height}
+                                    fill="#6c696973"
+                                    stroke="#b8b8b8"
+                                />
+                            );
+                        })}
+                    </Layer>
+                </Stage>
                 <div className='button-container'>
                     <ThemeProvider theme={theme}>
                         <TextField id="outlined-basic" label="Title" variant="outlined" onChange={(e) => setTitle(e.target.value)} />
