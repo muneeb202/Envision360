@@ -6,6 +6,7 @@ import Sidebar from './components/Sidebar';
 import ImageViewer from './components/ImageViewer';
 import { useNavigate } from 'react-router-dom';
 import CryptoJS from 'crypto-js';
+import { useSelector } from 'react-redux';
 
 
 const theme = createTheme({
@@ -35,7 +36,7 @@ const Blog = () => {
     const [selectedPost, setSelectedPost] = useState(null);
     const [comment, setComment] = useState('');
     const [isLoading, setIsLoading] = useState(false)
-    const [user, setUser] = useState(-1);
+    const user = useSelector((state) => state.user).id;
     const [message, setMessage] = useState('');
     const encryptionKey = 'WsOhEgwajsuZ3vZxESqRSxirE3KGSjJf';
     const navigate = useNavigate()
@@ -145,20 +146,6 @@ const Blog = () => {
             console.error('Error fetching comments:', error);
         }
     };
-
-    useEffect(() => {
-        const getUser = async () => {
-            try {
-                const response = await axios.post('http://localhost:8000/api/get_user/', { token: localStorage.getItem('user') })
-                console.log(response)
-                setUser(response.data['id']);
-            }
-            catch (e) {
-                console.log(e);
-            }
-        }
-        getUser();
-    }, [])
 
     const deleteComment = async (id) => {
         await axios.post('http://localhost:8000/api/delete_comment/', {

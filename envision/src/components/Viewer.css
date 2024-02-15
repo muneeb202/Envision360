@@ -5,7 +5,7 @@
     height: 650px;
     margin: 0 auto;
     overflow: hidden;
-    cursor: move; /* fallback if grab cursor is unsupported */
+    /* cursor: move; */
     cursor: grab;
     cursor: -moz-grab;
     cursor: -webkit-grab;
@@ -14,4 +14,9 @@
     cursor: grabbing;
     cursor: -moz-grabbing;
     cursor: -webkit-grabbing;
+}
+.konvajs-content {
+    position: absolute;
+    top: 0;
+    left: 0;
 }
