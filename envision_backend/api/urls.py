@@ -25,6 +25,7 @@ urlpatterns = [
     path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("stitch_images/", views.StitchImage.as_view(), name="stitch_images"),
+    path("web_scrape/", views.WebScrape.as_view(), name="web_scrape"),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

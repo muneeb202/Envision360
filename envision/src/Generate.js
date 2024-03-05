@@ -79,28 +79,62 @@ const Generate = () => {
     }
 
     const handleStitchImages = async () => {
-        try {
-            console.log(selectedFiles)
-            const response = await axios.post('http://localhost:8000/api/stitch_images/', {
-                images: selectedFiles,
-                thresh: threshold
-            }, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            console.log(response.data)
-            if (response.data.success) {
-                setCompletedImage(response.data.stitched_image_url);
-                setThreshold(Math.max(1, response.data['threshold'] - 1))
-            } else {
-                console.error('Image stitching failed:', response.data.message);
-                setIsLoading(false)
-            }
-        } catch (error) {
-            setIsLoading(false)
-            console.error('Error uploading images:', error);
+        switch (generateType) {
+            case 1:
+            case 2:
+                try {
+                    const response = await axios.post('http://localhost:8000/api/web_scrape/', {
+                        query: searchQuery,
+                        latitude: latitude,
+                        longitude: longitude,
+                        generateType: generateType,
+                        thresh: threshold,
+                    }, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    });
+                    console.log(response.data)
+                    if (response.data.success) {
+                        setCompletedImage(response.data.stitched_image_url);
+                        setThreshold(Math.max(1, response.data['threshold'] - 1))
+                    } else {
+                        console.error('Image stitching failed:', response.data.message);
+                        setIsLoading(false)
+                    }
+                } catch (error) {
+                    setIsLoading(false)
+                    console.error('Error setting location or coordinates:', error);
+                }
+                break;
+            case 3:
+                try {
+                    console.log(selectedFiles)
+                    const response = await axios.post('http://localhost:8000/api/stitch_images/', {
+                        images: selectedFiles,
+                        thresh: threshold
+                    }, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    });
+                    console.log(response.data)
+                    if (response.data.success) {
+                        setCompletedImage(response.data.stitched_image_url);
+                        setThreshold(Math.max(1, response.data['threshold'] - 1))
+                    } else {
+                        console.error('Image stitching failed:', response.data.message);
+                        setIsLoading(false)
+                    }
+                } catch (error) {
+                    setIsLoading(false)
+                    console.error('Error uploading images:', error);
+                }
+                break;
+            default:
+                break;
         }
+
     };
 
 
