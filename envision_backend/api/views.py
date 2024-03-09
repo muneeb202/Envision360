@@ -20,14 +20,11 @@ from serpapi import GoogleSearch
 from pygoogle_image import image as pi
 import urllib.request
 from geopy.geocoders import Nominatim
-import requests
+import glob
 
 
 class WebScrape(APIView):
     parser_classes = [MultiPartParser]
-
-    def __init__(self):
-        self.mystitcher = StitchImage()
 
     def location_to_coordinates(self, location_name):
         geolocator = Nominatim(user_agent="location_converter")
@@ -78,7 +75,7 @@ class WebScrape(APIView):
                 "engine": "google_maps",  # SerpApi search engine
                 "q": query,  # query
                 "ll": coord,  # GPS coordinates
-                "type": "search",  # list of results for the query
+                "type": "search",
                 "hl": "en",  # language
                 "start": 0,
             }
@@ -106,84 +103,80 @@ class WebScrape(APIView):
                     "data_id": "0x3919099de7eeacd9:0xed8bafee3c8f975a",  # place result
                 }
 
-                search = GoogleSearch(params)
-                new_page_results = search.get_dict()
-                photos = []
-                images = []
-                photos.extend(new_page_results["photos"])
+                # search = GoogleSearch(params)
+                # new_page_results = search.get_dict()
+                # photos = []
+                # images = []
+                # photos.extend(new_page_results["photos"])
 
                 output_directory = "downloaded_images"
-                if not os.path.exists(output_directory):
-                    os.makedirs(output_directory)
 
-                for i, photo in enumerate(photos):
-                    img_url = photo["image"]
-                    img_filename = f"{title}_image_{i + 1}.jpg"
-                    img_filepath = os.path.join(output_directory, img_filename)
-                    # Download the image
-                    urllib.request.urlretrieve(img_url, img_filepath)
-                    print(f"Downloaded: {img_filename}")
-                    images.append(img_filepath)
+                directory_path = os.path.join(settings.MEDIA_ROOT, output_directory)
 
-                    # with open(img_filepath, "rb") as file:
-                    #     file_contents = file.read()
-                    #     file.seek(0)
-                    #     selected_files.append(
-                    #         InMemoryUploadedFile(
-                    #             file,
-                    #             None,
-                    #             img_filename,
-                    #             "image/jpeg",
-                    #             len(file_contents),
-                    #             None,
-                    #         )
-                    #     )
+                # if not os.path.exists(directory_path):
+                #     os.makedirs(directory_path)
 
-                print(images)
+                # for i, photo in enumerate(photos):
+                #     img_url = photo["image"]
+                #     img_filename = f"{title}_image_{i + 1}.jpg"
+                #     img_filepath = os.path.join(directory_path, img_filename)
+                #     # Download the image
+                #     urllib.request.urlretrieve(img_url, img_filepath)
+                #     print(f"Downloaded: {img_filename}")
+                #     images.append(img_filepath)
 
-                start = int(request.data["thresh"])
+                # print(images)
 
-                if not images:
-                    return Response(
-                        {"error": "Images not provided"},
-                        status=status.HTTP_400_BAD_REQUEST,
-                    )
+                # start = int(request.data["thresh"])
+
+                # if not images:
+                #     return Response(
+                #         {"error": "Images not provided"},
+                #         status=status.HTTP_400_BAD_REQUEST,
+                #     )
 
                 try:
 
-                    for i in range(start, 0, -1):
-                        print(i)
-                        try:
-                            stitcher = Stitcher(
-                                confidence_threshold=i / 10, blend_strength=20
-                            )  # Create an affine stitcher object
-                            stitched_img = stitcher.stitch(images)  # Stitch images
-                            # image_stitcher = cv2.Stitcher_create()
-                            # print("stitching")
-                            # error, stitched_img = image_stitcher.stitch(images)
+                    # for i in range(start, 0, -1):
+                    #     print(i)
+                    #     try:
+                    #         stitcher = Stitcher(
+                    #             confidence_threshold=i / 10, blend_strength=20
+                    #         )  # Create an affine stitcher object
+                    #         stitched_img = stitcher.stitch(images)  # Stitch images
 
-                            stitched_image_path = os.path.join(
-                                settings.MEDIA_ROOT, "stitched_image.jpg"
-                            )
-                            cv2.imwrite(stitched_image_path, stitched_img)
-                            stitched_image_url = os.path.join(
-                                settings.MEDIA_URL, "stitched_image.jpg"
-                            ).replace("\\", "/")
-                            return JsonResponse(
-                                {
-                                    "success": True,
-                                    "stitched_image_url": stitched_image_url,
-                                    "threshold": i,
-                                }
-                            )
-                        except Exception as e:
-                            print(str(e))
-                    return Response(
-                        {"success": False, "message": "Image stitching failed"},
-                        status=status.HTTP_404_NOT_FOUND,
+                    #         stitched_image_path = os.path.join(
+                    #             settings.MEDIA_ROOT, "stitched_image.jpg"
+                    #         )
+                    #         cv2.imwrite(stitched_image_path, stitched_img)
+                    #         stitched_image_url = os.path.join(
+                    #             settings.MEDIA_URL, "stitched_image.jpg"
+                    #         ).replace("\\", "/")
+                    #         return JsonResponse(
+                    #             {
+                    #                 "success": True,
+                    #                 "stitched_image_url": stitched_image_url,
+                    #                 "threshold": i,
+                    #             }
+                    #         )
+                    #     except Exception as e:
+                    #         print(str(e))
+                    print("Image stitching failed")
+                    downloaded_images = glob.glob(os.path.join(directory_path, "*.jpg"))
+                    print(downloaded_images)
+                    return JsonResponse(
+                        {
+                            "success": False,
+                            "message": "Image stitching failed",
+                            "downloaded_images": downloaded_images,
+                        }
                     )
+                    # return Response(
+                    #     {"success": False, "message": "Image stitching failed"},
+                    #     status=status.HTTP_404_NOT_FOUND,
+                    # )
                 except Exception as e:
-                    print(e)
+                    print(e, "Image Memory handling failed")
                     return Response(
                         {
                             "success": False,
@@ -194,7 +187,7 @@ class WebScrape(APIView):
                     )
 
             except Exception as e:
-                print(e)
+                print(e, "unable to download google maps images")
                 return Response(
                     {
                         "success": False,
@@ -206,6 +199,7 @@ class WebScrape(APIView):
                 # print("Unable to map images, downloading google images instead")
                 # pi.download(keywords=f"{query} street view", limit=10)
         else:
+            print("Location not found")
             return Response(
                 {"success": False, "message": "Location not found"},
                 status=status.HTTP_400_BAD_REQUEST,
