@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Alert, Button, Snackbar, TextField, ThemeProvider, createTheme } from '@mui/material';
 import { Stage, Layer, Rect } from "react-konva";
+import { height, width } from '@mui/system';
 
 const theme = createTheme({
     palette: {
@@ -14,7 +15,8 @@ const theme = createTheme({
         },
         secondary: {
             main: '#8331D6',
-        }
+        },
+        red: { main: '#FF5733' }
     },
     typography: {
         fontFamily: 'Poppins, sans-serif',
@@ -119,7 +121,7 @@ const PreviewImage = ({ imagelist, thresh, image }) => {
     const handleMouseDown = (event) => {
         if (newAnnotation.length === 0) {
             const { x, y } = event.target.getStage().getPointerPosition();
-            setNewAnnotation([{ x, y, width: 0, height: 0, key: "0" }]);
+            setNewAnnotation([{ x, y, width: 0, height: 0, key: "0", }]);
         }
     };
 
@@ -135,7 +137,13 @@ const PreviewImage = ({ imagelist, thresh, image }) => {
                 height: y - sy,
                 key: '0',
             };
-            setNewAnnotation([annotationToAdd])
+            setNewAnnotation([annotationToAdd]);
+            const minX = Math.min(sx, x)
+            const minY = Math.min(sy, y)
+            const maxX = Math.max(sx, x)
+            const maxY = Math.max(sy, y)
+            console.log("Top-left corner:", minX, minY);
+            console.log("Bottom-right corner:", maxX, maxY);
         }
         setTimeout(() => setNewAnnotation([]), 1000)
     };
@@ -145,12 +153,14 @@ const PreviewImage = ({ imagelist, thresh, image }) => {
             const sx = newAnnotation[0].x;
             const sy = newAnnotation[0].y;
             const { x, y } = event.target.getStage().getPointerPosition();
+            const width = x - sx;
+            const height = y - sy;
             setNewAnnotation([
                 {
                     x: sx,
                     y: sy,
-                    width: x - sx,
-                    height: y - sy,
+                    width: width,
+                    height: height,
                     key: "0",
                 },
             ]);
@@ -202,6 +212,8 @@ const PreviewImage = ({ imagelist, thresh, image }) => {
                                 {message}
                             </Alert>
                         </Snackbar>
+                        <TextField label="Prompt" color="success" id="fullWidth" sx={{ margin: '30px 0px' }} />
+                        <TextField label="Negative Prompt" color='red' id="fullWidth" />
                     </ThemeProvider>
                 </div>
             </div>
