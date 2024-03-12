@@ -9,6 +9,7 @@ const ImageViewer = () => {
     const encryptionKey = 'WsOhEgwajsuZ3vZxESqRSxirE3KGSjJf';
     const decryptedPath = CryptoJS.AES.decrypt(decodeURIComponent(path), encryptionKey).toString(CryptoJS.enc.Utf8);
 
+    console.log(path, decryptedPath)
     useEffect(() => {
       // Initialize Panolens viewer
       const img = document.getElementById('image-container')

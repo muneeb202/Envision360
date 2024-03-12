@@ -8,11 +8,14 @@ import AboutUs from './About';
 import Profile from './Profile';
 import Footer from './components/Footer';
 import ImageViewer from './components/ImageViewer';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 
 function App() {
   // const location = useLocation()
   return (
     <div className='body'>
+      <Provider store={store}>
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -23,8 +26,9 @@ function App() {
           <Route path='/profile' element={<Profile />} />
           <Route path='/viewer/:path' element={<ImageViewer />} />
         </Routes>
-        {/* <Footer /> */}
+        <Footer />
       </Router>
+      </Provider>
     </div>
 
   );

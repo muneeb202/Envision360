@@ -91,12 +91,12 @@ const GetStarted = () => {
     const handleSignUpSubmit = async (e) => {
         e.preventDefault();
         setCheckPassword(false);
-        setIsLoading(true);
-        setProgress(progress + 10)
         if (formData.password !== formData.re_password) {
             setCheckPassword(true);
             return;
         }
+        setIsLoading(true);
+        setProgress(progress + 10)
         try {
             setProgress(progress + 30)
             const response = await axios.post('http://localhost:8000/api/create_user/', { ...formData, refresh: refresh });

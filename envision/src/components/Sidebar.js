@@ -1,12 +1,15 @@
 import { Avatar, Drawer, IconButton, Tooltip } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
+import { setUserData } from "../redux/userSlice";
 
 const Sidebar = () => {
     const [sidebar, setSidebar] = useState(false);
     const [user, setUser] = useState({ name: ' ', email: ' ' });
     const location = useLocation();
+    const dispatch = useDispatch()
 
     const isActive = (path) => {
         return location.pathname === path ? 'active' : '';
@@ -18,6 +21,13 @@ const Sidebar = () => {
                 const response = await axios.post('http://localhost:8000/api/get_user/', { token: localStorage.getItem('user') })
                 console.log(response)
                 setUser(response.data);
+                const userData = {
+                    id: response.data.id,
+                    name: response.data.name,
+                    email: response.data.email,
+                    joining: response.data.date_joined,
+                  };
+                  dispatch(setUserData(userData));
             }
             catch (e) {
                 console.log(e);

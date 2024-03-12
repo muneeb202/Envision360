@@ -3,8 +3,11 @@ import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
 import particlesConfig from "./config/particle-config";
 import Navbar from './components/Navbar';
+import { useSelector } from 'react-redux';
 
 const Home = () => {
+    const userData = useSelector((state) => state.user);
+    console.log(userData)
 
     return (
         <>
