@@ -59,6 +59,7 @@ const PreviewImage = ({ imagelist, thresh, image }) => {
     const [loggedIn, setLoggedIn] = useState(true)
     const [startCoord, setStartCoord] = useState({ x: 0, y: 0 })
     const [endCoord, setEndCoord] = useState({ x: 0, y: 0 })
+    const [adjust, setAdjust] = useState(false);
 
     const handleSave = async () => {
         if (title.trim() === '') {
@@ -167,14 +168,19 @@ const PreviewImage = ({ imagelist, thresh, image }) => {
         }
     };
 
+    const handleAdjust = () => {
+
+    }
+
     return (
         <>
             <div className='image-viewer'>
-                {/* {!rendering &&
+                {(!rendering && !adjust) &&
                     <ImageViewer src={'http://localhost:8000' + completedImage} />
-                } */}
-                <img id='image' src={'http://localhost:8000' + completedImage} draggable={false}>
-                </img>
+                }
+                {adjust &&
+                    <img id='image' src={'http://localhost:8000' + completedImage} draggable={false} />
+                }
                 <Stage
                     onMouseDown={handleMouseDown}
                     onMouseUp={handleMouseUp}
@@ -199,24 +205,29 @@ const PreviewImage = ({ imagelist, thresh, image }) => {
                 </Stage>
                 <div className='button-container'>
                     <ThemeProvider theme={theme}>
-                        <TextField id="outlined-basic" label="Title" variant="outlined" onChange={(e) => setTitle(e.target.value)} />
-                        <Button onClick={handleSave} variant='contained' color='success' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px', margin: '30px 0px' }}>Save</Button>
-                        <Button onClick={handleStitchImages} variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px' }}>Re-Render</Button>
+                        {!adjust ? <>
+                            <TextField id="outlined-basic" label="Title" variant="outlined" onChange={(e) => setTitle(e.target.value)} />
+                            <Button onClick={handleSave} variant='contained' color='success' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px', margin: '30px 0px' }}>Save</Button>
+                            <Button onClick={handleStitchImages} variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px' }}>Re-Render</Button>
+                        </> : <>
+                            <TextField label="Prompt" color="success" id="fullWidth" sx={{ margin: '30px 0px' }} />
+                            <TextField label="Negative Prompt" color='red' id="fullWidth" />
+                        </>}
+                        <br />
+                        <Button onClick={() => setAdjust(!adjust)} variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px' }}>{adjust ? 'Back': 'Adjust Image'}</Button>
 
-                        <Snackbar
-                            open={message}
-                            autoHideDuration={3000}
-                            onClose={closeError}
-                        >
-                            <Alert onClose={closeError} severity="error" sx={{ fontSize: '17px', letterSpacing: '1px' }}>
-                                {message}
-                            </Alert>
-                        </Snackbar>
-                        <TextField label="Prompt" color="success" id="fullWidth" sx={{ margin: '30px 0px' }} />
-                        <TextField label="Negative Prompt" color='red' id="fullWidth" />
                     </ThemeProvider>
                 </div>
             </div>
+            <Snackbar
+                open={message}
+                autoHideDuration={3000}
+                onClose={closeError}
+            >
+                <Alert onClose={closeError} severity="error" sx={{ fontSize: '17px', letterSpacing: '1px' }}>
+                    {message}
+                </Alert>
+            </Snackbar>
         </>
     )
 }
