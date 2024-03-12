@@ -43,6 +43,8 @@ const Generate = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [latitude, setLatitude] = useState('');
     const [longitude, setLongitude] = useState('');
+    const [img, setImg] = useState(false);
+    const [downloadedImages, setDownloadedImages] = useState([]);
     const [threshold, setThreshold] = useState(10)
     const [generating, setGenerating] = useState(true)
 
@@ -81,29 +83,67 @@ const Generate = () => {
     }
 
     const handleStitchImages = async () => {
-        try {
-            console.log(selectedFiles)
-            const response = await axios.post('http://localhost:8000/api/stitch_images/', {
-                images: selectedFiles,
-                thresh: threshold
-            }, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            console.log(response.data)
-            if (response.data.success) {
-                setCompletedImage(response.data.stitched_image_url);
-                setThreshold(Math.max(1, response.data['threshold'] - 1))
-                setGenerating(false)
-            } else {
-                console.error('Image stitching failed:', response.data.message);
-                setIsLoading(false)
-            }
-        } catch (error) {
-            setIsLoading(false)
-            console.error('Error uploading images:', error);
+        switch (generateType) {
+            case 1:
+            case 2:
+                try {
+                    const response = await axios.post('http://localhost:8000/api/web_scrape/', {
+                        query: searchQuery,
+                        latitude: latitude,
+                        longitude: longitude,
+                        generateType: generateType,
+                        thresh: threshold,
+                    }, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    });
+                    console.log(response.data)
+                    if (response.data.success) {
+                        setCompletedImage(response.data.stitched_image_url);
+                        setThreshold(Math.max(1, response.data['threshold'] - 1))
+                    }
+                    else {
+                        if (response.data.downloaded_images && response.data.downloaded_images.length > 0) {
+                            setImg(true);
+                            setDownloadedImages(response.data.downloaded_images);
+                        }
+                        console.error('Failed:', response.data.message);
+                        setIsLoading(false)
+                    }
+                } catch (error) {
+                    setIsLoading(false)
+                    console.error('Error setting location or coordinates:', error);
+                }
+                break;
+            case 3:
+                try {
+                    console.log(selectedFiles)
+                    const response = await axios.post('http://localhost:8000/api/stitch_images/', {
+                        images: selectedFiles,
+                        thresh: threshold
+                    }, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    });
+                    console.log(response.data)
+                    if (response.data.success) {
+                        setCompletedImage(response.data.stitched_image_url);
+                        setThreshold(Math.max(1, response.data['threshold'] - 1))
+                    } else {
+                        console.error('Image stitching failed:', response.data.message);
+                        setIsLoading(false)
+                    }
+                } catch (error) {
+                    setIsLoading(false)
+                    console.error('Error uploading images:', error);
+                }
+                break;
+            default:
+                break;
         }
+
     };
 
 
@@ -166,42 +206,58 @@ const Generate = () => {
                                                 <div className='input-container'>
 
                                                     <div className='w-75'>
-                                                        {generateType === 1 && (
-                                                            <TextField
-                                                                color='secondary'
-                                                                fullWidth
-                                                                multiline
-                                                                maxRows={7}
-                                                                label="Search Query"
-                                                                variant="standard"
-                                                                sx={{ color: 'white', letterSpacing: '2px' }}
-                                                                value={searchQuery}
-                                                                onChange={(e) => setSearchQuery(e.target.value)}
-                                                            />
-                                                        )}
-                                                        {generateType === 2 && (
+                                                        {img ? (
+                                                            <ImageList className='image-list' cols={3} sx={{ marginBottom: '0', maxHeight: '350px', overflowY: 'auto' }}>
+                                                                {downloadedImages.map((image, index) => {
+                                                                    const filename = image.split('\\').pop();
+                                                                    console.log(filename)
+                                                                    return (
+                                                                        <ImageListItem className='image-item' key={index}>
+                                                                            <img src={'http://localhost:8000/assets/downloaded_images/' + filename} alt={filename} draggable='false' />
+                                                                        </ImageListItem>
+                                                                    );
+                                                                })}
+                                                            </ImageList>
+                                                        ) : (
                                                             <>
-                                                                <TextField
-                                                                    color='secondary'
-                                                                    type='number'
-                                                                    fullWidth
-                                                                    label="Latitude"
-                                                                    variant="standard"
-                                                                    sx={{ color: 'white', letterSpacing: '2px' }}
-                                                                    value={latitude}
-                                                                    onChange={(e) => setLatitude(e.target.value)}
-                                                                />
-                                                                <br /><br />
-                                                                <TextField
-                                                                    color='secondary'
-                                                                    type='number'
-                                                                    fullWidth
-                                                                    label="Longitude"
-                                                                    variant="standard"
-                                                                    sx={{ color: 'white', letterSpacing: '2px' }}
-                                                                    value={longitude}
-                                                                    onChange={(e) => setLongitude(e.target.value)}
-                                                                />
+                                                                {generateType === 1 && (
+                                                                    <TextField
+                                                                        color='secondary'
+                                                                        fullWidth
+                                                                        multiline
+                                                                        maxRows={7}
+                                                                        label="Search Query"
+                                                                        variant="standard"
+                                                                        sx={{ color: 'white', letterSpacing: '2px' }}
+                                                                        value={searchQuery}
+                                                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                                                    />
+                                                                )}
+                                                                {generateType === 2 && (
+                                                                    <>
+                                                                        <TextField
+                                                                            color='secondary'
+                                                                            type='number'
+                                                                            fullWidth
+                                                                            label="Latitude"
+                                                                            variant="standard"
+                                                                            sx={{ color: 'white', letterSpacing: '2px' }}
+                                                                            value={latitude}
+                                                                            onChange={(e) => setLatitude(e.target.value)}
+                                                                        />
+                                                                        <br /><br />
+                                                                        <TextField
+                                                                            color='secondary'
+                                                                            type='number'
+                                                                            fullWidth
+                                                                            label="Longitude"
+                                                                            variant="standard"
+                                                                            sx={{ color: 'white', letterSpacing: '2px' }}
+                                                                            value={longitude}
+                                                                            onChange={(e) => setLongitude(e.target.value)}
+                                                                        />
+                                                                    </>
+                                                                )}
                                                             </>
                                                         )}
                                                     </div>
