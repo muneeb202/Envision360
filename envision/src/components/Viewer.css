@@ -1,6 +1,6 @@
 #image-container{
     /* comment for fixed dimentsions */
-    position: relative;
+    position: relative !important;
     width: 1440px;
     height: 650px;
     margin: 0 auto;
