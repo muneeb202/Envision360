@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setUserData } from '../redux/userSlice';
 import axios from 'axios';
 import { Avatar, Drawer, IconButton, Tooltip } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +10,8 @@ const Navbar = () => {
     const navigate = useNavigate();
     const [sidebar, setSidebar] = useState(false);
     const [name, setName] = useState('');
+
+    const dispatch = useDispatch()
 
     const userLogout = (e) => {
         e.preventDefault();
@@ -23,6 +27,13 @@ const Navbar = () => {
                 const response = await axios.post('http://localhost:8000/api/get_user/', { token: user })
                 console.log(response)
                 setName(response.data['name']);
+                const userData = {
+                    id: response.data.id,
+                    name: response.data.name,
+                    email: response.data.email,
+                    joining: response.data.date_joined,
+                  };
+                  dispatch(setUserData(userData));
             }
             catch (e) {
                 console.log(e);

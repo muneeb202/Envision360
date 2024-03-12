@@ -44,6 +44,7 @@ const Generate = () => {
     const [latitude, setLatitude] = useState('');
     const [longitude, setLongitude] = useState('');
     const [threshold, setThreshold] = useState(10)
+    const [generating, setGenerating] = useState(true)
 
     const handleDragEnter = (e) => {
         e.preventDefault();
@@ -76,6 +77,7 @@ const Generate = () => {
 
     const handleCompletion = () => {
         console.log('completed');
+        setIsLoading(false)
     }
 
     const handleStitchImages = async () => {
@@ -93,6 +95,7 @@ const Generate = () => {
             if (response.data.success) {
                 setCompletedImage(response.data.stitched_image_url);
                 setThreshold(Math.max(1, response.data['threshold'] - 1))
+                setGenerating(false)
             } else {
                 console.error('Image stitching failed:', response.data.message);
                 setIsLoading(false)
@@ -136,7 +139,7 @@ const Generate = () => {
 
     return (
         <>
-            {completedImage ? (
+            {(completedImage && !isLoading) ? (
                 <PreviewImage imagelist={selectedFiles} thresh={threshold} image={completedImage} />
 
             ) :
@@ -144,7 +147,7 @@ const Generate = () => {
                     <ThemeProvider theme={theme}>
                         <MemoizedParticles options={particlesConfig2} />
 
-                        <LoadingScreen loading={isLoading} completion={handleCompletion} />
+                        <LoadingScreen loading={isLoading} generating={generating} completion={handleCompletion} />
                         <div className='gen-container'>
                             <div className='image-container' >
                                 <img src={`${process.env.PUBLIC_URL}/images/generatebg.png`} alt="background" draggable='false' />

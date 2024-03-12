@@ -16,11 +16,12 @@ from django.core.files.storage import default_storage
 from django.http import HttpResponse
 from django.conf import settings
 from stitching import Stitcher
-
+from numba import jit, cuda
 
 class StitchImage(APIView):
     parser_classes = [MultiPartParser]
 
+    # @jit(target_backend='cuda')	
     def post(self, request):
         print(request.data)
         start = int(request.data['thresh'])
@@ -45,19 +46,20 @@ class StitchImage(APIView):
                     # If the file is on disk, get its temporary file path
                     image = uploaded_image.temporary_file_path()
 
+
                 images.append(image)
 
             for i in range(start, 0, -1):
-                print(i)
+                print(i) 
                 try:
-                    stitcher = Stitcher(confidence_threshold=i/10, blend_strength=20)  # Create an affine stitcher object
+                    stitcher = Stitcher(confidence_threshold=i/10, crop=False)  # Create an affine stitcher object
                     stitched_img = stitcher.stitch(images)  # Stitch images
                     # image_stitcher = cv2.Stitcher_create()
                     # print("stitching")
                     # error, stitched_img = image_stitcher.stitch(images)
-
+ 
                     stitched_image_path = os.path.join(
-                        settings.MEDIA_ROOT, "stitched_image.jpg"
+                        settings.MEDIA_ROOT, "stitched_image.jpg" 
                     )
                     cv2.imwrite(stitched_image_path, stitched_img)
                     stitched_image_url = os.path.join(
@@ -67,7 +69,7 @@ class StitchImage(APIView):
                         {"success": True, "stitched_image_url": stitched_image_url, 'threshold' : i}
                     )
                 except Exception as e:
-                    print(str(e))
+                    print(str(e)) 
             return Response({"success": False, "message": "Image stitching failed"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

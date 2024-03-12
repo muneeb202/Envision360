@@ -14,7 +14,7 @@ export default function LoadingScreen(props) {
     const progressRef = useRef(() => { });
     useEffect(() => {
         progressRef.current = () => {
-            if (progress < 100) {
+            if (progress < 90) {
                 const diff = Math.random() * 10;
                 const diff2 = Math.random() * 10;
                 setProgress(Math.min(progress + diff, 100));
@@ -22,6 +22,14 @@ export default function LoadingScreen(props) {
             }
         };
     });
+    console.log(props)
+    useEffect(() => {
+        if (!props.generating) {
+            console.log('finished')
+            setProgress(100)
+            setPlaySuccessAnimation(true);
+        }
+    }, [props.generating])
     const facts = [
         'The earliest known panorama was created in 1787 by Robert Barker, an Irish painter. It was a massive painting of Edinburgh, Scotland, that was displayed in a specially built rotunda.',
         'The word "panorama" comes from the Greek words "pan" (all) and "horama" (view).',
@@ -45,11 +53,10 @@ export default function LoadingScreen(props) {
             timerRef.current = setInterval(() => {
                 progressRef.current();
 
-                if (progress >= 100) {
+                if (progress >= 90) {
                     clearInterval(timerRef.current); // Use the ref value to clear the interval
-                    setPlaySuccessAnimation(true);
                 }
-            }, 500);
+            }, 3000);
         }
 
         return () => {
