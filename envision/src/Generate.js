@@ -45,7 +45,7 @@ const Generate = () => {
     const [longitude, setLongitude] = useState('');
     const [img, setImg] = useState(false);
     const [downloadedImages, setDownloadedImages] = useState([]);
-    const [threshold, setThreshold] = useState(10)
+    const [threshold, setThreshold] = useState(2)
     const [generating, setGenerating] = useState(true)
 
     const handleDragEnter = (e) => {
@@ -131,6 +131,7 @@ const Generate = () => {
                     if (response.data.success) {
                         setCompletedImage(response.data.stitched_image_url);
                         setThreshold(Math.max(1, response.data['threshold'] - 1))
+                        setGenerating(false);
                     } else {
                         console.error('Image stitching failed:', response.data.message);
                         setIsLoading(false)
