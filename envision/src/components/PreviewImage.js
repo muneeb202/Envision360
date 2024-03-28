@@ -222,11 +222,11 @@ const PreviewImage = ({ imagelist, thresh, image }) => {
                     <CircularProgress />
                 </div>
                 :
-                <div className='image-viewer'>
-                    {(!rendering && !adjust) &&
-                        <ImageViewer src={'http://localhost:8000' + completedImage} />
-                    }
-                    {adjust &&
+            <div className='image-viewer'>
+                {(!rendering && !adjust) &&
+                    <ImageViewer src={'http://localhost:8000' + completedImage} />
+                }
+                {adjust &&
                         <>
                             {loading ?
                                 <div className='d-flex justify-content-center align-items-center' style={{ height: '100vh', width: '99vw', backgroundColor: 'grey' }}>
@@ -259,23 +259,23 @@ const PreviewImage = ({ imagelist, thresh, image }) => {
                             </Stage>
                         </>
                     }
-                    <div className='button-container'>
-                        <ThemeProvider theme={theme}>
-                            {!adjust ? <>
-                                <TextField id="outlined-basic" label="Title" variant="outlined" onChange={(e) => setTitle(e.target.value)} />
-                                <Button onClick={handleSave} variant='contained' color='success' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px' }}>Save</Button>
-                                <Button onClick={handleStitchImages} variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px', margin: '30px 0px' }}>Re-Render</Button>
-                                <Button onClick={handleGapFilling} variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px' }}>Gap filling</Button>
+                <div className='button-container'>
+                    <ThemeProvider theme={theme}>
+                        {!adjust ? <>
+                            <TextField id="outlined-basic" label="Title" variant="outlined" onChange={(e) => setTitle(e.target.value)} />
+                            <Button onClick={handleSave} variant='contained' color='success' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px', margin: '30px 0px' }}>Save</Button>
+                            <Button onClick={handleStitchImages} variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px' }}>Re-Render</Button>
+                            <Button onClick={handleGapFilling} variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px' }}>Gap filling</Button>
 
-                            </> : <>
-                                <TextField onChange={(e) => setPrompt(e.target.value)} label="Prompt" color="success" id="fullWidth" sx={{ margin: '30px 0px' }} />
-                                <TextField onChange={(e) => setNegPrompt(e.target.value)} label="Negative Prompt" color='red' id="fullWidth" />
-                            </>}
-                            <br />
-                            <Button onClick={() => setAdjust(!adjust)} variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px' }}>{adjust ? 'Back' : 'Adjust Image'}</Button>
+                        </> : <>
+                            <TextField label="Prompt" color="success" id="fullWidth" sx={{ margin: '30px 0px' }} />
+                            <TextField label="Negative Prompt" color='red' id="fullWidth" />
+                        </>}
+                        <br />
+                        <Button onClick={() => setAdjust(!adjust)} variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px' }}>{adjust ? 'Back' : 'Adjust Image'}</Button>
 
-                        </ThemeProvider>
-                    </div>
+                    </ThemeProvider>
+                </div>
                 </div>
             }
             <Snackbar

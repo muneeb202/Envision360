@@ -22,6 +22,7 @@ import urllib.request
 from geopy.geocoders import Nominatim
 import glob
 import requests
+import shutil
 
 
 class WebScrape(APIView):
@@ -82,84 +83,85 @@ class WebScrape(APIView):
             }
 
             try:
-                # title = "Arcadian Cafe"
-                # search = GoogleSearch(params)  # where data extraction happens on the backend
-                # results = search.get_dict()
-                # data_id = None
-                # title = None
+                search = GoogleSearch(
+                    params
+                )  # where data extraction happens on the backend
+                results = search.get_dict()
+                data_id = None
+                title = None
 
-                # if "local_results" in results:
-                #     data_id = results["local_results"]["data_id"]
-                #     title = results["local_results"]["title"]
-                # else:
-                #     data_id = results["place_results"]["data_id"]
-                #     title = results["place_results"]["title"]
-                # print(title,data_id)
-                # params = {
-                #     "api_key": "30d34cd305aa9788998023223750f58fbcef25ab36d5e00565d54f6be8cbbc7e",
-                #     "engine": "google_maps_photos",
-                #     "hl": "en",
-                #     "data_id": "0x3919099de7eeacd9:0xed8bafee3c8f975a",  # place result
-                # }
+                if "local_results" in results:
+                    data_id = results["local_results"]["data_id"]
+                    title = results["local_results"]["title"]
+                else:
+                    data_id = results["place_results"]["data_id"]
+                    title = results["place_results"]["title"]
+                print(title, data_id)
+                params = {
+                    "api_key": "30d34cd305aa9788998023223750f58fbcef25ab36d5e00565d54f6be8cbbc7e",
+                    "engine": "google_maps_photos",
+                    "hl": "en",
+                    "data_id": "0x3919099de7eeacd9:0xed8bafee3c8f975a",  # place result
+                }
 
-                # search = GoogleSearch(params)
-                # new_page_results = search.get_dict()
-                # photos = []
-                # images = []
-                # photos.extend(new_page_results["photos"])
+                search = GoogleSearch(params)
+                new_page_results = search.get_dict()
+                photos = []
+                images = []
+                photos.extend(new_page_results["photos"])
 
                 output_directory = "downloaded_images"
 
                 directory_path = os.path.join(settings.MEDIA_ROOT, output_directory)
 
-                # if not os.path.exists(directory_path):
-                #     os.makedirs(directory_path)
+                if not os.path.exists(directory_path):
+                    os.makedirs(directory_path)
 
-                # for i, photo in enumerate(photos):
-                #     img_url = photo["image"]
-                #     img_filename = f"{title}_image_{i + 1}.jpg"
-                #     img_filepath = os.path.join(directory_path, img_filename)
-                #     # Download the image
-                #     urllib.request.urlretrieve(img_url, img_filepath)
-                #     print(f"Downloaded: {img_filename}")
-                #     images.append(img_filepath)
+                for i, photo in enumerate(photos):
+                    img_url = photo["image"]
+                    img_filename = f"{title}_image_{i + 1}.jpg"
+                    img_filepath = os.path.join(directory_path, img_filename)
+                    # Download the image
+                    urllib.request.urlretrieve(img_url, img_filepath)
+                    print(f"Downloaded: {img_filename}")
+                    images.append(img_filepath)
 
-                # print(images)
+                print(images)
 
-                # start = int(request.data["thresh"])
+                start = int(request.data["thresh"])
 
-                # if not images:
-                #     return Response(
-                #         {"error": "Images not provided"},
-                #         status=status.HTTP_400_BAD_REQUEST,
-                #     )
+                if not images:
+                    return Response(
+                        {"error": "Images not provided"},
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
 
                 try:
 
-                    # for i in range(start, 0, -1):
-                    #     print(i)
-                    #     try:
-                    #         stitcher = Stitcher(
-                    #             confidence_threshold=i / 10, blend_strength=20
-                    #         )  # Create an affine stitcher object
-                    #         stitched_img = stitcher.stitch(images)  # Stitch images
+                    for i in range(start, 0, -1):
+                        print(i)
+                        try:
+                            stitcher = Stitcher(
+                                confidence_threshold=i / 10, blend_strength=20
+                            )  # Create an affine stitcher object
+                            stitched_img = stitcher.stitch(images)  # Stitch images
 
-                    #         stitched_image_path = os.path.join(
-                    #             settings.MEDIA_ROOT, "stitched_image.jpg"
-                    #         )
-                    #         cv2.imwrite(stitched_image_path, stitched_img)
-                    #         stitched_image_url = os.path.join(
-                    #             settings.MEDIA_URL, "stitched_image.jpg"
-                    #         ).replace("\\", "/")
-                    #         return JsonResponse(
-                    #             {
-                    #                 "success": True,
-                    #                 "stitched_image_url": stitched_image_url,
-                    #                 "threshold": i,
-                    #             }
-                    #         )
-                    #     except Exception as e:
-                    #         print(str(e))
+                            stitched_image_path = os.path.join(
+                                settings.MEDIA_ROOT, "stitched_image.jpg"
+                            )
+                            cv2.imwrite(stitched_image_path, stitched_img)
+                            stitched_image_url = os.path.join(
+                                settings.MEDIA_URL, "stitched_image.jpg"
+                            ).replace("\\", "/")
+                            return JsonResponse(
+                                {
+                                    "success": True,
+                                    "stitched_image_url": stitched_image_url,
+                                    "threshold": i,
+                                }
+                            )
+                        except Exception as e:
+                            print(str(e))
                     print("Image stitching failed")
                     downloaded_images = glob.glob(os.path.join(directory_path, "*.jpg"))
                     print(downloaded_images)
@@ -271,13 +273,14 @@ class StitchImage(APIView):
             )
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-        return JsonResponse(
-            {
-                "success": True,
-                "stitched_image_url": "/assets/stitched_image.jpg",
-                "threshold": 10,
-            }
-        )
+
+        # return JsonResponse(
+        #     {
+        #         "success": True,
+        #         "stitched_image_url": "/assets/stitched_image.jpg",
+        #         "threshold": 10,
+        #     }
+        # )
 
 
 def get_token_user(token):
@@ -314,9 +317,11 @@ class UserCreate(APIView):
             )
             refresh = RefreshToken.for_user(user)
             response_data = {
-                "user": str(refresh)
-                if request.data.get("refresh")
-                else str(refresh.access_token),
+                "user": (
+                    str(refresh)
+                    if request.data.get("refresh")
+                    else str(refresh.access_token)
+                ),
                 "message": "Signup successful",
             }
             return Response(response_data, status=status.HTTP_200_OK)
@@ -337,9 +342,11 @@ class UserLogin(APIView):
         if user and user.check_password(password):
             refresh = RefreshToken.for_user(user)
             response_data = {
-                "user": str(refresh)
-                if request.data.get("refresh")
-                else str(refresh.access_token),
+                "user": (
+                    str(refresh)
+                    if request.data.get("refresh")
+                    else str(refresh.access_token)
+                ),
                 "message": "Login successful",
             }
             return Response(response_data, status=status.HTTP_200_OK)
@@ -383,9 +390,9 @@ class UserImage(APIView):
 
         try:
             # Save the image with a custom title in the assets/images folder
-            img = cv2.imread('assets/stitched_image.jpg')
-            path = f'images/{title}_{str(uuid.uuid4())[:8]}.jpg'
-            cv2.imwrite('assets/' + path, img)
+            img = cv2.imread("assets/stitched_image.jpg")
+            path = f"images/{title}_{str(uuid.uuid4())[:8]}.jpg"
+            cv2.imwrite("assets/" + path, img)
 
             image_instance = Image(user=user, image=path, title=title)
             image_instance.save()
@@ -666,7 +673,6 @@ class GapFilling(APIView):
         if response.status_code == 200:
             # Path to save the received image
             received_image_path =  os.path.join(settings.MEDIA_ROOT, "filled_image.jpg")
-
             # Write the received image data to a file
             with open(received_image_path, "wb") as file:
                 file.write(response.content)
@@ -732,3 +738,22 @@ class AdjustImage(APIView):
                 "success": False,
             }
         )
+
+
+class DeleteDownloads(APIView):
+    def post(self, request):
+        try:
+            downloads_folder = os.path.join(settings.MEDIA_ROOT, "downloaded_images")
+
+            if os.path.exists(downloads_folder) and os.path.isdir(downloads_folder):
+                shutil.rmtree(downloads_folder)
+                return Response(
+                    {"message": "Downloaded images folder deleted successfully."}
+                )
+            else:
+                return Response(
+                    {"error": "Downloaded images folder not found or not a directory."},
+                    status=404,
+                )
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)
