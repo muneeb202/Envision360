@@ -83,7 +83,6 @@ class WebScrape(APIView):
             }
 
             try:
-                # title = "Arcadian Cafe"
                 search = GoogleSearch(
                     params
                 )  # where data extraction happens on the backend
@@ -274,6 +273,7 @@ class StitchImage(APIView):
             )
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
         # return JsonResponse(
         #     {
         #         "success": True,
@@ -647,12 +647,19 @@ class DeleteComment(APIView):
                 {"error": "Comment not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
+path = 'https://afc9-34-42-38-67.ngrok-free.app/'
+
 
 class GapFilling(APIView):
     def post(self, request):
-
+        # return JsonResponse(
+        #         {
+        #             "success": True,
+        #             "recieved_image_url": "/assets/filled_image.jpg",
+        #         }
+        #     )
         # URL of the Flask API endpoint that processes the image
-        api_url = "https://2c3b-104-155-195-243.ngrok-free.app/process_image"
+        api_url = f"{path}process_image"
 
         # Path to the image file you want to process
         image_file_path = os.path.join(settings.MEDIA_ROOT, "stitched_image.jpg")
@@ -660,12 +667,59 @@ class GapFilling(APIView):
         # Send a POST request to the Flask API endpoint with the image data
         with open(image_file_path, "rb") as file:
             files = {"file": file}
-            response = requests.post(api_url, files=files)
+            response = requests.post(api_url, files=files, timeout=300)
 
         # Check if the request was successful (status code 200)
         if response.status_code == 200:
             # Path to save the received image
-            received_image_path = "received_image.jpg"
+            received_image_path =  os.path.join(settings.MEDIA_ROOT, "filled_image.jpg")
+            # Write the received image data to a file
+            with open(received_image_path, "wb") as file:
+                file.write(response.content)
+
+            print("Received image saved as", received_image_path)
+            return JsonResponse(
+                {
+                    "success": True,
+                    "recieved_image_url": "/assets/filled_image.jpg",
+                }
+            )
+        print("Error:", response.text)
+        return JsonResponse(
+            {
+                "success": False,
+            }
+        )
+
+
+class AdjustImage(APIView):
+    def post(self, request):
+        x1 = request.data.get('x1')
+        x2 = request.data.get('x2')
+        y1 = request.data.get('y1')
+        y2 = request.data.get('y2')
+        prompt = request.data.get('y2')
+        # URL of the Flask API endpoint that processes the image
+        api_url = f"{path}adjust_image"
+
+        # Path to the image file you want to process
+        image_file_path = os.path.join(settings.MEDIA_ROOT, "filled_image.jpg")
+
+        # Send a POST request to the Flask API endpoint with the image data
+        with open(image_file_path, "rb") as file:
+            files = {"file": file}
+            data = {
+            "x1": x1,
+            "x2": x2,
+            "y1": y1,
+            "y2": y2
+        }
+            response = requests.post(api_url, files=files, data=request.data, timeout=300)
+
+        # Check if the request was successful (status code 200)
+        if response.status_code == 200:
+            # Path to save the received image
+            received_image_path =  os.path.join(settings.MEDIA_ROOT, "filled_image.jpg")
 
             # Write the received image data to a file
             with open(received_image_path, "wb") as file:
@@ -675,16 +729,15 @@ class GapFilling(APIView):
             return JsonResponse(
                 {
                     "success": True,
-                    "recieved_image_url": received_image_path,
+                    "recieved_image_url": "/assets/filled_image.jpg",
                 }
             )
-        else:
-            print("Error:", response.text)
-            return JsonResponse(
-                {
-                    "success": False,
-                }
-            )
+        print("Error:", response.text)
+        return JsonResponse(
+            {
+                "success": False,
+            }
+        )
 
 
 class DeleteDownloads(APIView):

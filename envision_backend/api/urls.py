@@ -27,6 +27,7 @@ urlpatterns = [
     path("stitch_images/", views.StitchImage.as_view(), name="stitch_images"),
     path("web_scrape/", views.WebScrape.as_view(), name="web_scrape"),
     path("gap_filling/", views.GapFilling.as_view(), name="gap_filling"),
+    path("adjust_image/", views.AdjustImage.as_view(), name="adjust"),
     path("delete_downloads/", views.DeleteDownloads.as_view(), name="delete_downloads"),
 ]
 if settings.DEBUG:
