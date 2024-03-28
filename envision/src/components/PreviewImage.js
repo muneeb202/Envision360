@@ -110,6 +110,25 @@ const PreviewImage = ({ imagelist, thresh, image }) => {
         }
     };
 
+    const handleGapFilling = async () => {
+        try {
+            console.log('handleGapFilling')
+            const response = await axios.post('http://localhost:8000/api/gap_filling/', {
+                image: completedImage,
+            }, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            console.log(response.data)
+            setCompletedImage(response.data.recieved_image_url);
+
+        } catch (error) {
+            console.error('handleGapFilling:', error);
+        }
+    };
+
+
     const closeError = () => {
         if (!loggedIn) {
             navigate('/start')
@@ -209,12 +228,14 @@ const PreviewImage = ({ imagelist, thresh, image }) => {
                             <TextField id="outlined-basic" label="Title" variant="outlined" onChange={(e) => setTitle(e.target.value)} />
                             <Button onClick={handleSave} variant='contained' color='success' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px', margin: '30px 0px' }}>Save</Button>
                             <Button onClick={handleStitchImages} variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px' }}>Re-Render</Button>
+                            <Button onClick={handleGapFilling} variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px' }}>Gap filling</Button>
+
                         </> : <>
                             <TextField label="Prompt" color="success" id="fullWidth" sx={{ margin: '30px 0px' }} />
                             <TextField label="Negative Prompt" color='red' id="fullWidth" />
                         </>}
                         <br />
-                        <Button onClick={() => setAdjust(!adjust)} variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px' }}>{adjust ? 'Back': 'Adjust Image'}</Button>
+                        <Button onClick={() => setAdjust(!adjust)} variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px' }}>{adjust ? 'Back' : 'Adjust Image'}</Button>
 
                     </ThemeProvider>
                 </div>
