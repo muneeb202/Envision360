@@ -6,6 +6,8 @@ import axios from 'axios';
 import { Alert, Button, CircularProgress, Snackbar, TextField, ThemeProvider, createTheme } from '@mui/material';
 import { Stage, Layer, Rect } from "react-konva";
 import { height, width } from '@mui/system';
+import { ReactCompareSlider, ReactCompareSliderImage } from 'react-compare-slider';
+
 
 const theme = createTheme({
     palette: {
@@ -62,6 +64,8 @@ const PreviewImage = ({ imagelist, thresh, image }) => {
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
     const [prompt, setPrompt] = useState('');
     const [negPrompt, setNegPrompt] = useState('');
+    const [selected, setSelected] = useState(false);
+    const [compare, setCompare] = useState(false);
 
     const handleSave = async () => {
         if (title.trim() === '') {
@@ -122,6 +126,7 @@ const PreviewImage = ({ imagelist, thresh, image }) => {
             setCompletedImage(response.data.recieved_image_url);
             setRendering(false)
             setLoading(false)
+            setCompare(true)
         } catch (error) {
             console.error('handleGapFilling:', error);
             setLoading(false)
@@ -215,6 +220,11 @@ const PreviewImage = ({ imagelist, thresh, image }) => {
         setDimensions({ width: naturalWidth, height: naturalHeight });
     };
 
+    const handleImageClick = (imageSrc) => (event) => {
+        event.stopPropagation();
+        setCompletedImage(imageSrc);
+        setCompare(false);
+    };
     return (
         <>
             {loading ?
@@ -222,60 +232,84 @@ const PreviewImage = ({ imagelist, thresh, image }) => {
                     <CircularProgress />
                 </div>
                 :
-            <div className='image-viewer'>
-                {(!rendering && !adjust) &&
-                    <ImageViewer src={'http://localhost:8000' + completedImage} />
-                }
-                {adjust &&
+                <div className='image-viewer'>
+                    {compare ?
+                        <div className="compare-container" >
+                            <ReactCompareSlider
+                                itemOne={
+                                    <ReactCompareSliderImage
+                                        src={'http://localhost:8000' + image}
+                                        alt="Image one"
+                                    />
+                                }
+                                itemTwo={
+                                    <ReactCompareSliderImage
+                                        src={'http://localhost:8000' + completedImage}
+                                        alt="Image two"
+                                    />
+                                }
+                            />
+                            <Button onClick={handleImageClick(image)} variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px', position: 'absolute', left: '20px', marginTop: '20px' }}>Before</Button>
+                            <Button onClick={handleImageClick(completedImage)} variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px', position: 'absolute', right: '20px', marginTop: '20px' }}>After</Button>
+
+                        </div>
+                        :
                         <>
-                            {loading ?
-                                <div className='d-flex justify-content-center align-items-center' style={{ height: '100vh', width: '99vw', backgroundColor: 'grey' }}>
-                                    <CircularProgress />
-                                </div>
-                                :
-                                <img id='image' src={'http://localhost:8000' + completedImage} draggable={false} onLoad={handleImageLoad} />
+                            {(!rendering && !adjust) &&
+                                <ImageViewer src={'http://localhost:8000' + completedImage} />
                             }
-                            <Stage
-                                onMouseDown={handleMouseDown}
-                                onMouseUp={handleMouseUp}
-                                onMouseMove={handleMouseMove}
-                                width={window.innerWidth - 10}
-                                height={window.innerHeight}
-                            >
-                                <Layer >
-                                    {newAnnotation.map((value) => {
-                                        return (
-                                            <Rect
-                                                x={value.x}
-                                                y={value.y}
-                                                width={value.width}
-                                                height={value.height}
-                                                fill="#6c696973"
-                                                stroke="#b8b8b8"
-                                            />
-                                        );
-                                    })}
-                                </Layer>
-                            </Stage>
+                            {adjust &&
+                                <>
+                                    {loading ?
+                                        <div className='d-flex justify-content-center align-items-center' style={{ height: '100vh', width: '99vw', backgroundColor: 'grey' }}>
+                                            <CircularProgress />
+                                        </div>
+                                        :
+                                        <img id='image' src={'http://localhost:8000' + completedImage} draggable={false} onLoad={handleImageLoad} />
+                                    }
+                                    <Stage
+                                        onMouseDown={handleMouseDown}
+                                        onMouseUp={handleMouseUp}
+                                        onMouseMove={handleMouseMove}
+                                        width={window.innerWidth - 10}
+                                        height={window.innerHeight}
+                                    >
+                                        <Layer >
+                                            {newAnnotation.map((value) => {
+                                                return (
+                                                    <Rect
+                                                        x={value.x}
+                                                        y={value.y}
+                                                        width={value.width}
+                                                        height={value.height}
+                                                        fill="#6c696973"
+                                                        stroke="#b8b8b8"
+                                                    />
+                                                );
+                                            })}
+                                        </Layer>
+                                    </Stage>
+                                </>
+                            }
+                            <div className='button-container'>
+                                <ThemeProvider theme={theme}>
+                                    {!adjust ? <>
+                                        <TextField id="outlined-basic" label="Title" variant="outlined" onChange={(e) => setTitle(e.target.value)} />
+                                        <Button onClick={handleSave} variant='contained' color='success' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px', margin: '30px 0px' }}>Save</Button>
+                                        <Button onClick={handleStitchImages} variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px', margin: '30px 0px' }}>Re-Render</Button>
+                                        <Button onClick={handleGapFilling} variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px' }}>Gap filling</Button>
+
+                                    </> : <>
+                                        <TextField label="Prompt" color="success" id="fullWidth" sx={{ margin: '30px 0px' }} />
+                                        <TextField label="Negative Prompt" color='red' id="fullWidth" />
+                                    </>}
+                                    <br />
+                                    <Button onClick={() => setAdjust(!adjust)} variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px' }}>{adjust ? 'Back' : 'Adjust Image'}</Button>
+
+                                </ThemeProvider>
+                            </div>
                         </>
                     }
-                <div className='button-container'>
-                    <ThemeProvider theme={theme}>
-                        {!adjust ? <>
-                            <TextField id="outlined-basic" label="Title" variant="outlined" onChange={(e) => setTitle(e.target.value)} />
-                            <Button onClick={handleSave} variant='contained' color='success' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px', margin: '30px 0px' }}>Save</Button>
-                            <Button onClick={handleStitchImages} variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px' }}>Re-Render</Button>
-                            <Button onClick={handleGapFilling} variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px' }}>Gap filling</Button>
-
-                        </> : <>
-                            <TextField label="Prompt" color="success" id="fullWidth" sx={{ margin: '30px 0px' }} />
-                            <TextField label="Negative Prompt" color='red' id="fullWidth" />
-                        </>}
-                        <br />
-                        <Button onClick={() => setAdjust(!adjust)} variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px' }}>{adjust ? 'Back' : 'Adjust Image'}</Button>
-
-                    </ThemeProvider>
-                </div>
                 </div>
             }
             <Snackbar
