@@ -118,10 +118,12 @@ const Generate = () => {
                             setImg(true);
                             setDownloadedImages(response.data.downloaded_images);
                         }
+                        setMessage('Image stitching failed')
                         console.error('Failed:', response.data.message);
                         setIsLoading(false)
                     }
-                } catch (error) {
+                } catch (error) {                        
+                    setMessage('Could not find entered location')
                     setIsLoading(false)
                     console.error('Error setting location or coordinates:', error);
                 }
@@ -143,11 +145,13 @@ const Generate = () => {
                         setThreshold(Math.max(1, response.data['threshold'] - 1))
                         setGenerating(false);
                     } else {
+                        setMessage('Image stitching failed')
                         console.error('Image stitching failed:', response.data.message);
                         setIsLoading(false)
                     }
                 } catch (error) {
                     setIsLoading(false)
+                    setMessage('Error uploading images')
                     console.error('Error uploading images:', error);
                 }
                 break;
@@ -175,8 +179,8 @@ const Generate = () => {
                 }
                 break;
             case 3:
-                if (selectedFiles.length === 0) {
-                    setMessage('Must upload at least 1 image.');
+                if (selectedFiles.length < 2) {
+                    setMessage('Must upload at least 2 images.');
                     setOpen(true);
                     return;
                 }
@@ -291,6 +295,7 @@ const Generate = () => {
                                                                 <input
                                                                     type="file"
                                                                     className="file-input"
+                                                                    accept="image/*"
                                                                     multiple
                                                                     onChange={handleFileInputChange}
                                                                 />

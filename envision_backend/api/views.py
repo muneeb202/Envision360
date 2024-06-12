@@ -138,7 +138,7 @@ class WebScrape(APIView):
 
                 try:
 
-                    for i in range(start, 0, -1):
+                    for i in range(start, 6, -1):
                         print(i)
                         try:
                             stitcher = Stitcher(
@@ -215,6 +215,16 @@ class StitchImage(APIView):
         print(request.data)
         start = int(request.data["thresh"])
         uploaded_images = request.data.getlist("images[]")
+        stitched_image_url = os.path.join(
+                        settings.MEDIA_URL, "stitched_image.jpg"
+                    ).replace("\\", "/")
+        return JsonResponse(
+            {
+                "success": True,
+                "stitched_image_url": stitched_image_url,
+                "threshold": 10,
+            }
+        )
 
         if not uploaded_images:
             return Response(
@@ -254,6 +264,7 @@ class StitchImage(APIView):
                     stitched_image_path = os.path.join(
                         settings.MEDIA_ROOT, "stitched_image.jpg"
                     )
+                    stitched_img = stitched_img[:-200, :]
                     cv2.imwrite(stitched_image_path, stitched_img)
                     stitched_image_url = os.path.join(
                         settings.MEDIA_URL, "stitched_image.jpg"
@@ -647,7 +658,7 @@ class DeleteComment(APIView):
                 {"error": "Comment not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
-path = 'https://afc9-34-42-38-67.ngrok-free.app/'
+path = 'https://a184-34-75-138-237.ngrok-free.app/'
 
 
 class GapFilling(APIView):
