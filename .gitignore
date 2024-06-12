@@ -1,3 +1,4 @@
 *.pyc
 *node_modules
 /envision_backend/assets
+*.sqlite3
