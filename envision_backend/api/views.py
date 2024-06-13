@@ -663,12 +663,12 @@ path = 'https://a184-34-75-138-237.ngrok-free.app/'
 
 class GapFilling(APIView):
     def post(self, request):
-        # return JsonResponse(
-        #         {
-        #             "success": True,
-        #             "recieved_image_url": "/assets/filled_image.jpg",
-        #         }
-        #     )
+        return JsonResponse(
+                {
+                    "success": True,
+                    "recieved_image_url": "/assets/filled_image.jpg",
+                }
+            )
         # URL of the Flask API endpoint that processes the image
         api_url = f"{path}process_image"
 
