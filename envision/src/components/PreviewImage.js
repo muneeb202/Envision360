@@ -55,6 +55,7 @@ const PreviewImage = ({ imagelist, thresh, image }) => {
     const [title, setTitle] = useState('');
     const [message, setMessage] = useState('')
     const [completedImage, setCompletedImage] = useState(image);
+    const [previousImage, setPreviousImage] = useState(image);
     const navigate = useNavigate();
     const [threshold, setThreshold] = useState(thresh)
     const [rendering, setRendering] = useState(false)
@@ -180,16 +181,19 @@ const PreviewImage = ({ imagelist, thresh, image }) => {
 
     const adjustImage = async (x1, y1, x2, y2) => {
         setLoading(true)
+        console.log()
         axios.post('http://localhost:8000/api/adjust_image/', { x1, y1, x2, y2, prompt, negPrompt })
             .then((response) => {
                 console.log(response)
                 setCompletedImage(response.data.recieved_image_url);
-                setTimeout(() => {
-                    setLoading(false)
-                }, 3000);
+                setPreviousImage(response.data.previous_image_url)
+                setLoading(false);
+                setAdjust(false)
+                setCompare(true)
             })
             .catch((e) => {
                 console.log(e)
+                setMessage('An error occurred while adjusting the image.')
                 setLoading(false);
             })
     }
@@ -238,7 +242,7 @@ const PreviewImage = ({ imagelist, thresh, image }) => {
                             <ReactCompareSlider
                                 itemOne={
                                     <ReactCompareSliderImage
-                                        src={'http://localhost:8000' + image}
+                                        src={'http://localhost:8000' + previousImage}
                                         alt="Image one"
                                     />
                                 }
@@ -249,7 +253,7 @@ const PreviewImage = ({ imagelist, thresh, image }) => {
                                     />
                                 }
                             />
-                            <Button onClick={handleImageClick(image)} variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px', position: 'absolute', left: '20px', marginTop: '20px' }}>Before</Button>
+                            <Button onClick={handleImageClick(previousImage)} variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px', position: 'absolute', left: '20px', marginTop: '20px' }}>Before</Button>
                             <Button onClick={handleImageClick(completedImage)} variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px', position: 'absolute', right: '20px', marginTop: '20px' }}>After</Button>
 
                         </div>
@@ -300,8 +304,8 @@ const PreviewImage = ({ imagelist, thresh, image }) => {
                                         <Button onClick={handleGapFilling} variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px' }}>Gap filling</Button>
 
                                     </> : <>
-                                        <TextField label="Prompt" color="success" id="fullWidth" sx={{ margin: '30px 0px' }} />
-                                        <TextField label="Negative Prompt" color='red' id="fullWidth" />
+                                        <TextField label="Prompt" color="success" id="fullWidth" sx={{ margin: '30px 0px' }} onChange={(e) => setPrompt(e.target.value)}/>
+                                        <TextField label="Negative Prompt" color='red' id="fullWidth" onChange={(e) => setNegPrompt(e.target.value)}/>
                                     </>}
                                     <br />
                                     <Button onClick={() => setAdjust(!adjust)} variant='contained' sx={{ borderRadius: '20px', letterSpacing: '1px', padding: '10px 40px' }}>{adjust ? 'Back' : 'Adjust Image'}</Button>

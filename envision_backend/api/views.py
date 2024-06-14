@@ -215,16 +215,16 @@ class StitchImage(APIView):
         print(request.data)
         start = int(request.data["thresh"])
         uploaded_images = request.data.getlist("images[]")
-        stitched_image_url = os.path.join(
-                        settings.MEDIA_URL, "stitched_image.jpg"
-                    ).replace("\\", "/")
-        return JsonResponse(
-            {
-                "success": True,
-                "stitched_image_url": stitched_image_url,
-                "threshold": 10,
-            }
-        )
+        # stitched_image_url = os.path.join(
+        #                 settings.MEDIA_URL, "stitched_image.jpg"
+        #             ).replace("\\", "/")
+        # return JsonResponse(
+        #     {
+        #         "success": True,
+        #         "stitched_image_url": stitched_image_url,
+        #         "threshold": 10,
+        #     }
+        # )
 
         if not uploaded_images:
             return Response(
@@ -658,17 +658,17 @@ class DeleteComment(APIView):
                 {"error": "Comment not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
-path = 'https://a184-34-75-138-237.ngrok-free.app/'
+path = 'https://c6d3-104-155-189-54.ngrok-free.app/'
 
 
 class GapFilling(APIView):
     def post(self, request):
-        return JsonResponse(
-                {
-                    "success": True,
-                    "recieved_image_url": "/assets/filled_image.jpg",
-                }
-            )
+        # return JsonResponse(
+        #         {
+        #             "success": True,
+        #             "recieved_image_url": "/assets/filled_image.jpg",
+        #         }
+        #     )
         # URL of the Flask API endpoint that processes the image
         api_url = f"{path}process_image"
 
@@ -729,6 +729,10 @@ class AdjustImage(APIView):
 
         # Check if the request was successful (status code 200)
         if response.status_code == 200:
+            backup_image_path = os.path.join(settings.MEDIA_ROOT, f"previous_image.jpg")
+            if os.path.exists(backup_image_path):
+                os.remove(backup_image_path)
+            os.rename(image_file_path, backup_image_path)
             # Path to save the received image
             received_image_path =  os.path.join(settings.MEDIA_ROOT, "filled_image.jpg")
 
@@ -740,6 +744,7 @@ class AdjustImage(APIView):
             return JsonResponse(
                 {
                     "success": True,
+                    "previous_image_url": "/assets/previous_image.jpg",
                     "recieved_image_url": "/assets/filled_image.jpg",
                 }
             )

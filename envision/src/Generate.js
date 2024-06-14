@@ -131,6 +131,14 @@ const Generate = () => {
             case 3:
                 try {
                     console.log(selectedFiles)
+                    setTimeout(() => {
+                        if (!completedImage) {
+                            setMessage('Image stitching failed')
+                            setOpen(true)
+                            setIsLoading(false)
+                            setGenerating(true)
+                        }
+                    },300000)
                     const response = await axios.post('http://localhost:8000/api/stitch_images/', {
                         images: selectedFiles,
                         thresh: threshold
@@ -141,9 +149,11 @@ const Generate = () => {
                     });
                     console.log(response.data)
                     if (response.data.success) {
-                        setCompletedImage(response.data.stitched_image_url);
-                        setThreshold(Math.max(1, response.data['threshold'] - 1))
-                        setGenerating(false);
+                        if (!isLoading) {
+                            setCompletedImage(response.data.stitched_image_url);
+                            setThreshold(Math.max(1, response.data['threshold'] - 1))
+                            setGenerating(false);
+                        }
                     } else {
                         setMessage('Image stitching failed')
                         console.error('Image stitching failed:', response.data.message);
@@ -202,7 +212,7 @@ const Generate = () => {
                     <ThemeProvider theme={theme}>
                         <MemoizedParticles options={particlesConfig2} />
 
-                        <LoadingScreen loading={isLoading} generating={generating} completion={handleCompletion} />
+                        <LoadingScreen message={message} loading={isLoading} generating={generating} completion={handleCompletion} />
                         <div className='gen-container'>
                             <div className='image-container' >
                                 <img src={`${process.env.PUBLIC_URL}/images/generatebg.png`} alt="background" draggable='false' />
@@ -332,11 +342,11 @@ const Generate = () => {
                             </div>
                         </div>
                         <Snackbar
-                            open={open}
+                            open={message}
                             autoHideDuration={6000}
-                            onClose={() => setOpen(false)}
+                            onClose={() => setMessage('')}
                         >
-                            <Alert onClose={() => setOpen(false)} severity="error" sx={{ fontSize: '17px', letterSpacing: '2px' }}>
+                            <Alert onClose={() => setMessage('')} severity="error" sx={{ fontSize: '17px', letterSpacing: '2px' }}>
                                 {message}
                             </Alert>
                         </Snackbar>
